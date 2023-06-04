@@ -1,0 +1,80 @@
+server
+{
+    host 0.0.0.0;
+    listen 80;
+
+    server_name ayoub;
+#    error_page 500 /Users/imannouc/Desktop/WWW/website/error_page/500.html;
+#    error_page 405 /Users/imannouc/Desktop/WWW/website/error_page/405.html;
+#    error_page 404 /Users/imannouc/Desktop/WWW/website/error_page/404.html;
+#    error_page 401 /Users/imannouc/Desktop/WWW/website/error_page/401.html;
+
+    root /Users/imannouc/Desktop/WWW/website;
+    allow_method [GET];
+
+    location / {
+        index index.html;
+        allow_method [GET];
+    }
+
+    location /notallowed {
+        root /Users/imannouc/Desktop/WWW/website/notallowed;
+        allow_method [POST] ; # overrides allowed methods
+    }
+
+    location /listfiles {
+        root /Users/imannouc/Desktop/WWW/website/listfiles;
+        autoindex on;
+    }
+
+    location /private {
+        root /Users/imannouc/Desktop/WWW/website/private;
+        access /Users/imannouc/Desktop/WWW/website/private/.access.prv;
+        index sensitive;
+    }
+
+    location /*.php
+    {
+        CGI_param /Users/imannouc/Desktop/WWW/website/our_cgi/php-cgi;
+    }
+
+    location /*.bla
+    {
+        allow_method [GET];
+        CGI_param /Users/imannouc/Desktop/WWW/website/our_cgi/cgi;
+    }
+
+    location /redirect {
+        return 0.0.0.0:2020;
+    }
+}
+
+
+server
+{
+    host 0.0.0.0;
+    listen 2020 ;
+
+    server_name imannouc;
+    error_page 500 /Users/imannouc/Desktop/WWW/website/error_page/500.html;
+    error_page 405 /Users/imannouc/Desktop/WWW/website/error_page/405.html;
+    error_page 404 /Users/imannouc/Desktop/WWW/website/error_page/404.html;
+    error_page 401 /Users/imannouc/Desktop/WWW/website/error_page/401.html;
+
+    root /Users/imannouc/Desktop/WWW/website;
+    allow_method [GET];
+
+    location / {
+        index hello.html;
+        allow_method [GET];
+    }
+
+    location /puttofile {
+        allow_method [POST];
+        client_max_body_size 50;
+    }
+
+    location /deletefile {
+#        allow_method [DELETE];
+    }
+}
