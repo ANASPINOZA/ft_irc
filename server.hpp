@@ -18,11 +18,14 @@ class Server {
     public:
         void    ft_server();
         int     CheckSocket();
+        void    SomeParss(char **av);
+        void    CheckPort(char *port);
     private:
         std::vector<int>    tab;
         int server_fd;
         int server;
         int valread;
+        int Port;
 };
 
 #endif

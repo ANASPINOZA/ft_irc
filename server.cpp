@@ -1,6 +1,23 @@
 #include "server.hpp"
 #include <vector>
 
+void    Server::CheckPort(char *port)
+{
+    for (size_t i = 0; i < strlen(port); i++)
+    {
+        if (!isdigit(port[i]))
+            throw std::runtime_error("PORT: Error");
+    }
+    this->Port = atoi(port);
+    if (this->Port < 1000 || this->Port > 65535)
+        throw std::runtime_error("PORT: Error");
+}
+
+void    Server::SomeParss(char **av)
+{
+    CheckPort(av[1]);
+}
+
 int Server::CheckSocket()
 {
     for (size_t i = 0; i < tab.size(); i++)
@@ -51,5 +68,4 @@ void    Server::ft_server()
         std::cout << buffer;
         tab.push_back(this->server);
     }
-    
 }
