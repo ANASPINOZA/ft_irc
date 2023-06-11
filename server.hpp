@@ -12,7 +12,7 @@
 #include <arpa/inet.h>
 #include <vector>
 
-#define PORT 8080
+#define PORT 1500
 
 class Server {
     public:
@@ -21,7 +21,7 @@ class Server {
     private:
         std::vector<int>    tab;
         int server_fd;
-        int new_socket;
+        int server;
         int valread;
 };
 
