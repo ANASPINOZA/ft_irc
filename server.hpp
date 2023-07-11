@@ -10,7 +10,9 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/time.h>
 #include <vector>
+#include <string>
 
 #define PORT 1500
 
@@ -24,6 +26,7 @@ class Server {
         std::vector<int>    tab;
         int server_fd;
         int server;
+        int new_socket;
         int valread;
         int Port;
 };
