@@ -48,27 +48,30 @@ void    Server::ft_server()
     // Forcefully attaching socket to the port 8080
     if (bind(this->server_fd, (struct sockaddr*)&address, sizeof(address)) < 0)
         throw std::runtime_error("Error: bind failed");
-
-    std::cout << "Waiting for connection...." << std::endl;
-
-    if (listen(this->server_fd, 3) < 0) 
-        throw std::runtime_error("Error: listen");
-
     fd_set master;
+
+    int max_clients = 30;
+    int sd;
+    int client_socket[30];
 
     for (int i = 0; i < max_clients; i++)  
     {  
         client_socket[i] = 0;  
     }  
 
+    if (listen(this->server_fd, 3) < 0) 
+        throw std::runtime_error("Error: listen");
 
-    int max_clients = 30;
-    int sd;
-    int client_socket[30];
+    std::cout << "Waiting for connection...." << std::endl;
+
+
+
     while (true)
     {
         FD_ZERO(&master);
+
         FD_SET(this->server_fd, &master);
+
         int max_sd = this->server_fd;
 
         for (int i = 0; i < max_clients; i++)
@@ -81,9 +84,9 @@ void    Server::ft_server()
                 max_sd = sd;
         }
 
-        std::cout << max_sd << std::endl;
-        int socketcount = select(max_sd + 1, &master, nullptr, nullptr, nullptr);
-        if ((socketcount < 0) && (errno!=EINTR))  
+        int activity = select(max_sd + 1, &master, nullptr, nullptr, nullptr);
+
+        if ((activity < 0) && (errno!=EINTR))  
         {  
             printf("select error\n");  
         }
@@ -93,13 +96,13 @@ void    Server::ft_server()
             this->new_socket = accept(this->server_fd, NULL, NULL);
 
             // send mssg to client to inform that mssg is sent
-            std::string mssg = "HHHHH I GOT YOU";
+            std::string mssg = "HHHHH I GOT YOU\n";
             send(this->new_socket, mssg.c_str(), mssg.size() + 1, 0);
 
             for (int i = 0; i < max_clients; i++)  
             {  
                 //if position is empty 
-                if( client_socket[i] == 0 )  
+                if( client_socket[i] == 0)  
                 {  
                     client_socket[i] = new_socket;  
                     printf("Adding to list of sockets as %d\n" , i);  
@@ -126,26 +129,14 @@ void    Server::ft_server()
                 }
                 else {
                     buffer[valRead] = '\0';
-                    send (sd, buffer, strlen(buffer), 0);
+                    for (int i = 0; i < max_clients; i++)
+                    {
+                        if (client_socket[i] != this->server_fd && client_socket[i] != sd)
+                            send(client_socket[i], buffer, strlen(buffer), 0);
+                    }
                 }
             }
         }
-
     }
-    // while (1)
-    // {
-    //     char *buffer = new char;
-    //     if (CheckSocket())
-    //     {
-    //         if (((this->server = accept(this->server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen)) < 0))
-    //             throw std::runtime_error("Error: accept");
-    //     }
-    //     this->valread = read(this->server, buffer, 30000);
-    //     std::cout << buffer;
-    //     delete buffer;
-    //     bzero(buffer, strlen(buffer));
-    //     std::cout << buffer;
-    //     tab.push_back(this->server);
-    // }
 }
 

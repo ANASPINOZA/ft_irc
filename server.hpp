@@ -27,7 +27,7 @@ class Server {
         int server_fd;
         int server;
         int new_socket;
-        int valread;
+        // int valread;
         int Port;
 };
 
