@@ -32,7 +32,7 @@ void    Server::ft_server()
 {
     struct sockaddr_in address;
     int opt = 1;
-    int addrlen = sizeof(address);
+    // int addrlen = sizeof(address);
 
   
     if ((this->server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -56,9 +56,12 @@ void    Server::ft_server()
 
     fd_set master;
 
+    for (int i = 0; i < max_clients; i++)  
+    {  
+        client_socket[i] = 0;  
+    }  
 
 
-    int max_sd = this->server_fd;
     int max_clients = 30;
     int sd;
     int client_socket[30];
@@ -66,6 +69,7 @@ void    Server::ft_server()
     {
         FD_ZERO(&master);
         FD_SET(this->server_fd, &master);
+        int max_sd = this->server_fd;
 
         for (int i = 0; i < max_clients; i++)
         {
@@ -77,10 +81,11 @@ void    Server::ft_server()
                 max_sd = sd;
         }
 
+        std::cout << max_sd << std::endl;
         int socketcount = select(max_sd + 1, &master, nullptr, nullptr, nullptr);
         if ((socketcount < 0) && (errno!=EINTR))  
         {  
-            printf("select error");  
+            printf("select error\n");  
         }
 
         if (FD_ISSET(this->server_fd, &master))
@@ -111,10 +116,17 @@ void    Server::ft_server()
 
             if (FD_ISSET(sd, &master))
             {
-                int valRead = recv(sd, buffer, 3000);
+                int valRead = recv(sd, buffer, 3000, 0);
                 if (valRead == 0)
                 {
-                    std::
+                    std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
+
+                    close (sd);
+                    client_socket[i] = 0;
+                }
+                else {
+                    buffer[valRead] = '\0';
+                    send (sd, buffer, strlen(buffer), 0);
                 }
             }
         }
@@ -136,3 +148,4 @@ void    Server::ft_server()
     //     tab.push_back(this->server);
     // }
 }
+
