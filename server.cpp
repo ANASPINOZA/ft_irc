@@ -13,28 +13,23 @@ void    Server::CheckPort(char *port)
         throw std::runtime_error("PORT: Error");
 }
 
+void    Server::get_PASS(char *pass)
+{
+    this->PASS = pass;
+}
+
 void    Server::SomeParss(char **av)
 {
     CheckPort(av[1]);
-}
-
-int Server::CheckSocket()
-{
-    for (size_t i = 0; i < tab.size(); i++)
-    {
-        if (tab[i] == server)
-            return (0);
-    }
-    return (1);
+    get_PASS(av[2]);
 }
 
 void    Server::ft_server()
 {
     struct sockaddr_in address;
     int opt = 1;
-    // int addrlen = sizeof(address);
 
-  
+
     if ((this->server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw std::runtime_error("Error: socket failed");
   
@@ -48,16 +43,15 @@ void    Server::ft_server()
     // Forcefully attaching socket to the port 8080
     if (bind(this->server_fd, (struct sockaddr*)&address, sizeof(address)) < 0)
         throw std::runtime_error("Error: bind failed");
-    fd_set master;
 
-    int max_clients = 30;
+    
     int sd;
-    int client_socket[30];
 
-    for (int i = 0; i < max_clients; i++)  
-    {  
-        client_socket[i] = 0;  
-    }  
+
+    for (int i = 0; i < FD_SETSIZE; i++)  
+    {
+        this->client_socket.insert(client_socket.begin() + i, 0);
+    }
 
     if (listen(this->server_fd, 3) < 0) 
         throw std::runtime_error("Error: listen");
@@ -68,43 +62,43 @@ void    Server::ft_server()
 
     while (true)
     {
-        FD_ZERO(&master);
+        FD_ZERO(&this->master);
 
-        FD_SET(this->server_fd, &master);
+        FD_SET(this->server_fd, &this->master);
 
         int max_sd = this->server_fd;
 
-        for (int i = 0; i < max_clients; i++)
+        for (int i = 0; i < FD_SETSIZE; i++)
         {
-            sd = client_socket[i];
+            sd = this->client_socket[i];
 
             if (sd > 0)
-                FD_SET(sd, &master);
+                FD_SET(sd, &this->master);
             if (sd > max_sd)
                 max_sd = sd;
         }
 
-        int activity = select(max_sd + 1, &master, nullptr, nullptr, nullptr);
+        int activity = select(max_sd + 1, &this->master, nullptr, nullptr, nullptr);
 
         if ((activity < 0) && (errno!=EINTR))  
         {  
             printf("select error\n");  
         }
 
-        if (FD_ISSET(this->server_fd, &master))
+        if (FD_ISSET(this->server_fd, &this->master))
         {
             this->new_socket = accept(this->server_fd, NULL, NULL);
 
             // send mssg to client to inform that mssg is sent
-            std::string mssg = "HHHHH I GOT YOU\n";
+            std::string mssg = "NEW CONNECTION\n";
             send(this->new_socket, mssg.c_str(), mssg.size() + 1, 0);
 
-            for (int i = 0; i < max_clients; i++)  
+            for (int i = 0; i < FD_SETSIZE; i++)  
             {  
                 //if position is empty 
-                if( client_socket[i] == 0)  
+                if( this->client_socket[i] == 0)  
                 {  
-                    client_socket[i] = new_socket;  
+                    this->client_socket[i] = new_socket;  
                     printf("Adding to list of sockets as %d\n" , i);  
                          
                     break;  
@@ -112,28 +106,30 @@ void    Server::ft_server()
             }  
         }
         
-        for (int i = 0; i < max_clients; i++)
+        for (int i = 0; i < FD_SETSIZE; i++)
         {
             char *buffer = new char;
-            sd = client_socket[i];
+            sd = this->client_socket[i];
 
-            if (FD_ISSET(sd, &master))
+            if (FD_ISSET(sd, &this->master))
             {
-                int valRead = recv(sd, buffer, 3000, 0);
-                if (valRead == 0)
+                this->valread = recv(sd, buffer, 3000, 0);
+                // need parss HERE
+                if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
 
                     close (sd);
-                    client_socket[i] = 0;
+                    this->client_socket[i] = 0;
                 }
                 else {
-                    buffer[valRead] = '\0';
-                    for (int i = 0; i < max_clients; i++)
-                    {
-                        if (client_socket[i] != this->server_fd && client_socket[i] != sd)
-                            send(client_socket[i], buffer, strlen(buffer), 0);
-                    }
+                    buffer[this->valread] = '\0';
+
+                    // for (int i = 0; i < FD_SETSIZE; i++)
+                    // {
+                    //     if (this->client_socket[i] != this->server_fd && this->client_socket[i] != sd)
+                    //         send(this->client_socket[i], buffer, strlen(buffer), 0);
+                    // }
                 }
             }
         }
