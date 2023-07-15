@@ -19,16 +19,19 @@
 class Server {
     public:
         void    ft_server();
-        int     CheckSocket();
         void    SomeParss(char **av);
         void    CheckPort(char *port);
+        void    get_PASS(char *pass);
     private:
         std::vector<int>    tab;
+        std::vector<int>    client_socket;
+        std::string PASS;
         int server_fd;
-        int server;
+        // int server;
         int new_socket;
-        // int valread;
+        int valread;
         int Port;
+        fd_set master;
 };
 
 #endif
