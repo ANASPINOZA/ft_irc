@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.cpp                                         :+:      :+:    :+:   */
+/*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/07/14 19:46:16 by aadnane          ###   ########.fr       */
+/*   Created: 2023/07/14 19:23:59 by aadnane           #+#    #+#             */
+/*   Updated: 2023/07/14 19:46:19 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.hpp"
-
+#include "User.hpp"
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Client::Client()
+User::User()
 {
 }
 
-Client::Client()
+User::User()
 {
 }
 
-Client::Client(const Client & src)
+User::User(const User & src)
 {
 }
 
@@ -35,7 +34,7 @@ Client::Client(const Client & src)
 ** -------------------------------- DESTRUCTOR --------------------------------
 */
 
-Client::~Client()
+User::~User()
 {
 }
 
@@ -44,7 +43,7 @@ Client::~Client()
 ** --------------------------------- OVERLOAD ---------------------------------
 */
 
-Client &				Client::operator=( Client const & rhs )
+User &				User::operator=( User const & rhs )
 {
 	//if ( this != &rhs )
 	//{
@@ -53,51 +52,49 @@ Client &				Client::operator=( Client const & rhs )
 	return *this;
 }
 
-std::ostream &			operator<<( std::ostream & o, Client const & i )
-{
-	//o << "Value = " << i.getValue();
-	return o;
-}
-
 
 /*
 ** --------------------------------- METHODS ----------------------------------
 */
 
+
+/*
+** --------------------------------- ACCESSOR---------------------------------
+*/
+
+
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
-void    Client::setPassword(std::string password)
+void    User::setUsername(std::string username)
 {
-    this->password = password;
+    this->username = username;
 }
 
-void    Client::setNickname(std::string nickname)
+void    User::setHostname(std::string hostname)
 {
-    this->nickname = nickname;
+    this->hostname = hostname;
 }
 
-void   Client::setUser(std::string username, std::string hostname, std::string realname)
+void    User::setRealname(std::string realname)
 {
-    this->user.setUsername(username);
-    this->user.setHostname(hostname);
-    this->user.setRealname(realname);
+    this->realname = realname;
 }
 
-std::string     Client::getNickname()
+std::string     User::getUsername()
 {
-    return this->nickname;
+    return (this->username);
 }
 
-std::string     Client::getPassword()
+std::string     User::getHostname()
 {
-    return this->password;
+    return (this->hostname);
 }
 
-User            Client::getUser()
+std::string     User::getRealname()
 {
-    return this->user;
+    return (this->realname);
 }
 
 /* ************************************************************************** */
