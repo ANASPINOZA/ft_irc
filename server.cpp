@@ -1,6 +1,12 @@
 #include "server.hpp"
 #include <string>
 
+
+Server::Server()
+{
+    this->pass = FALSE;
+}
+
 void    Server::CheckPort(char *port)
 {
     for (size_t i = 0; i < strlen(port); i++)
@@ -24,6 +30,13 @@ void    Server::SomeParss(char **av)
     get_PASS(av[2]);
 }
 
+
+void    Server::Authentication()
+{
+    if (!this->tokens[0].compare("PASS") && !this->tokens[1].compare(this->PASS))
+        this->pass = TRUE;
+}
+
 void    Server::ft_server()
 {
     struct sockaddr_in address;
@@ -45,7 +58,7 @@ void    Server::ft_server()
         throw std::runtime_error("Error: bind failed");
 
     
-    int sd;
+    // int sd;
 
 
     for (int i = 0; i < FD_SETSIZE; i++)  
@@ -70,12 +83,12 @@ void    Server::ft_server()
 
         for (int i = 0; i < FD_SETSIZE; i++)
         {
-            sd = this->client_socket[i];
+            this->client_fd = this->client_socket[i];
 
-            if (sd > 0)
-                FD_SET(sd, &this->master);
-            if (sd > max_sd)
-                max_sd = sd;
+            if (this->client_fd > 0)
+                FD_SET(this->client_fd, &this->master);
+            if (this->client_fd > max_sd)
+                max_sd = this->client_fd;
         }
 
         int activity = select(max_sd + 1, &this->master, nullptr, nullptr, nullptr);
@@ -105,32 +118,35 @@ void    Server::ft_server()
                 }  
             }  
         }
-        
-        for (int i = 0; i < FD_SETSIZE; i++)
+        for (int i = 0; i < max_sd; i++)
         {
             char *buffer = new char;
-            sd = this->client_socket[i];
+            this->client_fd = this->client_socket[i];
 
-            if (FD_ISSET(sd, &this->master))
+            if (FD_ISSET(this->client_fd, &this->master))
             {
-                this->valread = recv(sd, buffer, 3000, 0);
-                // need parss HERE
+                this->valread = recv(this->client_fd, buffer, 3000, 0);
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
 
-                    close (sd);
+                    close (this->client_fd);
                     this->client_socket[i] = 0;
                 }
                 else {
-                    buffer[this->valread] = '\0';
+                    std::string input = buffer;
+                    std::string delimiter = " ";
 
-                    // for (int i = 0; i < FD_SETSIZE; i++)
-                    // {
-                    //     if (this->client_socket[i] != this->server_fd && this->client_socket[i] != sd)
-                    //         send(this->client_socket[i], buffer, strlen(buffer), 0);
-                    // }
+                    size_t pos = 0;
+                    std::string token;
+                    if ((pos = input.find(delimiter)) != std::string::npos) {
+                        token = input.substr(0, pos);
+                        tokens.push_back(token);
+                        input.erase(0, pos + delimiter.length());
+                        tokens.push_back(input.substr(0, input.find("\n")));
+                    }
                 }
+                Authentication();
             }
         }
     }
