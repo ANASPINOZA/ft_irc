@@ -12,23 +12,38 @@
 #include <arpa/inet.h>
 #include <sys/time.h>
 #include <vector>
+#include <map>
 #include <string>
+#include "client.hpp"
 
 #define PORT 1500
+#define TRUE true
+#define FALSE false
 
 class Server {
     public:
+        Server();
         void    ft_server();
-        int     CheckSocket();
         void    SomeParss(char **av);
         void    CheckPort(char *port);
+        void    get_PASS(char *pass);
+        void    Authentication();
     private:
         std::vector<int>    tab;
+        std::vector<int>    client_socket;
+        std::vector<std::string> tokens;
+        std::map<int, Client &> store;
+        std::string PASS;
         int server_fd;
-        int server;
+        int client_fd;
+        // int server;
         int new_socket;
         int valread;
         int Port;
+        bool    pass;
+        // bool    nick;
+        // bool    user;
+        fd_set master;
 };
 
 #endif

@@ -1,6 +1,12 @@
 #include "server.hpp"
 #include <string>
 
+
+Server::Server()
+{
+    this->pass = FALSE;
+}
+
 void    Server::CheckPort(char *port)
 {
     for (size_t i = 0; i < strlen(port); i++)
@@ -13,28 +19,30 @@ void    Server::CheckPort(char *port)
         throw std::runtime_error("PORT: Error");
 }
 
+void    Server::get_PASS(char *pass)
+{
+    this->PASS = pass;
+}
+
 void    Server::SomeParss(char **av)
 {
     CheckPort(av[1]);
+    get_PASS(av[2]);
 }
 
-int Server::CheckSocket()
+
+void    Server::Authentication()
 {
-    for (size_t i = 0; i < tab.size(); i++)
-    {
-        if (tab[i] == server)
-            return (0);
-    }
-    return (1);
+    if (this->tokens[0].c_str() && !this->tokens[0].compare("PASS") && this->tokens[1].c_str() && !this->tokens[1].compare(this->PASS))
+        this->pass = TRUE;
 }
 
 void    Server::ft_server()
 {
     struct sockaddr_in address;
     int opt = 1;
-    int addrlen = sizeof(address);
 
-  
+
     if ((this->server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw std::runtime_error("Error: socket failed");
   
@@ -49,90 +57,99 @@ void    Server::ft_server()
     if (bind(this->server_fd, (struct sockaddr*)&address, sizeof(address)) < 0)
         throw std::runtime_error("Error: bind failed");
 
-    std::cout << "Waiting for connection...." << std::endl;
+    
+    // int sd;
+
+
+    for (int i = 0; i < FD_SETSIZE; i++)  
+    {
+        this->client_socket.insert(client_socket.begin() + i, 0);
+    }
 
     if (listen(this->server_fd, 3) < 0) 
         throw std::runtime_error("Error: listen");
 
-    fd_set master;
+    std::cout << "Waiting for connection...." << std::endl;
 
 
 
-    int max_sd = this->server_fd;
-    int max_clients = 30;
-    int sd;
-    int client_socket[30];
     while (true)
     {
-        FD_ZERO(&master);
-        FD_SET(this->server_fd, &master);
+        FD_ZERO(&this->master);
 
-        for (int i = 0; i < max_clients; i++)
+        FD_SET(this->server_fd, &this->master);
+
+        int max_sd = this->server_fd;
+
+        for (int i = 0; i < FD_SETSIZE; i++)
         {
-            sd = client_socket[i];
+            this->client_fd = this->client_socket[i];
 
-            if (sd > 0)
-                FD_SET(sd, &master);
-            if (sd > max_sd)
-                max_sd = sd;
+            if (this->client_fd > 0)
+                FD_SET(this->client_fd, &this->master);
+            if (this->client_fd > max_sd)
+                max_sd = this->client_fd;
         }
 
-        int socketcount = select(max_sd + 1, &master, nullptr, nullptr, nullptr);
-        if ((socketcount < 0) && (errno!=EINTR))  
+        int activity = select(max_sd + 1, &this->master, nullptr, nullptr, nullptr);
+
+        if ((activity < 0) && (errno!=EINTR))  
         {  
-            printf("select error");  
+            printf("select error\n");  
         }
 
-        if (FD_ISSET(this->server_fd, &master))
+        if (FD_ISSET(this->server_fd, &this->master))
         {
             this->new_socket = accept(this->server_fd, NULL, NULL);
 
             // send mssg to client to inform that mssg is sent
-            std::string mssg = "HHHHH I GOT YOU";
+            std::string mssg = "NEW CONNECTION\n";
             send(this->new_socket, mssg.c_str(), mssg.size() + 1, 0);
 
-            for (int i = 0; i < max_clients; i++)  
+            for (int i = 0; i < FD_SETSIZE; i++)  
             {  
                 //if position is empty 
-                if( client_socket[i] == 0 )  
+                if( this->client_socket[i] == 0)  
                 {  
-                    client_socket[i] = new_socket;  
+                    this->client_socket[i] = new_socket;  
                     printf("Adding to list of sockets as %d\n" , i);  
                          
                     break;  
                 }  
             }  
         }
-        
-        for (int i = 0; i < max_clients; i++)
+        for (int i = 0; i < max_sd; i++)
         {
             char *buffer = new char;
-            sd = client_socket[i];
+            this->client_fd = this->client_socket[i];
 
-            if (FD_ISSET(sd, &master))
+            if (FD_ISSET(this->client_fd, &this->master))
             {
-                int valRead = recv(sd, buffer, 3000);
-                if (valRead == 0)
+                this->valread = recv(this->client_fd, buffer, 3000, 0);
+                if (this->valread == 0)
                 {
-                    std::
+                    std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
+
+                    close (this->client_fd);
+                    this->client_socket[i] = 0;
                 }
+                else {
+                    std::string input = buffer;
+                    std::string delimiter = " ";
+
+                    size_t pos = 0;
+                    std::string token;
+                    if ((pos = input.find(delimiter)) != std::string::npos) {
+                        token = input.substr(0, pos);
+                        tokens.push_back(token);
+                        input.erase(0, pos + delimiter.length());
+                        tokens.push_back(input.substr(0, input.find("\n")));
+                    }
+                }
+                // Authentication();
+                std::cout << buffer << std::endl;
             }
         }
-
     }
-    // while (1)
-    // {
-    //     char *buffer = new char;
-    //     if (CheckSocket())
-    //     {
-    //         if (((this->server = accept(this->server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen)) < 0))
-    //             throw std::runtime_error("Error: accept");
-    //     }
-    //     this->valread = read(this->server, buffer, 30000);
-    //     std::cout << buffer;
-    //     delete buffer;
-    //     bzero(buffer, strlen(buffer));
-    //     std::cout << buffer;
-    //     tab.push_back(this->server);
-    // }
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/07/14 19:46:13 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/07/22 15:34:15 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@
 class   Client
 {
     private:
-        std::string     password;
+        std::string     PASS;
         std::string     nickname;
         User            user;
+        char            *ipv4;
     public:
         Client();
         ~Client();
-        void    setPassword(std::string password);
+        void    setPASS(std::string password);
+        void    setIPV4(char    *ip);
         void    setNickname(std::string nickname);
         void    setUser(std::string username, std::string hostname, std::string realname);
         std::string     getNickname();

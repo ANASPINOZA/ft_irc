@@ -6,7 +6,7 @@ int main(int ac, char **av)
     Server  server;
 
     try {
-        if (ac != 2)
+        if (ac != 3)
             throw std::runtime_error("ARG: error");
         server.SomeParss(av);
         server.ft_server();
