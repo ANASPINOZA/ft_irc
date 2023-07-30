@@ -33,7 +33,7 @@ void    Server::SomeParss(char **av)
 
 void    Server::Authentication()
 {
-    if (!this->tokens[0].compare("PASS") && !this->tokens[1].compare(this->PASS))
+    if (this->tokens[0].c_str() && !this->tokens[0].compare("PASS") && this->tokens[1].c_str() && !this->tokens[1].compare(this->PASS))
         this->pass = TRUE;
 }
 
@@ -146,7 +146,8 @@ void    Server::ft_server()
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
                 }
-                Authentication();
+                // Authentication();
+                std::cout << buffer << std::endl;
             }
         }
     }
