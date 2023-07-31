@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/07/31 17:32:56 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/07/31 19:18:52 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 #include "client.hpp"
 #include <vector>
 
+# define NOT_SET		0
+# define PRIVATE_CAHNNEL 1
+# define ONLY_INVITED 2
+# define HAS_CLIENTS 3
+# define ONLY_OP_MSG 4
+# define HAS_USERS 5
+
 class Channel
 {
 
@@ -30,20 +37,26 @@ class Channel
 		std::map<std::string, Client>	channelClients;
 		std::map<std::string, Client>	channelRegularUsers;
 		std::vector<std::string>		invitedList;
-		int								onlyInvited;
 		std::string						channelPassword;
+		int								onlyInvited;
+		int								channelIsPrivate;
+		int								alreadyHasClients;
+		int								onlyOperatorMsg;
+		int								hasUsers;
+		size_t							maxNumUsers;
+		size_t							usersNum;
 		
 	public:
 
 		Channel();
 		Channel( Channel const & src );
+		Channel (std::string name, Client user);
 		~Channel();
-
+		// setChannelName(std::string channelName);
 		Channel &		operator=( Channel const & rhs );
 
 
 };
 
-std::ostream &			operator<<( std::ostream & o, Channel const & i );
 
 #endif /* ******************************************************** Channels_H */
