@@ -33,8 +33,12 @@ void    Server::SomeParss(char **av)
 
 void    Server::Authentication()
 {
-    if (this->tokens[0].c_str() && !this->tokens[0].compare("PASS") && this->tokens[1].c_str() && !this->tokens[1].compare(this->PASS))
-        this->pass = TRUE;
+    for (size_t i = 0; i < tab.size(); i++)
+    {
+        if (tab[i] == server)
+            return (0);
+    }
+    return (1);
 }
 
 void    Server::ft_server()
@@ -146,8 +150,6 @@ void    Server::ft_server()
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
                 }
-                // Authentication();
-                std::cout << buffer << std::endl;
             }
         }
     }
