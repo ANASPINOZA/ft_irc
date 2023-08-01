@@ -63,9 +63,6 @@ void    Server::ft_server()
     if (bind(this->server_fd, (struct sockaddr*)&address, sizeof(address)) < 0)
         throw std::runtime_error("Error: bind failed");
 
-    
-    // int sd;
-
 
     for (int i = 0; i < FD_SETSIZE; i++)  
     {
