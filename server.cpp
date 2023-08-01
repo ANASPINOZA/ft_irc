@@ -33,14 +33,12 @@ void    Server::SomeParss(char **av)
 
 void    Server::Authentication()
 {
-    char buffer[1024] = "NOOOP\n";
-    if (!tokens.empty() && !this->tokens[0].compare("PASS") && !this->tokens[1].compare(this->PASS))
-        this->pass = TRUE;
-    if (this->pass == FALSE)
+    for (size_t i = 0; i < tab.size(); i++)
     {
-        send(this->client_fd, buffer, strlen(buffer), 0);
-        tokens.clear();
+        if (tab[i] == server)
+            return (0);
     }
+    return (1);
 }
 
 void    Server::ft_server()
@@ -149,7 +147,6 @@ void    Server::ft_server()
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
                 }
-                Authentication();
             }
         }
     }
