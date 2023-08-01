@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/07/31 19:18:52 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/01 16:13:08 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define ONLY_INVITED 2
 # define HAS_CLIENTS 3
 # define ONLY_OP_MSG 4
-# define HAS_USERS 5
 
 class Channel
 {
@@ -34,26 +33,25 @@ class Channel
 		std::string						channelOner;
 		std::string						channellTopic;
 		std::vector<std::string>		channelOperators;
-		std::map<std::string, Client>	channelClients;
-		std::map<std::string, Client>	channelRegularUsers;
+		std::map<std::string, Client> 	channelClients;
 		std::vector<std::string>		invitedList;
 		std::string						channelPassword;
 		int								onlyInvited;
 		int								channelIsPrivate;
 		int								alreadyHasClients;
 		int								onlyOperatorMsg;
-		int								hasUsers;
+		// int								hasUsers;
 		size_t							maxNumUsers;
 		size_t							usersNum;
 		
 	public:
 
 		Channel();
-		Channel( Channel const & src );
+		// Channel( Channel const & src );
 		Channel (std::string name, Client user);
 		~Channel();
 		// setChannelName(std::string channelName);
-		Channel &		operator=( Channel const & rhs );
+		// Channel &		operator=( Channel const & rhs );
 
 
 };

@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/07/14 19:46:16 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/01 16:06:11 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,6 @@ Client::~Client()
 /*
 ** --------------------------------- OVERLOAD ---------------------------------
 */
-
-Client &				Client::operator=( Client const & rhs )
-{
-	//if ( this != &rhs )
-	//{
-		//this->_value = rhs.getValue();
-	//}
-	return *this;
-}
-
-std::ostream &			operator<<( std::ostream & o, Client const & i )
-{
-	//o << "Value = " << i.getValue();
-	return o;
-}
 
 
 /*
@@ -98,6 +83,11 @@ std::string     Client::getPassword()
 User            Client::getUser()
 {
     return this->user;
+}
+
+User            Client::getId()
+{
+    return this->id;
 }
 
 /* ************************************************************************** */
