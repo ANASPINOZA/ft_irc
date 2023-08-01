@@ -1,41 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.cpp                                         :+:      :+:    :+:   */
+/*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/01 16:06:11 by aadnane          ###   ########.fr       */
+/*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
+/*   Updated: 2023/08/01 16:19:27 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.hpp"
-
+#include "Channel.hpp"
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Client::Client()
+Channel::Channel()
 {
 }
 
-Client::Client()
+// Channel::Channel( const Channel & src )
+// {
+// }
+
+Channel::Channel(std::string name, Client user)
 {
+	channelName = name;
+	channelOner = user.getNickname();
+	onlyInvited = NOT_SET;
+	channelIsPrivate = NOT_SET;
+	alreadyHasClients = HAS_CLIENTS;
+	usersNum = NOT_SET;
+	channelClients[user.getNickname()] = user;
 }
-
-Client::Client(const Client & src)
-{
-}
-
-
 
 /*
 ** -------------------------------- DESTRUCTOR --------------------------------
 */
 
-Client::~Client()
+Channel::~Channel()
 {
 }
 
@@ -49,45 +53,10 @@ Client::~Client()
 ** --------------------------------- METHODS ----------------------------------
 */
 
+
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
-void    Client::setPassword(std::string password)
-{
-    this->password = password;
-}
-
-void    Client::setNickname(std::string nickname)
-{
-    this->nickname = nickname;
-}
-
-void   Client::setUser(std::string username, std::string hostname, std::string realname)
-{
-    this->user.setUsername(username);
-    this->user.setHostname(hostname);
-    this->user.setRealname(realname);
-}
-
-std::string     Client::getNickname()
-{
-    return this->nickname;
-}
-
-std::string     Client::getPassword()
-{
-    return this->password;
-}
-
-User            Client::getUser()
-{
-    return this->user;
-}
-
-User            Client::getId()
-{
-    return this->id;
-}
 
 /* ************************************************************************** */
