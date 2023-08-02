@@ -160,8 +160,6 @@ void    Server::ft_server()
                     client_handling();
                 else
                     Authentication();
-                // if (user[client_fd].getPass())
-                //     std::cout << "HE'S GOOD" << std::endl;
             }
         }
     }
