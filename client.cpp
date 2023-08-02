@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/01 16:06:11 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/02 13:33:11 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 */
 
 Client::Client()
-{
-}
-
-Client::Client()
-{
-}
-
-Client::Client(const Client & src)
 {
 }
 
@@ -53,41 +45,50 @@ Client::~Client()
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
-void    Client::setPassword(std::string password)
+void    Client::addData(std::string &new_token)
 {
-    this->password = password;
+    tokens.push_back(new_token);
 }
 
-void    Client::setNickname(std::string nickname)
+
+void    Client::printData()
 {
-    this->nickname = nickname;
+    for (size_t i = 0; i < tokens.size(); i++)
+    {
+        std::cout << tokens[i] << std::endl;
+    }
 }
 
-void   Client::setUser(std::string username, std::string hostname, std::string realname)
-{
-    this->user.setUsername(username);
-    this->user.setHostname(hostname);
-    this->user.setRealname(realname);
-}
+// void    Client::setNickname(std::string nickname)
+// {
+//     this->nickname = nickname;
+// }
 
-std::string     Client::getNickname()
-{
-    return this->nickname;
-}
+// void   Client::setUser(std::string username, std::string hostname, std::string realname)
+// {
+//     this->user.setUsername(username);
+//     this->user.setHostname(hostname);
+//     this->user.setRealname(realname);
+// }
 
-std::string     Client::getPassword()
-{
-    return this->password;
-}
+// std::string     Client::getNickname()
+// {
+//     return this->nickname;
+// }
 
-User            Client::getUser()
-{
-    return this->user;
-}
+// std::string     Client::getPassword()
+// {
+//     return this->password;
+// }
 
-User            Client::getId()
-{
-    return this->id;
-}
+// User            Client::getUser()
+// {
+//     return this->user;
+// }
+
+// User            Client::getId()
+// {
+//     return this->id;
+// }
 
 /* ************************************************************************** */

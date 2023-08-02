@@ -132,7 +132,6 @@ void    Server::ft_server()
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
-
                     close (this->client_fd);
                     this->client_socket[i] = 0;
                 }
@@ -144,12 +143,16 @@ void    Server::ft_server()
                     std::string token;
                     if ((pos = input.find(delimiter)) != std::string::npos) {
                         token = input.substr(0, pos);
-                        tokens.push_back(token);
+                        user[this->client_fd].addData(token);
+                        // tokens.push_back(token);
                         input.erase(0, pos + delimiter.length());
-                        tokens.push_back(input.substr(0, input.find("\n")));
+                        // tokens.push_back(input.substr(0, input.find("\n")));
+                        token = input.substr(0, input.find("\n"));
+                        user[this->client_fd].addData(token);
                     }
                 }
-                Authentication();
+                user[this->client_fd].printData();
+                // Authentication();
             }
         }
     }
