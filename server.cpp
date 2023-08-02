@@ -30,17 +30,24 @@ void    Server::SomeParss(char **av)
     get_PASS(av[2]);
 }
 
+/////////////////////////////   Authentication /////////////////////////////////
 
 void    Server::Authentication()
 {
-    char buffer[1024] = "NOOOP\n";
-    if (!tokens.empty() && !this->tokens[0].compare("PASS") && !this->tokens[1].compare(this->PASS))
-        this->pass = TRUE;
-    if (this->pass == FALSE)
-    {
-        send(this->client_fd, buffer, strlen(buffer), 0);
-        tokens.clear();
-    }
+    if (!user[client_fd].tokens.empty() && !user[client_fd].tokens[0].compare("PASS") && !user[client_fd].tokens[1].compare(this->PASS))
+        user[client_fd].setPass(true);
+    // if (this->pass == FALSE)
+    // {
+    //     send(this->client_fd, buffer, strlen(buffer), 0);
+    //     tokens.clear();
+    // }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void    Server::client_handling()
+{
+    std::cout << "WELCOME TO OUR IRC" << std::endl;
 }
 
 void    Server::ft_server()
@@ -115,7 +122,7 @@ void    Server::ft_server()
                 if( this->client_socket[i] == 0)  
                 {  
                     this->client_socket[i] = new_socket;  
-                    printf("Adding to list of sockets as %d\n" , i);  
+                    printf("Adding to list of sockets as %d\n" , client_socket[i]);  
                          
                     break;  
                 }  
@@ -144,15 +151,17 @@ void    Server::ft_server()
                     if ((pos = input.find(delimiter)) != std::string::npos) {
                         token = input.substr(0, pos);
                         user[this->client_fd].addData(token);
-                        // tokens.push_back(token);
                         input.erase(0, pos + delimiter.length());
-                        // tokens.push_back(input.substr(0, input.find("\n")));
                         token = input.substr(0, input.find("\n"));
                         user[this->client_fd].addData(token);
                     }
                 }
-                user[this->client_fd].printData();
-                // Authentication();
+                if (user[client_fd].getPass())
+                    client_handling();
+                else
+                    Authentication();
+                // if (user[client_fd].getPass())
+                //     std::cout << "HE'S GOOD" << std::endl;
             }
         }
     }

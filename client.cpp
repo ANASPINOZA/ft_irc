@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/02 13:33:11 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:12:22 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,21 @@ void    Client::printData()
     {
         std::cout << tokens[i] << std::endl;
     }
+}
+
+std::vector<std::string> Client::getTokens()
+{
+    return (this->tokens);
+}
+
+void    Client::setPass(bool type)
+{
+    this->pass = type;
+}
+
+bool    Client::getPass()
+{
+    return (this->pass);
 }
 
 // void    Client::setNickname(std::string nickname)

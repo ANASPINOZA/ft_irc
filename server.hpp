@@ -28,6 +28,7 @@ class Server {
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
         void    Authentication();
+        void    client_handling();
     private:
         std::vector<int>    tab;
         std::vector<int>    client_socket;
