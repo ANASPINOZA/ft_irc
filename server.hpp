@@ -28,11 +28,12 @@ class Server {
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
         void    Authentication();
+        void    client_handling();
     private:
         std::vector<int>    tab;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
-        std::map<int, Client &> store;
+        std::map<int, Client > user;
         std::string PASS;
         int server_fd;
         int client_fd;

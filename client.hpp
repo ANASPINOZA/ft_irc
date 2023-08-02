@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/31 19:51:07 by ahel-mou         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/01 16:19:55 by aadnane          ###   ########.fr       */
->>>>>>> dev
+/*   Updated: 2023/08/02 15:57:44 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +16,14 @@
 #include <iostream>
 #include <string>
 #include "User.hpp"
+#include <vector>
 
 class Client
 {
-<<<<<<< HEAD
-private:
-    std::string PASS;
-    std::string nickname;
-    User user;
-    char *ipv4;
-
-public:
-    Client();
-    ~Client();
-    void setPASS(std::string password);
-    void setIPV4(char *ip);
-    void setNickname(std::string nickname);
-    void setUser(std::string username, std::string hostname, std::string realname);
-    std::string getNickname();
-    std::string getPassword();
-    User getUser();
-=======
     private:
-        std::string     password;
         std::string     nickname;
-        User            user;
+        bool            pass;
+        // User            user;
         char            *ipv4;
         int             fd;
 
@@ -52,15 +31,18 @@ public:
     public:
         Client();
         ~Client();
-        void    setPASS(std::string password);
+        std::vector<std::string> tokens;
+        std::vector<std::string> getTokens();
+        void    setPass(bool type);
+        void    addData(std::string &new_token);
+        void    printData();
         void    setIPV4(char    *ip);
         void    setNickname(std::string nickname);
         void    setUser(std::string username, std::string hostname, std::string realname);
         std::string     getNickname();
-        std::string     getFd();
-        std::string     getPassword();
-        User            getUser();
->>>>>>> dev
+        // std::string     getFd();
+        bool     getPass();
+        // User            getUser();
 };
 
 #endif
