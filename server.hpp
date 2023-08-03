@@ -15,6 +15,7 @@
 #include <map>
 #include <string>
 #include "client.hpp"
+#include <sys/poll.h>
 
 #define PORT 1500
 #define TRUE true
@@ -38,13 +39,13 @@ class Server {
         int server_fd;
         int client_fd;
         // int server;
-        int new_socket;
+        int clientSocket;
         int valread;
         int Port;
         bool    pass;
         // bool    nick;
         // bool    user;
-        fd_set master;
+        // fd_set master;
 };
 
 #endif
