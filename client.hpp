@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/02 18:19:50 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/03 19:20:47 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Client
         void    setUser(std::string username, std::string hostname, std::string realname);
         std::string     getNickname();
         void            parser(std::vector<std::string> tokens);
+        void    Client::checkTokens(std::string cmd, std::string param, int *i);  
         // std::string     getFd();
         bool     getPass();
         // User            getUser();
