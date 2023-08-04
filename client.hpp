@@ -23,7 +23,6 @@
 
 class Client
 {
-<<<<<<< HEAD
 private:
     std::string PASS;
     std::string nickname;
@@ -40,27 +39,6 @@ public:
     std::string getNickname();
     std::string getPassword();
     User getUser();
-=======
-    private:
-        std::string     password;
-        std::string     nickname;
-        User            user;
-        char            *ipv4;
-        int             fd;
-
-
-    public:
-        Client();
-        ~Client();
-        void    setPASS(std::string password);
-        void    setIPV4(char    *ip);
-        void    setNickname(std::string nickname);
-        void    setUser(std::string username, std::string hostname, std::string realname);
-        std::string     getNickname();
-        std::string     getFd();
-        std::string     getPassword();
-        User            getUser();
->>>>>>> dev
 };
 
 #endif
