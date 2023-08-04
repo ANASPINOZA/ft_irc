@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 02:03:10 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/04 19:45:49 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 #include "User.hpp"
 #include <vector>
+#include <algorithm>
 
 class Client
 {
@@ -48,6 +49,7 @@ class Client
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
         void            checkJoinParam(std::string param);
+        // void            delelet
         // std::string     getFd();
         bool     getPass();
         // User            getUser();

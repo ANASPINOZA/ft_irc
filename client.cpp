@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 02:25:08 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/04 19:45:39 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int    Client::checkCmds(std::string cmd)
 void    Client::checkJoinParam(std::string param)
 {
     //check param validation
+    std::count(param.begin(), param.end(), '#');
 }
 
 void    Client::checkTokens(std::string cmd, std::string param, int *i)
@@ -119,10 +120,10 @@ void    Client::setPass(bool type)
     this->pass = type;
 }
 
-bool    Client::getPass()
-{
-    return (this->pass);
-}
+// bool    Client::getPass()
+// {
+//     return (this->pass);
+// }
 
 // void    Client::setNickname(std::string nickname)
 // {
