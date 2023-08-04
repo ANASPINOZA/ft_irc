@@ -32,15 +32,76 @@ void    Server::SomeParss(char **av)
 
 /////////////////////////////   Authentication /////////////////////////////////
 
+int checkUserCmd(std::string Args)
+{
+    int check = 0;
+    for (size_t i = 0; i < Args.size(); i++)
+    {
+        if (Args[i] != ' ')
+            check++;
+    }
+    if (check == 4)
+        return 0;
+    return 1;
+}
+
+int Server::checkNick(std::string nickname)
+{
+    for (size_t i = 0; i < nickNames.size(); i++)
+    {
+        if (!nickname.empty() && !nickname.compare(nickNames[i]))
+            return 1;
+    }
+    return 0;
+}
+
+
 void    Server::Authentication()
 {
-    if (!user[client_fd].tokens.empty() && !user[client_fd].tokens[0].compare("PASS") && !user[client_fd].tokens[1].compare(this->PASS))
-        user[client_fd].setPass(true);
-    // if (this->pass == FALSE)
-    // {
-    //     send(this->client_fd, buffer, strlen(buffer), 0);
-    //     tokens.clear();
-    // }
+    std::string cmd[3] = {"PASS", "NICK", "USER"};
+    for (size_t j = 0; j < tokens.size(); j = j + 2)
+    {
+        int i = 0;
+        for (i = 0; i < 3; i++)
+        {
+            if (!tokens[j].compare(cmd[i]))
+                break;
+        }
+        switch (i)
+        {
+        case 0:
+            if (!tokens[i + 1].compare(this->PASS))
+                this->pass = TRUE;
+            break;
+        case 1:
+            if (!checkNick(tokens[j + 1]))
+                this->nick = TRUE;
+            nickNames[client_fd] = tokens[j + 1]; // this->nickNames.push_back(tokens[j + 1]);
+            break;
+        case 2:
+            if (!checkUserCmd(tokens[j + 1]))
+                this->user = TRUE;
+                break;
+        default:
+            std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
+            tokens.clear();
+            send(clientSocket, failure.c_str(),failure.size() + 1, 0);
+            break;
+        }
+    }
+    // std::cout << pass << user << nick << std::endl;
+    if (!pass || !nick || !user)
+    {
+        std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
+        tokens.clear();
+        send(clientSocket, failure.c_str(),failure.size() + 1, 0);
+    }
+    else
+    {
+        std::string mssg = "\033[1;32mYOU ARE GOOD NOW HERMANOS\033[0m\n";
+        send(clientSocket, mssg.c_str(), mssg.size() + 1, 0);
+        this->Authen = TRUE;
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,6 +114,8 @@ void    Server::client_handling()
 void    Server::ft_server()
 {
     struct sockaddr_in address;
+    struct sockaddr_in clientAddr;
+    socklen_t addrSize = sizeof(struct sockaddr_in);
     int opt = 1;
 
 
@@ -76,71 +139,72 @@ void    Server::ft_server()
         this->client_socket.insert(client_socket.begin() + i, 0);
     }
 
-    if (listen(this->server_fd, 3) < 0) 
+    if (listen(this->server_fd, SOMAXCONN) < 0) 
         throw std::runtime_error("Error: listen");
 
-    std::cout << "Waiting for connection...." << std::endl;
+    std::cout << "Server listening on port 4444..." << std::endl;
+    struct pollfd fds[1024];
 
+    memset(fds, 0, sizeof(fds));
 
+    fds[0].fd = this->server_fd;
+    fds[0].events = POLLIN | POLLOUT;
 
+    client_fd = 0;
     while (true)
     {
-        FD_ZERO(&this->master);
-
-        FD_SET(this->server_fd, &this->master);
-
-        int max_sd = this->server_fd;
-
-        for (int i = 0; i < FD_SETSIZE; i++)
-        {
-            this->client_fd = this->client_socket[i];
-
-            if (this->client_fd > 0)
-                FD_SET(this->client_fd, &this->master);
-            if (this->client_fd > max_sd)
-                max_sd = this->client_fd;
+        int pollResult = poll(fds, client_fd + 1, -1);
+        if (pollResult == -1) {
+            perror("Error in poll");
+            break;
         }
 
-        int activity = select(max_sd + 1, &this->master, nullptr, nullptr, nullptr);
-
-        if ((activity < 0) && (errno!=EINTR))  
-        {  
-            printf("select error\n");  
+        if (pollResult == 0) {
+            continue;
         }
-
-        if (FD_ISSET(this->server_fd, &this->master))
+        if (fds[0].revents && POLLIN)
         {
-            this->new_socket = accept(this->server_fd, NULL, NULL);
-
-            // send mssg to client to inform that mssg is sent
+            this->Authen = FALSE;
+            this->pass = FALSE;
+            this->nick = FALSE;
+            this->user = FALSE;
+            tokens.clear();
+            this->clientSocket = accept(this->server_fd, (struct sockaddr *)&clientAddr , &addrSize);
+            if (clientSocket == -1) {
+                perror("Error accepting connection");
+                continue;
+            }
             std::string mssg = "NEW CONNECTION\n";
-            send(this->new_socket, mssg.c_str(), mssg.size() + 1, 0);
-
-            for (int i = 0; i < FD_SETSIZE; i++)  
-            {  
-                //if position is empty 
-                if( this->client_socket[i] == 0)  
-                {  
-                    this->client_socket[i] = new_socket;  
-                    printf("Adding to list of sockets as %d\n" , client_socket[i]);  
-                         
-                    break;  
-                }  
-            }  
+            send(this->clientSocket, mssg.c_str(), mssg.size() + 1, 0);
+            if (client_fd >= 1024) {
+                std::cout << "Maximum number of clients reached. Rejecting new connection." << std::endl;
+                close(clientSocket);
+            }
+            else {
+                    std::cout << "New connection established. Client IP: "
+                          << inet_ntoa(clientAddr.sin_addr) << ", Client Port: "
+                          << ntohs(clientAddr.sin_port) << std::endl;
+                    fds[client_fd + 1].fd = clientSocket;
+                    fds[client_fd + 1].events = POLLIN;
+                    ++client_fd;
+                    client_socket.push_back(clientSocket);
+                }
         }
-        for (int i = 0; i < max_sd; i++)
+        char buffer[1024];
+        for (int i = 1; i <= client_fd; ++i)
         {
-            char *buffer = new char;
-            this->client_fd = this->client_socket[i];
 
-            if (FD_ISSET(this->client_fd, &this->master))
+            if (fds[i].revents && POLLIN)
             {
-                this->valread = recv(this->client_fd, buffer, 3000, 0);
+                this->valread = recv(fds[i].fd, buffer, 1024, 0);
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
-                    close (this->client_fd);
-                    this->client_socket[i] = 0;
+
+                    close (fds[i].fd);
+                    fds[i] = fds[client_fd];
+                    --client_fd;
+                    continue;
                 }
                 else {
                     std::string input = buffer;
@@ -150,18 +214,20 @@ void    Server::ft_server()
                     std::string token;
                     if ((pos = input.find(delimiter)) != std::string::npos) {
                         token = input.substr(0, pos);
-                        user[this->client_fd].addData(token);
+                        tokens.push_back(token);
                         input.erase(0, pos + delimiter.length());
-                        token = input.substr(0, input.find("\n"));
-                        user[this->client_fd].addData(token);
+                        tokens.push_back(input.substr(0, input.find("\n")));
                     }
+                    if (tokens.size() == 6)
+                        Authentication();
                 }
-                if (user[client_fd].getPass())
-                    client_handling();
-                else
-                    Authentication();
             }
         }
     }
+    for (int i = 0; i < clientSocket; ++i) {
+        close(fds[i + 1].fd);
+    }
+
+    close (this->server_fd);
 }
 

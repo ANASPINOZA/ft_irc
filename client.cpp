@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 19:45:39 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/04 19:50:49 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,11 @@ void    Client::addData(std::string &new_token)
     tokens.push_back(new_token);
 }
 
+void    Client::addVector(std::vector<std::string> new_vector)
+{
+    for (size_t i = 0; i < new_vector.size(); i++)
+        tokens.push_back(new_vector[i]);
+}
 
 void    Client::printData()
 {
