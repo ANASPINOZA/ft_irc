@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/03 13:11:17 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/04 19:50:49 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,57 @@ Client::~Client()
 ** --------------------------------- METHODS ----------------------------------
 */
 
+
+int    Client::checkCmds(std::string cmd)
+{
+    std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+    // int        i = 0;
+    for(int i = 0; i < 5; i++)
+    {
+        if (cmds[i] == cmd)
+            return(i);
+    }
+    return (-1);
+}
+
+void    Client::checkJoinParam(std::string param)
+{
+    //check param validation
+    std::count(param.begin(), param.end(), '#');
+}
+
+void    Client::checkTokens(std::string cmd, std::string param, int *i)
+{
+    // std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+    int     index = checkCmds(cmd);
+    
+    switch (index)
+    {
+    case 0
+        // checkJoinParam(param);
+        break;
+    case 1
+        // carry on ....
+    default:
+        break;
+    }
+}
+
+void    Client::parser(std::vector<std::string> tokens)
+{
+    int     i = 0;
+    size_t  size = tokens.size();
+    // std::vector<std::string>::iterator it = tokens.begin();
+    // while(it != tokens.end())
+    // {
+    //     checkTokens(*it, *(it + 1))
+    // }
+    while (i < size)
+    {
+        checkTokens(tokens[i], tokens[i + 1], &i);
+    }
+}
+
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
@@ -74,10 +125,10 @@ void    Client::setPass(bool type)
     this->pass = type;
 }
 
-bool    Client::getPass()
-{
-    return (this->pass);
-}
+// bool    Client::getPass()
+// {
+//     return (this->pass);
+// }
 
 // void    Client::setNickname(std::string nickname)
 // {
@@ -106,9 +157,9 @@ bool    Client::getPass()
 //     return this->user;
 // }
 
-// User            Client::getId()
+// int            Client::getFd()
 // {
-//     return this->id;
+//     return this->fd;
 // }
 
 /* ************************************************************************** */
