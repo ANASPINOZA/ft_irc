@@ -32,20 +32,62 @@ void    Server::SomeParss(char **av)
 
 /////////////////////////////   Authentication /////////////////////////////////
 
+int checkUserCmd(std::string Args)
+{
+    int check = 0;
+    for (size_t i = 0; i < Args.size(); i++)
+    {
+        if (Args[i] != ' ')
+            check++;
+    }
+    if (check == 4)
+        return 0;
+    return 1;
+}
+
+
 void    Server::Authentication()
 {
-    char buffer[1024] = "NOOOP\n";
-    send(client_fd, buffer, strlen(buffer), 0);
-    if (!tokens.empty() && !tokens[0].compare("PASS") && !tokens[1].compare(this->PASS))
+    std::string cmd[3] = {"PASS", "NICK", "USER"};
+    for (size_t i = 0; i < tokens.size(); i = i + 2)
     {
-        this->pass = TRUE;
-        std::string mssg = "\033[0;32mYOUR GOOD HERMANOS\033[0m\n";
-        send(clientSocket, mssg.c_str(), mssg.size() + 1, 0);
-    }
-    else
-    {
-        tokens.clear();
-        send(clientSocket, buffer, strlen(buffer), 0);
+        for (int i = 0; i < 3; i++)
+        {
+            if (!tokens[i].compare(cmd[i]))
+                break;
+        }
+        std::cout << "kkkkkkk" << std::endl;
+        switch (i)
+        {
+        case 0:
+            if (!tokens[i + 1].compare(this->PASS))
+                this->pass = TRUE;
+            break;
+        case 1:
+            this->nickNames.push_back(tokens[i + 1]);
+            break;
+        case 2:
+            if (!checkUserCmd(tokens[i + 1]))
+                break;
+        default:
+            std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
+            tokens.clear();
+            send(clientSocket, failure.c_str(),failure.size() + 1, 0);
+            break;
+        }
+        // if (!tokens.empty() && !tokens[i].compare("PASS") && !tokens[i + 1].compare(this->PASS))
+        // {
+            
+        //     this->pass = TRUE;
+        //     std::string mssg = "\033[0;32mYOUR GOOD HERMANOS\033[0m\n";
+        //     send(clientSocket, mssg.c_str(), mssg.size() + 1, 0);
+        // }
+        // else
+        // {
+        //     std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
+        //     tokens.clear();
+        //     send(clientSocket, failure.c_str(),failure.size() + 1, 0);
+        // }
     }
 }
 
@@ -134,11 +176,12 @@ void    Server::ft_server()
         }
         for (int i = 1; i <= client_fd; ++i)
         {
-            char *buffer = new char;
+            char buffer[1024];
 
             if (fds[i].revents && POLLIN)
             {
-                this->valread = recv(fds[i].fd, buffer, 3000, 0);
+                this->valread = recv(fds[i].fd, buffer, strlen(buffer), 0);
+                std::cout << valread << std::endl;
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
@@ -160,7 +203,8 @@ void    Server::ft_server()
                         input.erase(0, pos + delimiter.length());
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
-                    Authentication();
+                    if (tokens.size() == 6)
+                        Authentication();
                 }
             }
         }

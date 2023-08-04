@@ -32,6 +32,7 @@ class Server {
         void    client_handling();
     private:
         std::vector<int>    tab;
+        std::vector<std::string> nickNames;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
         std::map<int, Client > user;
