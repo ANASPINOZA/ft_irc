@@ -1,12 +1,12 @@
 NAME = server
 
-SRC = server.cpp main.cpp
+SRC = server.cpp main.cpp client.cpp 
 
 OBJ = $(SRC:.cpp=.o)
 
 CPP = c++
 
-INC = server.hpp
+INC = server.hpp client.hpp
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 

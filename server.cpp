@@ -30,15 +30,24 @@ void    Server::SomeParss(char **av)
     get_PASS(av[2]);
 }
 
+/////////////////////////////   Authentication /////////////////////////////////
 
 void    Server::Authentication()
 {
-    for (size_t i = 0; i < tab.size(); i++)
-    {
-        if (tab[i] == server)
-            return (0);
-    }
-    return (1);
+    if (!user[client_fd].tokens.empty() && !user[client_fd].tokens[0].compare("PASS") && !user[client_fd].tokens[1].compare(this->PASS))
+        user[client_fd].setPass(true);
+    // if (this->pass == FALSE)
+    // {
+    //     send(this->client_fd, buffer, strlen(buffer), 0);
+    //     tokens.clear();
+    // }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void    Server::client_handling()
+{
+    std::cout << "WELCOME TO OUR IRC" << std::endl;
 }
 
 void    Server::ft_server()
@@ -60,9 +69,6 @@ void    Server::ft_server()
     // Forcefully attaching socket to the port 8080
     if (bind(this->server_fd, (struct sockaddr*)&address, sizeof(address)) < 0)
         throw std::runtime_error("Error: bind failed");
-
-    
-    // int sd;
 
 
     for (int i = 0; i < FD_SETSIZE; i++)  
@@ -116,7 +122,7 @@ void    Server::ft_server()
                 if( this->client_socket[i] == 0)  
                 {  
                     this->client_socket[i] = new_socket;  
-                    printf("Adding to list of sockets as %d\n" , i);  
+                    printf("Adding to list of sockets as %d\n" , client_socket[i]);  
                          
                     break;  
                 }  
@@ -133,7 +139,6 @@ void    Server::ft_server()
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
-
                     close (this->client_fd);
                     this->client_socket[i] = 0;
                 }
@@ -145,11 +150,16 @@ void    Server::ft_server()
                     std::string token;
                     if ((pos = input.find(delimiter)) != std::string::npos) {
                         token = input.substr(0, pos);
-                        tokens.push_back(token);
+                        user[this->client_fd].addData(token);
                         input.erase(0, pos + delimiter.length());
-                        tokens.push_back(input.substr(0, input.find("\n")));
+                        token = input.substr(0, input.find("\n"));
+                        user[this->client_fd].addData(token);
                     }
                 }
+                if (user[client_fd].getPass())
+                    client_handling();
+                else
+                    Authentication();
             }
         }
     }
