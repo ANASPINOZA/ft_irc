@@ -31,6 +31,7 @@ class Server {
         void    Authentication();
         void    client_handling();
         int     checkNick(std::string nickname);
+        bool    isNickThere(std::string nickName);
     private:
         std::vector<int>    tab;
         // std::vector<std::string> nickNames;

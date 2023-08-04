@@ -106,6 +106,15 @@ void    Server::Authentication()
 
 /////////////////////////////////////////////////////////////////////////////
 
+bool    Server::isNickThere(std::string nickName)
+{
+    std::map<int, std::string>::iterator it;
+    for (it = nickNames.begin() ; it != nickNames.end(); it++)
+        if (it->second == nickName)
+            return (true);
+    return (false);
+}
+
 void    Server::client_handling()
 {
     std::cout << "WELCOME TO OUR IRC" << std::endl;
