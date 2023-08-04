@@ -38,7 +38,7 @@ class Server {
         std::map<int, std::string> nickNames;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
-        // std::map<int, Client > user;
+        std::map<int, Client > client;
         std::string PASS;
         int server_fd;
         int client_fd;

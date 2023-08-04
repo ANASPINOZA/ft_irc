@@ -101,6 +101,7 @@ void    Server::Authentication()
         std::string mssg = "\033[1;32mYOU ARE GOOD NOW HERMANOS\033[0m\n";
         send(clientSocket, mssg.c_str(), mssg.size() + 1, 0);
         this->Authen = TRUE;
+        client[client_fd].addVector(tokens);
     }
 }
 
