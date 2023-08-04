@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/03 19:30:15 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/04 02:25:08 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,39 @@ Client::~Client()
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void    Client::checkTokens(std::string cmd, std::string param, int *i)
+
+int    Client::checkCmds(std::string cmd)
 {
     std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+    // int        i = 0;
+    for(int i = 0; i < 5; i++)
+    {
+        if (cmds[i] == cmd)
+            return(i);
+    }
+    return (-1);
+}
+
+void    Client::checkJoinParam(std::string param)
+{
+    //check param validation
+}
+
+void    Client::checkTokens(std::string cmd, std::string param, int *i)
+{
+    // std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+    int     index = checkCmds(cmd);
     
+    switch (index)
+    {
+    case 0
+        // checkJoinParam(param);
+        break;
+    case 1
+        // carry on ....
+    default:
+        break;
+    }
 }
 
 void    Client::parser(std::vector<std::string> tokens)
