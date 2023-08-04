@@ -7,14 +7,15 @@
 #include <map>
 #include "../server.hpp"
 #include "../client.hpp"
+#include "../channel.hpp"
 
 class commands
 {
-    public:
-        void Kick(std::vector<std::string> params);
-        void Topic(std::vector<std::string> params);
-        void Invite(std::vector<std::string> params);
-        void Mode(std::vector<std::string> params);
+public:
+    void Kick(std::vector<std::string> cmd, Client c);
+    void Topic(std::vector<std::string> cmd, Client c);
+    void Invite(std::vector<std::string> cmd, Client c);
+    void Mode(std::vector<std::string> cmd, Client c);
 };
 
 #endif
