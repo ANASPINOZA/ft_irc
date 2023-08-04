@@ -30,12 +30,14 @@ class Server {
         void    get_PASS(char *pass);
         void    Authentication();
         void    client_handling();
+        int     checkNick(std::string nickname);
     private:
         std::vector<int>    tab;
-        std::vector<std::string> nickNames;
+        // std::vector<std::string> nickNames;
+        std::map<int, std::string> nickNames;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
-        std::map<int, Client > user;
+        // std::map<int, Client > user;
         std::string PASS;
         int server_fd;
         int client_fd;
@@ -44,9 +46,9 @@ class Server {
         int valread;
         int Port;
         bool    pass;
-        // bool    nick;
-        // bool    user;
-        // fd_set master;
+        bool    nick;
+        bool    user;
+        bool    Authen;
 };
 
 #endif
