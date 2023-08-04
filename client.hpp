@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/02 15:57:44 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:51:14 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class Client
         std::vector<std::string> getTokens();
         void    setPass(bool type);
         void    addData(std::string &new_token);
+        void    addVector(std::vector<std::string> new_vector);
         void    printData();
         void    setIPV4(char    *ip);
         void    setNickname(std::string nickname);

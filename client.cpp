@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/02 14:12:22 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:11:17 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ void    Client::addData(std::string &new_token)
     tokens.push_back(new_token);
 }
 
+void    Client::addVector(std::vector<std::string> new_vector)
+{
+    for (size_t i = 0; i < new_vector.size(); i++)
+        tokens.push_back(new_vector[i]);
+}
 
 void    Client::printData()
 {
