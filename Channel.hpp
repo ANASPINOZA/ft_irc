@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/01 18:18:23 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/05 15:36:13 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ public:
 
 	//----------------------------------------------------------------- Methods
 	bool addClientToChannel(Client user);
+	Client getClientInChannel(std::string nickname);
 };
 
 #endif
