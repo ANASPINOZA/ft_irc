@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/05 15:34:49 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/07 22:29:26 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ size_t Channel::getUsersNum() const
 {
 	return usersNum;
 }
+
+bool Channel::getProtectedByPassword() const
+{
+	return protectedByPassword;
+}
 //----------------------------------------------------------------- Setters
 
 void Channel::setChannelName(std::string channelName)
@@ -122,9 +127,9 @@ void Channel::setChannelTopic(std::string channelTopic)
 	this->channelTopic = channelTopic;
 }
 
-void Channel::setChannelOperators(const std::vector<std::string> &channelOperators)
+void Channel::setChannelOperators(std::string channelOperator)
 {
-	this->channelOperators = channelOperators;
+	this->channelOperators.push_back(channelOperator);
 }
 
 void Channel::setInvitedList(const std::vector<std::string> &invitedList)
@@ -166,7 +171,15 @@ void Channel::setUsersNum(size_t usersNum)
 {
 	this->usersNum = usersNum;
 }
+void Channel::setOnlyOperatorTopic(bool onlyOperatorTopic)
+{
+	this->onlyOperatorTopic = onlyOperatorTopic;
+}
 
+void Channel::setProtectedByPassword(bool protectedByPassword)
+{
+	this->protectedByPassword = protectedByPassword;
+}
 //----------------------------------------------------------------- Methods
 
 bool Channel::addClientToChannel(Client user)
@@ -193,6 +206,44 @@ Client Channel::getClientInChannel(std::string nickname)
 {
 	return channelClients[nickname];
 }
+
+bool Channel::removeClientFromChannel(Client user)
+{
+	std::string nickname = user.getNickname();
+
+	if (channelClients.find(nickname) == channelClients.end())
+	{
+		return false;
+	}
+
+	channelClients.erase(nickname);
+	usersNum--;
+
+	return true;
+}
+
+bool Channel::isOperator(std::string nickname)
+{
+	for (std::vector<std::string>::iterator it = channelOperators.begin(); it != channelOperators.end(); ++it)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
+}
+
+void Channel::removeOperator(std::string nickname)
+{
+	for (std::vector<std::string>::iterator it = channelOperators.begin(); it != channelOperators.end(); ++it)
+	{
+		if (*it == nickname)
+		{
+			channelOperators.erase(it);
+			return;
+		}
+	}
+}
+
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
