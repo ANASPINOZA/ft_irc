@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 19:50:59 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/07 19:08:54 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,6 @@
 
 class Client
 {
-<<<<<<< HEAD
-private:
-    std::string PASS;
-    std::string nickname;
-    User user;
-    char *ipv4;
-
-public:
-    Client();
-    ~Client();
-    void setPASS(std::string password);
-    void setIPV4(char *ip);
-    void setNickname(std::string nickname);
-    void setUser(std::string username, std::string hostname, std::string realname);
-    std::string getNickname();
-    std::string getPassword();
-    User getUser();
-=======
     private:
         std::string     nickname;
         bool            pass;
@@ -72,7 +54,6 @@ public:
         // std::string     getFd();
         bool     getPass();
         // User            getUser();
->>>>>>> dev
 };
 
 #endif
