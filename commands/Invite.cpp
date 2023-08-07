@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/05 15:35:48 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/08 00:49:47 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void Invite(std::vector<std::string> cmd, Client c)
 
     // if (!channel)
     // {
-    //     std::cout << "Channel doesn't exist" << std::endl;
+    //     std::cout << "Channel doesn't exist" << std::endl;i
     //     return;
     // }
 
