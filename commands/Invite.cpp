@@ -6,7 +6,11 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/08 00:14:52 by ahel-mou         ###   ########.fr       */
+=======
+/*   Updated: 2023/08/08 00:49:47 by ahel-mou         ###   ########.fr       */
+>>>>>>> 769c737 (bfr merge)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +35,19 @@ void Invite(std::vector<std::string> cmd, Client &c)
 
     Channel channel = getChannelByName(channelName);
 
+<<<<<<< HEAD
     if (channel.getChannelName().empty())
     {
         std::cout << "Error: Channel doesn't exist" << std::endl;
         return;
     }
+=======
+    // if (!channel)
+    // {
+    //     std::cout << "Channel doesn't exist" << std::endl;i
+    //     return;
+    // }
+>>>>>>> 769c737 (bfr merge)
 
     Client userInChannel = channel.getClientInChannel(nickname);
 
