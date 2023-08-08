@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 19:50:49 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/07 19:14:08 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ int    Client::checkCmds(std::string cmd)
 }
 
 void    Client::checkJoinParam(std::string param)
+{
+    //check param validation
+    std::count(param.begin(), param.end(), '#');
+}
+
+void    Client::checkInviteParam(std::string param)
 {
     //check param validation
     std::count(param.begin(), param.end(), '#');
