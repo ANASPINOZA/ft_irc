@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/08 00:17:23 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/08 00:47:58 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         return;
     }
 
-    if (!isOpOrOwner(c.getNickname(), channel))
+    if (!channel.isOperator(c.getNickname()))
     {
         std::cout << "Error: You are not an operator or the owner of this channel" << std::endl;
         return;
@@ -172,7 +172,7 @@ void Mode(std::vector<std::string> &cmd, Client &c)
     }
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
-    if (!userInChannel)
+    if (userInChannel.getNickname() != c.getNickname())
     {
         std::cout << "Error: You are not in this channel" << std::endl;
         return;
@@ -186,7 +186,7 @@ void Mode(std::vector<std::string> &cmd, Client &c)
     }
 
     userInChannel = channel.getClientInChannel(nickname);
-    if (!userInChannel)
+    if (userInChannel.getNickname() != nickname)
     {
         std::cout << "Error: This user isn't in this channel" << std::endl;
         return;

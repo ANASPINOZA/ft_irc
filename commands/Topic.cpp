@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/08 00:14:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/08 00:48:16 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void Topic(std::vector<std::string> cmd, Client &c)
         return;
     }
 
-    Client &userInChannel = channel.getClientInChannel(c.getNickname());
+    Client userInChannel = channel.getClientInChannel(c.getNickname());
 
     if (userInChannel.getNickname() != c.getNickname())
     {

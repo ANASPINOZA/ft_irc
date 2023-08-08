@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/08 00:14:19 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/08 00:47:39 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,26 @@ void kick(std::vector<std::string> cmd, Client &c)
     }
 
     Channel channel = getChannelByName(channelName);
-    if (!channel)
+    if (channel.getChannelName().empty())
     {
         std::cout << "Error: Channel doesn't exist" << std::endl;
         return;
     }
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
-    if (!userInChannel)
+    if (userInChannel.getNickname() != c.getNickname())
     {
         std::cout << "Error: You are not in this channel" << std::endl;
         return;
     }
     Client client = getUser(nickname);
-    if (!client)
+    if (client.getNickname().empty())
     {
         std::cout << "Error: User doesn't exist" << std::endl;
         return;
     }
     Client userToKickInChannel = channel.getClientInChannel(nickname);
-    if (!userToKickInChannel)
+    if (userToKickInChannel.getNickname() != nickname)
     {
         std::cout << "Error: The user is not in this channel" << std::endl;
         return;
