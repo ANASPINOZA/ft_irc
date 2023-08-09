@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 19:50:59 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/09 13:30:36 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ class Client
         void            checkInviteParam(std::string param);
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
+        void            checkPrivmsgParam(std::string param);
         void            checkJoinParam(std::string param);
         // void            delelet
         // std::string     getFd();

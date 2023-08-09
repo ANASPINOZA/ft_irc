@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/04 19:50:49 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/09 13:35:39 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ Client::~Client()
 
 int    Client::checkCmds(std::string cmd)
 {
-    std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+    std::string cmds[5] = {"PRIVMSG","JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
     // int        i = 0;
     for(int i = 0; i < 5; i++)
     {
@@ -59,6 +59,18 @@ void    Client::checkJoinParam(std::string param)
     //check param validation
     std::count(param.begin(), param.end(), '#');
 }
+void    Client::checkPrivmsgParam(std::string param)
+{
+    //check param validation
+    std::count(param.begin(), param.end(), '#');
+}
+
+void    Client::checkInviteParam(std::string param)
+{
+    //check param validation
+    std::count(param.begin(), param.end(), '#');
+    
+}
 
 void    Client::checkTokens(std::string cmd, std::string param, int *i)
 {
@@ -68,10 +80,12 @@ void    Client::checkTokens(std::string cmd, std::string param, int *i)
     switch (index)
     {
     case 0
-        // checkJoinParam(param);
+        // checkPrivmsgParam(param);
         break;
     case 1
-        // carry on ....
+        // checkJoinParam(param);
+    case 2
+        // carry on .....
     default:
         break;
     }
