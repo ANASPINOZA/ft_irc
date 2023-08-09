@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 16:44:13 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/09 23:25:49 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,30 @@ void    Client::setPass(bool type)
 //     return (this->pass);
 // }
 
-// void    Client::setNickname(std::string nickname)
-// {
-//     this->nickname = nickname;
-// }
+void    Client::setNickname(std::string nickname)
+{
+    this->nickname = nickname;
+}
+
+void    Client::setUserName(std::string username)
+{
+    this->username = username;
+}
+
+void    Client::setUserMode(std::string usermode)
+{
+    this->usermode = usermode;
+}
+
+void    Client::setUnused(std::string unused)
+{
+    this->unused = unused;
+}
+
+void    Client::setRealName(std::string realname)
+{
+    this->realname = realname;
+}
 
 // void   Client::setUser(std::string username, std::string hostname, std::string realname)
 // {
