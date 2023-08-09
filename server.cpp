@@ -76,7 +76,8 @@ void    Server::Authentication()
         case 1:
             if (!checkNick(tokens[j + 1]))
                 this->nick = TRUE;
-            nickNames[client_fd] = tokens[j + 1]; // this->nickNames.push_back(tokens[j + 1]);
+            nickNames[client_fd] = tokens[j + 1];
+            // client[client_fd].setNickname(); // this->nickNames.push_back(tokens[j + 1]);
             break;
         case 2:
             if (!checkUserCmd(tokens[j + 1]))
