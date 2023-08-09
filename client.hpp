@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 13:30:36 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/09 14:48:53 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Client
     private:
         std::string     nickname;
         bool            pass;
-        User            user;
+        // User            user;
         char            *ipv4;
         int             fd;
 
@@ -45,7 +45,7 @@ class Client
         void            parser(std::vector<std::string> tokens);
         void            checkTokens(std::string cmd, std::string param, int *i);  
         int            checkCmds(std::string cmd);
-        void            checkJoinParam(std::string param);
+        // void            checkJoinParam(std::string param);
         void            checkInviteParam(std::string param);
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);

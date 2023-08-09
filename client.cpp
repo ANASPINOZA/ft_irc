@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 13:35:39 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/09 14:49:24 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ Client::~Client()
 */
 
 
-int    Client::checkCmds(std::string cmd)
-{
-    std::string cmds[5] = {"PRIVMSG","JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
-    // int        i = 0;
-    for(int i = 0; i < 5; i++)
-    {
-        if (cmds[i] == cmd)
-            return(i);
-    }
-    return (-1);
-}
+// int    Client::checkCmds(std::string cmd)
+// {
+//     std::string cmds[5] = {"PRIVMSG","JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+//     // int        i = 0;
+//     for(int i = 0; i < 5; i++)
+//     {
+//         if (cmds[i] == cmd)
+//             return(i);
+//     }
+//     return (-1);
+// }
 
 void    Client::checkJoinParam(std::string param)
 {
@@ -72,39 +72,39 @@ void    Client::checkInviteParam(std::string param)
     
 }
 
-void    Client::checkTokens(std::string cmd, std::string param, int *i)
-{
-    // std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
-    int     index = checkCmds(cmd);
+// void    Client::checkTokens(std::string cmd, std::string param, int *i)
+// {
+//     // std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+//     int     index = checkCmds(cmd);
     
-    switch (index)
-    {
-    case 0
-        // checkPrivmsgParam(param);
-        break;
-    case 1
-        // checkJoinParam(param);
-    case 2
-        // carry on .....
-    default:
-        break;
-    }
-}
+//     switch (index)
+//     {
+//     case 0
+//         // checkPrivmsgParam(param);
+//         break;
+//     case 1
+//         // checkJoinParam(param);
+//     case 2
+//         // carry on .....
+//     default:
+//         break;
+//     }
+// }
 
-void    Client::parser(std::vector<std::string> tokens)
-{
-    int     i = 0;
-    size_t  size = tokens.size();
-    // std::vector<std::string>::iterator it = tokens.begin();
-    // while(it != tokens.end())
-    // {
-    //     checkTokens(*it, *(it + 1))
-    // }
-    while (i < size)
-    {
-        checkTokens(tokens[i], tokens[i + 1], &i);
-    }
-}
+// void    Client::parser(std::vector<std::string> tokens)
+// {
+//     int     i = 0;
+//     size_t  size = tokens.size();
+//     // std::vector<std::string>::iterator it = tokens.begin();
+//     // while(it != tokens.end())
+//     // {
+//     //     checkTokens(*it, *(it + 1))
+//     // }
+//     while (i < size)
+//     {
+//         checkTokens(tokens[i], tokens[i + 1], &i);
+//     }
+// }
 
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
@@ -144,10 +144,10 @@ void    Client::setPass(bool type)
 //     return (this->pass);
 // }
 
-// void    Client::setNickname(std::string nickname)
-// {
-//     this->nickname = nickname;
-// }
+void    Client::setNickname(std::string nickname)
+{
+    this->nickname = nickname;
+}
 
 // void   Client::setUser(std::string username, std::string hostname, std::string realname)
 // {
@@ -156,10 +156,10 @@ void    Client::setPass(bool type)
 //     this->user.setRealname(realname);
 // }
 
-// std::string     Client::getNickname()
-// {
-//     return this->nickname;
-// }
+std::string     Client::getNickname()
+{
+    return this->nickname;
+}
 
 // std::string     Client::getPassword()
 // {
