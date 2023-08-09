@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 14:48:53 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/09 23:30:41 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ class Client
         // User            user;
         char            *ipv4;
         int             fd;
-
-
+        std::string username;
+        std::string usermode;
+        std::string unused;
+        std::string realname;
     public:
         Client();
         ~Client();
@@ -41,6 +43,10 @@ class Client
         void    setIPV4(char    *ip);
         void    setNickname(std::string nickname);
         void    setUser(std::string username, std::string hostname, std::string realname);
+        void    setUserName(std::string username);
+        void    setUserMode(std::string usermode);
+        void    setUnused(std::string unused);
+        void    setRealName(std::string realname);
         std::string     getNickname();
         void            parser(std::vector<std::string> tokens);
         void            checkTokens(std::string cmd, std::string param, int *i);  
@@ -50,7 +56,6 @@ class Client
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
         void            checkPrivmsgParam(std::string param);
-        void            checkJoinParam(std::string param);
         // void            delelet
         // std::string     getFd();
         bool     getPass();

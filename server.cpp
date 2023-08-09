@@ -104,6 +104,30 @@ bool    Server::isNickThere(std::string nickName)
             return (true);
     return (false);
 }
+
+    void    Server::parseUserInfos(std::string userInfos, int client_fd)
+    {
+        size_t pos;
+        int i = 0;
+        size_t lenght;
+        size_t begin = 0;
+        pos = userInfos.find(" ", 0);
+        while (i < 4)
+        {
+            lenght = pos - begin;
+            if (i == 0)
+                client[client_fd].setUserName(userInfos.substr(begin, lenght));
+            else if (i == 1)
+                client[client_fd].setUserMode(userInfos.substr(begin, lenght));
+            else if (i == 2)
+                client[client_fd].setUnused(userInfos.substr(begin, lenght));
+            else if (i == 3)
+                client[client_fd].setRealName(userInfos.substr(begin, lenght));
+            begin = pos + 1;       
+            pos = userInfos.find(" ", 0);
+            i++;
+        }
+    }
 /////////////////////////////////////////////////////////////////////////////
 
 

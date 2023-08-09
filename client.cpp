@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 14:49:24 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/09 23:25:49 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ Client::~Client()
 
 // int    Client::checkCmds(std::string cmd)
 // {
-//     std::string cmds[5] = {"PRIVMSG","JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
+//     std::string cmds[6] = {"PRIVMSG", "JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
 //     // int        i = 0;
 //     for(int i = 0; i < 5; i++)
 //     {
@@ -54,16 +54,22 @@ Client::~Client()
 //     return (-1);
 // }
 
-void    Client::checkJoinParam(std::string param)
-{
-    //check param validation
-    std::count(param.begin(), param.end(), '#');
-}
-void    Client::checkPrivmsgParam(std::string param)
-{
-    //check param validation
-    std::count(param.begin(), param.end(), '#');
-}
+// void    Client::checkJoinParam(std::string param)
+// {
+//     //check param validation
+//     std::count(param.begin(), param.end(), '#');
+// }
+// void    Client::checkPrivmsgParam(std::string param)
+// {
+//     //check param validation
+//     if (param)
+//     if (param[0] != '#')
+//         // error ... 
+//     else
+//     {
+        
+//     }
+// }
 
 void    Client::checkInviteParam(std::string param)
 {
@@ -147,6 +153,26 @@ void    Client::setPass(bool type)
 void    Client::setNickname(std::string nickname)
 {
     this->nickname = nickname;
+}
+
+void    Client::setUserName(std::string username)
+{
+    this->username = username;
+}
+
+void    Client::setUserMode(std::string usermode)
+{
+    this->usermode = usermode;
+}
+
+void    Client::setUnused(std::string unused)
+{
+    this->unused = unused;
+}
+
+void    Client::setRealName(std::string realname)
+{
+    this->realname = realname;
 }
 
 // void   Client::setUser(std::string username, std::string hostname, std::string realname)

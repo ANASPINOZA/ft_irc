@@ -31,6 +31,7 @@ class Server {
         bool    Authentication();
         void    client_handling();
         bool    isNickThere(std::string nickName);
+        void    parseUserInfos(std::string userInfos, int client_fd);
     private:
         std::vector<int>    tab;
         std::vector<int>    client_socket;
