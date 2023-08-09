@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/08 00:48:37 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/09 13:30:36 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,40 @@
 
 class Client
 {
-private:
-    std::string PASS;
-    std::string nickname;
-    User user;
-    char *ipv4;
+    private:
+        std::string     nickname;
+        bool            pass;
+        User            user;
+        char            *ipv4;
+        int             fd;
 
-public:
-    Client();
-    ~Client();
-    void setPASS(std::string password);
-    void setIPV4(char *ip);
-    void setNickname(std::string nickname);
-    void setUser(std::string username, std::string hostname, std::string realname);
-    std::string getNickname();
-    std::string getPassword();
-    User getUser();
+
+    public:
+        Client();
+        ~Client();
+        std::vector<std::string> tokens;
+        std::vector<std::string> getTokens();
+        void    setPass(bool type);
+        void    addData(std::string &new_token);
+        void    addVector(std::vector<std::string> new_vector);
+        void    printData();
+        void    setIPV4(char    *ip);
+        void    setNickname(std::string nickname);
+        void    setUser(std::string username, std::string hostname, std::string realname);
+        std::string     getNickname();
+        void            parser(std::vector<std::string> tokens);
+        void            checkTokens(std::string cmd, std::string param, int *i);  
+        int            checkCmds(std::string cmd);
+        void            checkJoinParam(std::string param);
+        void            checkInviteParam(std::string param);
+        void            checkKickParam(std::string param);
+        void            checkTopicParam(std::string param);
+        void            checkPrivmsgParam(std::string param);
+        void            checkJoinParam(std::string param);
+        // void            delelet
+        // std::string     getFd();
+        bool     getPass();
+        // User            getUser();
 };
 
 #endif
