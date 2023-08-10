@@ -33,6 +33,8 @@ class Server {
         bool    isNickThere(std::string nickName);
         void    parseUserInfos(std::string userInfos, int client_fd);
     private:
+        struct sockaddr_in address;
+        struct sockaddr_in clientAddr;
         std::vector<int>    tab;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;

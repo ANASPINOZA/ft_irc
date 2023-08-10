@@ -37,10 +37,10 @@ int checkUserCmd(std::string Args)
     int check = 0;
     for (size_t i = 0; i < Args.size(); i++)
     {
-        if (Args[i] != ' ')
+        if (Args[i] == ' ')
             check++;
     }
-    if (check == 4)
+    if (check == 3)
         return 0;
     return 1;
 }
@@ -60,6 +60,7 @@ bool    Server::Authentication()
         switch (i)
         {
         case 0:
+            tokens[i + 1].erase(tokens[i + 1].size() - 1);
             if (!tokens[i + 1].compare(this->PASS))
                 this->pass = TRUE;
             break;
@@ -73,7 +74,7 @@ bool    Server::Authentication()
         case 2:
             if (!checkUserCmd(tokens[j + 1]))
                 this->user = TRUE;
-                // break;
+            parseUserInfos(tokens[j + 1], clientSocket);
         default:
             if (!pass || !nick || !user)
             {
@@ -86,7 +87,8 @@ bool    Server::Authentication()
     }
     if (pass && nick && user)
     {
-        std::string mssg = "\033[1;32mWelcome to the Internet Relay Network\033[0m\n" + client[clientSocket].getNickname() + "\033[0m\n";
+        char host[1024];
+        std::string mssg = inet_ntoa(clientAddr.sin_addr) + "001" +  client[clientSocket].getNickname() +  " :Welcome to the Internet Relay Network\r\n";
         send(clientSocket, mssg.c_str(), mssg.size() + 1, 0);
         this->Authen = TRUE;
         tokens.clear();
@@ -138,8 +140,6 @@ void    Server::client_handling()
 
 void    Server::ft_server()
 {
-    struct sockaddr_in address;
-    struct sockaddr_in clientAddr;
     socklen_t addrSize = sizeof(struct sockaddr_in);
     int opt = 1;
 
@@ -233,6 +233,7 @@ void    Server::ft_server()
                     continue;
                 }
                 else {
+                    std::cout << buffer;
                     std::string input = buffer;
                     std::string delimiter = " ";
 
@@ -246,10 +247,7 @@ void    Server::ft_server()
                     }
                     if (!this->Authen && tokens.size() == 6)
                         Authentication();
-                    std::map<int , Client>::iterator it;
-                    for (it = client.begin() ; it != client.end(); it++)
-                        std::cout << it->first << std::endl;
-                    // std::cout << pass << nick << user << std::endl;
+                    std::cout << pass << user << nick << std::endl;
                 }
             }
             if (this->Authen)
