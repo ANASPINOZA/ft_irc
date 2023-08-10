@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 23:30:41 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/10 14:51:01 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ class Client
         void    setUserMode(std::string usermode);
         void    setUnused(std::string unused);
         void    setRealName(std::string realname);
+        std::string     getUserName();
+        std::string     getUserMode();
+        std::string     getUnused();
+        std::string     getRealName();
         std::string     getNickname();
         void            parser(std::vector<std::string> tokens);
         void            checkTokens(std::string cmd, std::string param, int *i);  

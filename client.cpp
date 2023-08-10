@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/09 23:25:49 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/10 14:51:13 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,26 @@ void    Client::setUnused(std::string unused)
 void    Client::setRealName(std::string realname)
 {
     this->realname = realname;
+}
+
+std::string     Client::getUserName()
+{
+    return (this->username);
+}
+
+std::string     Client::getUnused()
+{
+    return (this->unused);
+}
+
+std::string     Client::getUserMode()
+{
+    return (this->usermode);
+}
+
+std::string     Client::getRealName()
+{
+    return (this->realname);
 }
 
 // void   Client::setUser(std::string username, std::string hostname, std::string realname)
