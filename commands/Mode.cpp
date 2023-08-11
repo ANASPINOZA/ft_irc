@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/08 00:47:58 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/11 17:35:38 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
 {
     if (mode.empty() || mode.size() < 2)
     {
-        std::cout << "Error: Invalid mode specified. Usage: /mode <channel_name> <mode> <nickname>" << std::endl;
+        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
         return;
     }
 
     if (!channel.isOperator(c.getNickname()))
     {
-        std::cout << "Error: You are not an operator or the owner of this channel" << std::endl;
+        std::cout << ERR_CHANOPRIVSNEEDED(c.getNickname(), channel.getChannelName()) << std::endl;
         return;
     }
 
@@ -57,12 +57,12 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setOnlyInvited(PRIVATE_CHANNEL);
-            std::cout << "Channel is Private now, users can not join without an invitation" << std::endl;
+            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) << std::endl;
         }
         else if (modeSymbol == '-')
         {
             channel.setOnlyInvited(PUBLIC_CHANNEL);
-            std::cout << "Channel is Public now, Everyone can join without an invitation" << std::endl;
+            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
         }
         break;
 
@@ -70,12 +70,12 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setOnlyOperatorTopic(true);
-            std::cout << "Only operators can change the topic now" << std::endl;
+            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) << std::endl;
         }
         else if (modeSymbol == '-')
         {
             channel.setOnlyOperatorTopic(false);
-            std::cout << "All channel users can change the topic now" << std::endl;
+            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
         }
         break;
 
@@ -84,12 +84,12 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         {
             if (channel.isOperator(user.getNickname()))
             {
-                std::cout << "This user is already an operator" << std::endl;
+                std::cout << ERR_USERONCHANNEL(c.getNickname(), user.getNickname()) << std::endl;
             }
             else
             {
                 channel.setChannelOperators(user.getNickname());
-                std::cout << "User " << user.getNickname() << " is now an operator" << std::endl;
+                std::cout << RPL_UMODEIS(c.getNickname(), "+" + modeOption) << std::endl;
             }
         }
         else if (modeSymbol == '-')
@@ -97,33 +97,33 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
             if (channel.isOperator(user.getNickname()))
             {
                 channel.removeOperator(user.getNickname());
-                std::cout << "User " << user.getNickname() << " is no longer an operator" << std::endl;
+                std::cout << RPL_UMODEIS(c.getNickname(), "-" + modeOption) << std::endl;
             }
             else
             {
-                std::cout << "This user is not an operator" << std::endl;
+                std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), user.getNickname()) << std::endl;
             }
-        }
-        break;
+            break;
 
-    case 'k':
-        if (modeSymbol == '+')
-        {
-            channel.setProtectedByPassword(true);
-            channel.setChannelPassword(mode.substr(2));
-            std::cout << "Channel key is now " << mode.substr(2) << std::endl;
-        }
-        else if (modeSymbol == '-')
-        {
-            if (channel.getProtectedByPassword())
+        case 'k':
+            if (modeSymbol == '+')
             {
-                channel.setProtectedByPassword(false);
-                channel.setChannelPassword("");
-                std::cout << "Channel key is now empty" << std::endl;
+                channel.setProtectedByPassword(true);
+                channel.setChannelPassword(mode.substr(2));
+                std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) << std::endl;
+            }
+            else if (modeSymbol == '-')
+            {
+                if (channel.getProtectedByPassword())
+                {
+                    channel.setProtectedByPassword(false);
+                    channel.setChannelPassword("");
+                    std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
+                }
             }
             else
             {
-                std::cout << "Channel is not protected by a key" << std::endl;
+                std::cout << ERR_KEYSET(c.getNickname(), channel.getChannelName()) << std::endl;
             }
         }
         break;
@@ -132,17 +132,17 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setMaxNumUsers(std::stoi(mode.substr(2)));
-            std::cout << "Channel max number of users is now " << mode.substr(2) << std::endl;
+            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) << std::endl;
         }
         else if (modeSymbol == '-')
         {
             channel.setMaxNumUsers(0);
-            std::cout << "Channel max number of users is now unlimited" << std::endl;
+            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
         }
         break;
 
     default:
-        std::cout << "Error: Invalid mode option specified" << std::endl;
+        std::cout << ERR_UNKNOWNMODE(c.getNickname(), modeOption) << std::endl;
     }
 }
 
@@ -150,7 +150,7 @@ void Mode(std::vector<std::string> &cmd, Client &c)
 {
     if (cmd.size() != 4)
     {
-        std::cout << "Error: Invalid number of arguments. Usage: /mode <channel_name> <mode> <nickname>" << std::endl;
+        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
         return;
     }
 
@@ -160,35 +160,35 @@ void Mode(std::vector<std::string> &cmd, Client &c)
 
     if (channelName[0] != '#')
     {
-        std::cout << "Error: Invalid channel name" << std::endl;
+        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
     Channel channel = getChannelByName(channelName);
     if (channel.getChannelName().empty())
     {
-        std::cout << "Error: Channel doesn't exist" << std::endl;
+        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())
     {
-        std::cout << "Error: You are not in this channel" << std::endl;
+        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
     Client client = getUser(nickname);
     if (client.getNickname().empty())
     {
-        std::cout << "Error: User doesn't exist" << std::endl;
+        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
         return;
     }
 
     userInChannel = channel.getClientInChannel(nickname);
     if (userInChannel.getNickname() != nickname)
     {
-        std::cout << "Error: This user isn't in this channel" << std::endl;
+        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
