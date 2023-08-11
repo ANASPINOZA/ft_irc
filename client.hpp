@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/10 14:51:01 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/11 18:04:21 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "User.hpp"
 #include <vector>
 #include <algorithm>
+#include "server.hpp"
+
 
 class Client
 {
@@ -53,9 +55,11 @@ class Client
         std::string     getRealName();
         std::string     getNickname();
         void            parser(std::vector<std::string> tokens);
-        void            checkTokens(std::string cmd, std::string param, int *i);  
+        // void            checkTokens(std::string cmd, std::string param, int *i); 
+        void            checkTokens(std::vector<std::string> cmd);
         int            checkCmds(std::string cmd);
         // void            checkJoinParam(std::string param);
+        void            checkJoinParam(std::vector<std::string> cmd, int i);
         void            checkInviteParam(std::string param);
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
