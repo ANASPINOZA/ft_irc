@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 17:35:38 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:25:03 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
     }
 }
 
-void Mode(std::vector<std::string> &cmd, Client &c)
+void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
 {
     if (cmd.size() != 4)
     {
@@ -178,8 +178,14 @@ void Mode(std::vector<std::string> &cmd, Client &c)
         return;
     }
 
-    Client client = getUser(nickname);
-    if (client.getNickname().empty())
+    if (s.isNickThere(nickname) == false)
+    {
+        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        return;
+    }
+
+    Client client = s.getClient(nickname);
+    if (client.getNickname() != nickname)
     {
         std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
         return;

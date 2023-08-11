@@ -6,13 +6,13 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 17:38:37 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:21:09 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Invite(std::vector<std::string> cmd, Client &c)
+void Invite(std::vector<std::string> cmd, Client &c, Server &s)
 {
     if (cmd.size() != 3)
     {
@@ -37,6 +37,12 @@ void Invite(std::vector<std::string> cmd, Client &c)
         return;
     }
 
+    if (s.isNickThere(nickname) == false)
+    {
+        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        return;
+    }
+
     Client userInChannel = channel.getClientInChannel(nickname);
 
     if (userInChannel.getNickname() == nickname)
@@ -45,9 +51,9 @@ void Invite(std::vector<std::string> cmd, Client &c)
         return;
     }
 
-    Client client = getUser(nickname);
+    Client client = s.getClient(nickname);
 
-    if (client.getNickname().empty())
+    if (client.getNickname() != nickname)
     {
         std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
         return;
