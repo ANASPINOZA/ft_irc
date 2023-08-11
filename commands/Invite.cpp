@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/08 03:19:25 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/11 17:38:37 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void Invite(std::vector<std::string> cmd, Client &c)
 {
     if (cmd.size() != 3)
     {
-        std::cout << "Error: Invalid number of arguments. Usage: /invite <channel_name> <nickname>" << std::endl;
+        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
         return;
     }
 
@@ -25,7 +25,7 @@ void Invite(std::vector<std::string> cmd, Client &c)
 
     if (channelName[0] != '#')
     {
-        std::cout << "Error: Invalid channel name. Channel name must start with '#'" << std::endl;
+        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
@@ -33,7 +33,7 @@ void Invite(std::vector<std::string> cmd, Client &c)
 
     if (channel.getChannelName().empty())
     {
-        std::cout << "Error: Channel doesn't exist" << std::endl;
+        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
@@ -41,7 +41,7 @@ void Invite(std::vector<std::string> cmd, Client &c)
 
     if (userInChannel.getNickname() == nickname)
     {
-        std::cout << "Error: This user is already in this channel" << std::endl;
+        std::cout << ERR_USERONCHANNEL(c.getNickname(), nickname) << std::endl;
         return;
     }
 
@@ -49,17 +49,17 @@ void Invite(std::vector<std::string> cmd, Client &c)
 
     if (client.getNickname().empty())
     {
-        std::cout << "Error: User doesn't exist" << std::endl;
+        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
         return;
     }
 
     if (channel.getMaxNumUsers() > 0 && channel.getUsersNum() >= channel.getMaxNumUsers())
     {
-        std::cout << "Error: Channel is full" << std::endl;
+        std::cout << ERR_CHANNELISFULL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
     channel.setUsersNum(channel.getUsersNum() + 1);
     channel.addClientToChannel(client);
-    std::cout << "Client " << nickname << " has been invited to channel " << channelName << std::endl;
+    std::cout << RPL_INVITING(c.getNickname(), nickname, channelName) << std::endl;
 }
