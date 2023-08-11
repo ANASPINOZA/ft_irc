@@ -32,6 +32,8 @@ class Server {
         void    client_handling();
         bool    isNickThere(std::string nickName);
         void    parseUserInfos(std::string userInfos, int client_fd);
+        Client  getClient(std::string nickName); //Mountassir
+        
     private:
         std::vector<int>    tab;
         std::vector<int>    client_socket;
