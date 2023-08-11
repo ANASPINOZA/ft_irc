@@ -28,11 +28,12 @@ class Server {
         void    SomeParss(char **av);
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
-        bool    Authentication();
+        bool    Authentication(int idx);
         void    client_handling();
         bool    isNickThere(std::string nickName);
         void    parseUserInfos(std::string userInfos, int client_fd);
     private:
+        struct pollfd fds[1024];
         struct sockaddr_in address;
         struct sockaddr_in clientAddr;
         std::vector<int>    tab;
@@ -50,5 +51,6 @@ class Server {
         bool    user;
         bool    Authen;
 };
+
 
 #endif
