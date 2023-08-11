@@ -14,9 +14,10 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <string.h>
 #include "client.hpp"
 #include <sys/poll.h>
-
+#include <sstream>
 
 #define TRUE true
 #define FALSE false
@@ -48,5 +49,8 @@ class Server {
         bool    user;
         bool    Authen;
 };
+
+std::string getHostName();
+std::vector<std::string> splitStrToVec(std::string str, char del);
 
 #endif

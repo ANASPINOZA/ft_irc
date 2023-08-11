@@ -263,3 +263,22 @@ void    Server::ft_server()
     close (this->server_fd);
 }
 
+std::string getHostName()
+{
+    char hostNames[256];
+    if (!gethostname(hostNames, sizeof(hostNames)))
+        return (hostNames);
+    return "";
+}
+
+
+
+std::vector<std::string> splitStrToVec(std::string str, char del)
+{
+    std::vector<std::string> ret;
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (getline(tokenStream, token, del))
+        ret.push_back(token);
+    return (ret);
+}
