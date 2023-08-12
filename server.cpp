@@ -291,3 +291,14 @@ Client Server::getClient(std::string name)
     }
     return Client();
 }
+
+Channel Server::getChannelByName(std::string channelName)
+{
+    std::map<std::string, Channel>::iterator it;
+    for (it = channel.begin(); it != channel.end(); it++)
+    {
+        if (!it->first.compare(channelName))
+            return it->second;
+    }
+    return Channel();
+}

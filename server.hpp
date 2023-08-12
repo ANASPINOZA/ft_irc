@@ -18,6 +18,7 @@
 #include "client.hpp"
 #include <sys/poll.h>
 #include <sstream>
+#include "Channel.hpp"
 
 #define TRUE true
 #define FALSE false
@@ -34,6 +35,7 @@ class Server {
         bool    isNickThere(std::string nickName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
+        Channel  getChannelByName(std::string channelName);
         
     private:
         struct pollfd fds[1024];
@@ -42,6 +44,7 @@ class Server {
         std::vector<int>    tab;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
+        std::map<std::string, Channel> channel;
         std::map<int, Client > client;
         std::string PASS;
         int server_fd;
