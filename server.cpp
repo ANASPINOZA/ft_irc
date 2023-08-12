@@ -94,7 +94,6 @@ bool    Server::Authentication(int idx)
             std::perror("send error");
         this->Authen = TRUE;
         tokens.clear();
-        // client[client_fd].addVector(tokens);
         return TRUE;
     }
     return FALSE;
@@ -201,8 +200,6 @@ void    Server::ft_server()
                 perror("Error accepting connection");
                 continue;
             }
-            std::string mssg = "NEW CONNECTION\n";
-            send(this->clientSocket, mssg.c_str(), mssg.size() + 1, 0);
             if (client_fd >= 1024) {
                 std::cout << "Maximum number of clients reached. Rejecting new connection." << std::endl;
                 close(clientSocket);
@@ -248,15 +245,10 @@ void    Server::ft_server()
                     }
                     if (!this->Authen && tokens.size() == 6)
                         Authentication(i);
-                    // std::cout << pass << user << nick << std::endl;
                 }
                 if (this->Authen)
                     client_handling();
             }
-        }
-        std::string mssg = "HJHJHJ";
-        for (int i = 0; i < clientSocket; i++) {
-            send(fds[i + 1].fd, mssg.c_str() , mssg.size(), 0);
         }
     }
     for (int i = 0; i < clientSocket; ++i) {
