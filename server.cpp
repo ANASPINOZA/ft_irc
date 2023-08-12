@@ -103,6 +103,14 @@ bool Server::isNickThere(std::string nickName)
     return (false);
 }
 
+bool Server::isChannelIsThere(std::string channelName,std::map<std::string, Channel>  map)
+{
+    std::map<std::string, Channel>::iterator it;
+    for (it = map.begin(); it != map.end(); it++)
+        if (it->first == channelName)
+            return (true);
+    return (false);
+}
 //---------------------------------- Spinosa 
 
 void Server::parseUserInfos(std::string userInfos, int client_fd)

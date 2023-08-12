@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/11 18:45:17 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/12 16:46:57 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int    Client::checkCmds(std::string cmd)
     return (-1);
 }
 
-void    Client::checkJoinParam(std::vector<std::string> cmd, int i)
+void    Client::checkJoinParam(std::vector<std::string> cmd,Client &client , int i)
 {
     //check param validation
     // std::count(param.begin(), param.end(), '#');
@@ -79,7 +79,17 @@ void    Client::checkJoinParam(std::vector<std::string> cmd, int i)
         keysNum = keys.size();
         if (chanelsNum >= keysNum)
         {
+            for (int i = 0; i < channels.size(); i++;)
+            {
+                int isCannelThere = isCannelThere(channels[i], )
+            }
             
+        }
+        else
+        {
+            message = ":" + getHostName() + " 400 " + client.getNickname() + "too much passwords for a channel\r\n";
+            if (send(fd, message.c_str(), message.length(),0))
+                std::perror("send message error");
         }
     }
     else

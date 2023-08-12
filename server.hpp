@@ -16,6 +16,7 @@
 #include <string>
 #include <string.h>
 #include "client.hpp"
+#include "channel.hpp"
 #include <sys/poll.h>
 #include <sstream>
 
@@ -32,6 +33,7 @@ class Server {
         bool    Authentication();
         void    client_handling();
         bool    isNickThere(std::string nickName);
+        bool    isChannelIsThere(std::string channelName,std::map<std::string, Channel>  map);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
         

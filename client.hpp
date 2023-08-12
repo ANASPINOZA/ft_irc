@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/11 18:04:21 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/12 13:27:16 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ class Client
         void            checkTokens(std::vector<std::string> cmd);
         int            checkCmds(std::string cmd);
         // void            checkJoinParam(std::string param);
-        void            checkJoinParam(std::vector<std::string> cmd, int i);
+        void            checkJoinParam(std::vector<std::string> cmd, Client &client, int i);
         void            checkInviteParam(std::string param);
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
