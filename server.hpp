@@ -14,9 +14,10 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <string.h>
 #include "client.hpp"
 #include <sys/poll.h>
-
+#include <sstream>
 
 #define TRUE true
 #define FALSE false
@@ -32,6 +33,8 @@ class Server {
         void    client_handling();
         bool    isNickThere(std::string nickName);
         void    parseUserInfos(std::string userInfos, int client_fd);
+        Client  getClient(std::string nickName); //Mountassir
+        
     private:
         struct pollfd fds[1024];
         struct sockaddr_in address;
@@ -52,5 +55,7 @@ class Server {
         bool    Authen;
 };
 
+std::string getHostName();
+std::vector<std::string> splitStrToVec(std::string str, char del);
 
 #endif

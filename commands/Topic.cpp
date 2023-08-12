@@ -6,67 +6,83 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/08 00:48:16 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/11 18:38:51 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Topic.cpp
 #include "Commands.hpp"
 
 void Topic(std::vector<std::string> cmd, Client &c)
 {
     if (cmd.size() < 3)
     {
-        std::cout << "Error: Insufficient arguments. Usage: /topic <channel_name> <topic>" << std::endl;
+        // Notify about missing parameters
+        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
         return;
     }
 
+    // Extract command parameters
     std::string channelName = cmd[1];
     std::string topic = cmd[2];
 
+    // Check if channel name starts with #
     if (channelName[0] != '#')
     {
-        std::cout << "Error: Invalid channel name. Channel name must start with '#'" << std::endl;
+        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
+    // Get the channel by name
     Channel channel = getChannelByName(channelName);
+
+    // Check if the channel exists
     if (channel.getChannelName().empty())
     {
-        std::cout << "Error: Channel doesn't exist" << std::endl;
+        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
 
+    // Get the user's presence in the channel
     Client userInChannel = channel.getClientInChannel(c.getNickname());
 
+    // Check if the user is in the channel
     if (userInChannel.getNickname() != c.getNickname())
     {
-        std::cout << "Error: You are not in this channel" << std::endl;
+        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
+
+    // Check if user has operator privileges
     if (!channel.isOperator(c.getNickname()))
     {
-        std::cout << "Error: You are not allowed to change the topic of this channel" << std::endl;
+        std::cout << ERR_CHANOPRIVSNEEDED(c.getNickname(), channelName) << std::endl;
         return;
     }
+
+    // Check if the topic is the same
     if (channel.getChannelTopic() == topic)
     {
-        std::cout << "Error: Topic of channel " << channelName << " is already " << topic << std::endl;
+        std::cout << RPL_TOPIC(c.getNickname(), channelName, topic) << std::endl;
         return;
     }
+
+    // Set the new topic if it's not empty
     if (topic.empty())
     {
         channel.setChannelTopic(topic);
-        std::cout << "Topic of channel " << channelName << " has been removed by " << c.getNickname() << std::endl;
+        std::cout << RPL_NOTOPIC(c.getNickname(), channelName) << std::endl;
     }
     else
     {
+        // Check if only operators can set topic
         if (channel.getOnlyOperatorTopic() && !channel.isOperator(c.getNickname()))
         {
-            std::cout << "Error: You are not allowed to change the topic of this channel" << std::endl;
+            std::cout << ERR_CHANOPRIVSNEEDED(c.getNickname(), channelName) << std::endl;
             return;
         }
+
+        // Set the new topic
         channel.setChannelTopic(topic);
-        std::cout << "Topic of channel " << channelName << " has been changed to " << topic << std::endl;
+        std::cout << RPL_TOPIC(c.getNickname(), channelName, topic) << std::endl;
     }
 }

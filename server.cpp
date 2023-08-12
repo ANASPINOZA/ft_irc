@@ -1,13 +1,12 @@
 #include "server.hpp"
 #include <string>
 
-
 Server::Server()
 {
     this->pass = FALSE;
 }
 
-void    Server::CheckPort(char *port)
+void Server::CheckPort(char *port)
 {
     for (size_t i = 0; i < strlen(port); i++)
     {
@@ -19,12 +18,12 @@ void    Server::CheckPort(char *port)
         throw std::runtime_error("PORT: Error");
 }
 
-void    Server::get_PASS(char *pass)
+void Server::get_PASS(char *pass)
 {
     this->PASS = pass;
 }
 
-void    Server::SomeParss(char **av)
+void Server::SomeParss(char **av)
 {
     CheckPort(av[1]);
     get_PASS(av[2]);
@@ -103,7 +102,7 @@ bool    Server::Authentication(int idx)
 bool    Server::isNickThere(std::string nickName)
 {
     std::map<int, Client>::iterator it;
-    for (it = client.begin() ; it != client.end(); it++)
+    for (it = client.begin(); it != client.end(); it++)
         if (it->second.getNickname() == nickName)
             return (true);
     return (false);
@@ -134,21 +133,19 @@ void    Server::parseUserInfos(std::string userInfos, int client_fd)
 }
 /////////////////////////////////////////////////////////////////////////////
 
-
-void    Server::client_handling()
+void Server::client_handling()
 {
     std::cout << "WELCOME TO OUR IRC" << std::endl;
 }
 
-void    Server::ft_server()
+void Server::ft_server()
 {
     socklen_t addrSize = sizeof(struct sockaddr_in);
     int opt = 1;
 
-
     if ((this->server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw std::runtime_error("Error: socket failed");
-  
+
     // Forcefully attaching socket to the port 8080
     if (setsockopt(this->server_fd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)))
         throw std::runtime_error("Error: setsockopt");
@@ -157,16 +154,15 @@ void    Server::ft_server()
     address.sin_port = htons(this->Port);
     std::cout << "PORT: {" << this->Port << "}" << std::endl;
     // Forcefully attaching socket to the port 8080
-    if (bind(this->server_fd, (struct sockaddr*)&address, sizeof(address)) < 0)
+    if (bind(this->server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
         throw std::runtime_error("Error: bind failed");
 
-
-    for (int i = 0; i < FD_SETSIZE; i++)  
+    for (int i = 0; i < FD_SETSIZE; i++)
     {
         this->client_socket.insert(client_socket.begin() + i, 0);
     }
 
-    if (listen(this->server_fd, SOMAXCONN) < 0) 
+    if (listen(this->server_fd, SOMAXCONN) < 0)
         throw std::runtime_error("Error: listen");
 
     std::cout << "Server listening on port 4444..." << std::endl;
@@ -180,12 +176,14 @@ void    Server::ft_server()
     while (true)
     {
         int pollResult = poll(fds, client_fd + 1, -1);
-        if (pollResult == -1) {
+        if (pollResult == -1)
+        {
             perror("Error in poll");
             break;
         }
 
-        if (pollResult == 0) {
+        if (pollResult == 0)
+        {
             continue;
         }
         if (fds[0].revents && POLLIN)
@@ -195,8 +193,9 @@ void    Server::ft_server()
             this->nick = FALSE;
             this->user = FALSE;
             tokens.clear();
-            this->clientSocket = accept(this->server_fd, (struct sockaddr *)&clientAddr , &addrSize);
-            if (clientSocket == -1) {
+            this->clientSocket = accept(this->server_fd, (struct sockaddr *)&clientAddr, &addrSize);
+            if (clientSocket == -1)
+            {
                 perror("Error accepting connection");
                 continue;
             }
@@ -204,15 +203,16 @@ void    Server::ft_server()
                 std::cout << "Maximum number of clients reached. Rejecting new connection." << std::endl;
                 close(clientSocket);
             }
-            else {
-                    std::cout << "New connection established. Client IP: "
+            else
+            {
+                std::cout << "New connection established. Client IP: "
                           << inet_ntoa(clientAddr.sin_addr) << ", Client Port: "
                           << ntohs(clientAddr.sin_port) << std::endl;
-                    fds[client_fd + 1].fd = clientSocket;
-                    fds[client_fd + 1].events = POLLIN;
-                    ++client_fd;
-                    client_socket.push_back(clientSocket);
-                }
+                fds[client_fd + 1].fd = clientSocket;
+                fds[client_fd + 1].events = POLLIN;
+                ++client_fd;
+                client_socket.push_back(clientSocket);
+            }
         }
         char buffer[1024];
         for (int i = 1; i <= client_fd; ++i)
@@ -224,7 +224,7 @@ void    Server::ft_server()
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
 
-                    close (fds[i].fd);
+                    close(fds[i].fd);
                     fds[i] = fds[client_fd];
                     --client_fd;
                     client.erase(fds[i].fd);
@@ -237,7 +237,8 @@ void    Server::ft_server()
 
                     size_t pos = 0;
                     std::string token;
-                    if ((pos = input.find(delimiter)) != std::string::npos) {
+                    if ((pos = input.find(delimiter)) != std::string::npos)
+                    {
                         token = input.substr(0, pos);
                         tokens.push_back(token);
                         input.erase(0, pos + delimiter.length());
@@ -251,10 +252,42 @@ void    Server::ft_server()
             }
         }
     }
-    for (int i = 0; i < clientSocket; ++i) {
+    for (int i = 0; i < clientSocket; ++i)
+    {
         close(fds[i + 1].fd);
     }
 
-    close (this->server_fd);
+    close(this->server_fd);
+}
+// -------------------------------- Spinoza
+std::string getHostName()
+{
+    char hostNames[256];
+    if (!gethostname(hostNames, sizeof(hostNames)))
+        return (hostNames);
+    return "";
 }
 
+
+
+std::vector<std::string> splitStrToVec(std::string str, char del)
+{
+    std::vector<std::string> ret;
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (getline(tokenStream, token, del))
+        ret.push_back(token);
+    return (ret);
+}
+// -------------------------------- Mountassir
+
+Client Server::getClient(std::string name)
+{
+    std::map<int, Client>::iterator it;
+    for (it = client.begin(); it != client.end(); it++)
+    {
+        if (it->second.getUserName() == name)
+            return it->second;
+    }
+    return Client();
+}
