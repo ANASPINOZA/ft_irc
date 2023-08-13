@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/08 00:09:06 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/13 15:59:38 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "Client.hpp"
+#include "client.hpp"
 
 #define NOT_SET 0
 #define PRIVATE_CHANNEL 1 // invitation only
 #define PUBLIC_CHANNEL 2  // anyone can join
 #define HAS_CLIENTS 3
+
+class Client;
 
 class Channel
 {
@@ -32,8 +34,8 @@ private:
 	std::string channelOwner;
 	std::string channelTopic;
 	std::vector<std::string> channelOperators;
-	std::map<std::string, Client> channelClients;
 	std::vector<std::string> invitedList;
+	std::map<std::string, Client> channelClients;
 	std::string channelPassword;
 	int onlyInvited;
 	int channelIsPrivate;
@@ -63,6 +65,7 @@ public:
 	size_t getUsersNum() const;
 	bool getOnlyOperatorTopic() const;
 	bool getProtectedByPassword() const;
+	std::map<std::string, Client> getChannelClients() const;
 	//----------------------------------------------------------------- Setters
 	void setChannelName(std::string channelName);
 	void setChannelOwner(std::string channelOwner);
@@ -78,6 +81,7 @@ public:
 	void setUsersNum(size_t usersNum);
 	void setOnlyOperatorTopic(bool onlyOperatorTopic);
 	void setProtectedByPassword(bool protectedByPassword);
+	// void setChannelClients(std::map<std::string, Client> clients);
 	//----------------------------------------------------------------- Methods
 	bool addClientToChannel(Client user);
 	Client getClientInChannel(std::string nickname);

@@ -108,7 +108,17 @@ bool    Server::isNickThere(std::string nickName)
     return (false);
 }
 
-void    Server::parseUserInfos(std::string userInfos, int client_fd)
+bool Server::isChannelIsThere(std::string channelName)
+{
+    std::map<std::string, Channel>::iterator it;
+    for (it = channel.begin(); it != channel.end(); it++)
+        if (it->first == channelName)
+            return (true);
+    return (false);
+}
+//---------------------------------- Spinosa 
+
+void Server::parseUserInfos(std::string userInfos, int client_fd)
 {
     size_t pos;
     int i = 0;
@@ -259,26 +269,7 @@ void Server::ft_server()
 
     close(this->server_fd);
 }
-// -------------------------------- Spinoza
-std::string getHostName()
-{
-    char hostNames[256];
-    if (!gethostname(hostNames, sizeof(hostNames)))
-        return (hostNames);
-    return "";
-}
 
-
-
-std::vector<std::string> splitStrToVec(std::string str, char del)
-{
-    std::vector<std::string> ret;
-    std::string token;
-    std::istringstream tokenStream(str);
-    while (getline(tokenStream, token, del))
-        ret.push_back(token);
-    return (ret);
-}
 // -------------------------------- Mountassir
 
 Client Server::getClient(std::string name)

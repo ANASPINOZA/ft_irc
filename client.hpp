@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/11 18:04:21 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/13 16:02:41 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@
 #include "User.hpp"
 #include <vector>
 #include <algorithm>
-#include "server.hpp"
+#include <sstream>
+#include <unistd.h>
 
+
+#define IS_OP 4;
+#define IS_NOT_OP 5;
 
 class Client
 {
@@ -33,6 +37,7 @@ class Client
         std::string usermode;
         std::string unused;
         std::string realname;
+        int        isOperator;
     public:
         Client();
         ~Client();
@@ -59,15 +64,19 @@ class Client
         void            checkTokens(std::vector<std::string> cmd);
         int            checkCmds(std::string cmd);
         // void            checkJoinParam(std::string param);
-        void            checkJoinParam(std::vector<std::string> cmd, int i);
+        // void            checkJoinParam(std::vector<std::string> cmd, Client &client ,Server &server , int i);
         void            checkInviteParam(std::string param);
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
         void            checkPrivmsgParam(std::string param);
+        void            setOP(int state);
         // void            delelet
         // std::string     getFd();
         bool     getPass();
         // User            getUser();
 };
+
+std::string getHostName();
+std::vector<std::string> splitStrToVec(std::string str, char del);
 
 #endif

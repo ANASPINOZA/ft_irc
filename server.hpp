@@ -23,6 +23,8 @@
 #define TRUE true
 #define FALSE false
 
+
+
 class Server {
     public:
         Server();
@@ -33,6 +35,7 @@ class Server {
         bool    Authentication(int idx);
         void    client_handling();
         bool    isNickThere(std::string nickName);
+        bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
         Channel  getChannelByName(std::string channelName);
@@ -57,8 +60,5 @@ class Server {
         bool    user;
         bool    Authen;
 };
-
-std::string getHostName();
-std::vector<std::string> splitStrToVec(std::string str, char del);
 
 #endif
