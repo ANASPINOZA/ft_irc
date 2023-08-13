@@ -16,12 +16,14 @@
 #include <string>
 #include <string.h>
 #include "client.hpp"
-#include "channel.hpp"
 #include <sys/poll.h>
 #include <sstream>
+#include "Channel.hpp"
 
 #define TRUE true
 #define FALSE false
+
+
 
 class Server {
     public:
@@ -30,17 +32,22 @@ class Server {
         void    SomeParss(char **av);
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
-        bool    Authentication();
+        bool    Authentication(int idx);
         void    client_handling();
         bool    isNickThere(std::string nickName);
-        bool    isChannelIsThere(std::string channelName,std::map<std::string, Channel>  map);
+        bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
+        Channel  getChannelByName(std::string channelName);
         
     private:
+        struct pollfd fds[1024];
+        struct sockaddr_in address;
+        struct sockaddr_in clientAddr;
         std::vector<int>    tab;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
+        std::map<std::string, Channel> channel;
         std::map<int, Client > client;
         std::string PASS;
         int server_fd;
@@ -53,8 +60,5 @@ class Server {
         bool    user;
         bool    Authen;
 };
-
-std::string getHostName();
-std::vector<std::string> splitStrToVec(std::string str, char del);
 
 #endif

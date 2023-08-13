@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/07 22:29:26 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/13 14:35:00 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ bool Channel::getProtectedByPassword() const
 {
 	return protectedByPassword;
 }
+
+std::map<std::string, Client> Channel::getChannelClients() const
+{
+	return (channelClients);
+}
 //----------------------------------------------------------------- Setters
 
 void Channel::setChannelName(std::string channelName)
@@ -180,6 +185,11 @@ void Channel::setProtectedByPassword(bool protectedByPassword)
 {
 	this->protectedByPassword = protectedByPassword;
 }
+
+// void Channel::setChannelClients(std::map<std::string, Client> clients)
+// {
+// 	this->channelClients = clients;
+// }
 //----------------------------------------------------------------- Methods
 
 bool Channel::addClientToChannel(Client user)

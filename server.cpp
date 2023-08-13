@@ -36,15 +36,16 @@ int checkUserCmd(std::string Args)
     int check = 0;
     for (size_t i = 0; i < Args.size(); i++)
     {
-        if (Args[i] != ' ')
+        if (Args[i] == ' ')
             check++;
     }
-    if (check == 4)
+    if (check == 3)
         return 0;
     return 1;
 }
 
-bool Server::Authentication()
+
+bool    Server::Authentication(int idx)
 {
     std::string cmd[3] = {"PASS", "NICK", "USER"};
     for (size_t j = 0; j < tokens.size(); j = j + 2)
@@ -58,6 +59,7 @@ bool Server::Authentication()
         switch (i)
         {
         case 0:
+            tokens[i + 1].erase(tokens[i + 1].size() - 1);
             if (!tokens[i + 1].compare(this->PASS))
                 this->pass = TRUE;
             break;
@@ -65,36 +67,39 @@ bool Server::Authentication()
             if (!isNickThere(tokens[j + 1]))
             {
                 this->nick = TRUE;
-                client[clientSocket].setNickname(tokens[j + 1]);
+                client[fds[idx].fd].setNickname(tokens[j + 1]);
             }
             break;
         case 2:
             if (!checkUserCmd(tokens[j + 1]))
                 this->user = TRUE;
-            // break;
+            parseUserInfos(tokens[j + 1], clientSocket);
         default:
             if (!pass || !nick || !user)
             {
                 std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
                 tokens.clear();
-                send(clientSocket, failure.c_str(), failure.size() + 1, 0);
+                send(fds[idx].fd, failure.c_str(),failure.size() + 1, 0);
                 return FALSE;
             }
         }
     }
     if (pass && nick && user)
     {
-        std::string mssg = "\033[1;32mWelcome to the Internet Relay Network\033[0m\n" + client[clientSocket].getNickname() + "\033[0m\n";
-        send(clientSocket, mssg.c_str(), mssg.size() + 1, 0);
+        char host[256];
+        gethostname(host, sizeof(host));
+        std::string mssg = std::string(":") + host + " 001 " + client.at(fds[idx].fd).getNickname()+" :Welcome to Our IRC Server!, " + client[fds[idx].fd].getNickname() +"\r\n"; \
+        if (send(fds[idx].fd, mssg.c_str(), mssg.size() + 1, 0) == -1)
+            std::perror("send error");
         this->Authen = TRUE;
         tokens.clear();
-        // client[client_fd].addVector(tokens);
         return TRUE;
     }
     return FALSE;
 }
 
-bool Server::isNickThere(std::string nickName)
+
+bool    Server::isNickThere(std::string nickName)
 {
     std::map<int, Client>::iterator it;
     for (it = client.begin(); it != client.end(); it++)
@@ -103,10 +108,10 @@ bool Server::isNickThere(std::string nickName)
     return (false);
 }
 
-bool Server::isChannelIsThere(std::string channelName,std::map<std::string, Channel>  map)
+bool Server::isChannelIsThere(std::string channelName)
 {
     std::map<std::string, Channel>::iterator it;
-    for (it = map.begin(); it != map.end(); it++)
+    for (it = channel.begin(); it != channel.end(); it++)
         if (it->first == channelName)
             return (true);
     return (false);
@@ -131,7 +136,7 @@ void Server::parseUserInfos(std::string userInfos, int client_fd)
             client[client_fd].setUnused(userInfos.substr(begin, lenght));
         else if (i == 3)
             client[client_fd].setRealName(userInfos.substr(begin, lenght));
-        begin = pos + 1;
+        begin = pos + 1;       
         pos = userInfos.find(" ", 0);
         i++;
     }
@@ -145,8 +150,6 @@ void Server::client_handling()
 
 void Server::ft_server()
 {
-    struct sockaddr_in address;
-    struct sockaddr_in clientAddr;
     socklen_t addrSize = sizeof(struct sockaddr_in);
     int opt = 1;
 
@@ -173,12 +176,11 @@ void Server::ft_server()
         throw std::runtime_error("Error: listen");
 
     std::cout << "Server listening on port 4444..." << std::endl;
-    struct pollfd fds[1024];
 
     memset(fds, 0, sizeof(fds));
 
     fds[0].fd = this->server_fd;
-    fds[0].events = POLLIN | POLLOUT;
+    fds[0].events = POLLIN;
 
     client_fd = 0;
     while (true)
@@ -207,10 +209,7 @@ void Server::ft_server()
                 perror("Error accepting connection");
                 continue;
             }
-            std::string mssg = "NEW CONNECTION\n";
-            send(this->clientSocket, mssg.c_str(), mssg.size() + 1, 0);
-            if (client_fd >= 1024)
-            {
+            if (client_fd >= 1024) {
                 std::cout << "Maximum number of clients reached. Rejecting new connection." << std::endl;
                 close(clientSocket);
             }
@@ -228,7 +227,6 @@ void Server::ft_server()
         char buffer[1024];
         for (int i = 1; i <= client_fd; ++i)
         {
-
             if (fds[i].revents && POLLIN)
             {
                 this->valread = recv(fds[i].fd, buffer, 1024, 0);
@@ -239,11 +237,11 @@ void Server::ft_server()
                     close(fds[i].fd);
                     fds[i] = fds[client_fd];
                     --client_fd;
-                    client.erase(clientSocket);
+                    client.erase(fds[i].fd);
                     continue;
                 }
-                else
-                {
+                else {
+                    std::cout << buffer;
                     std::string input = buffer;
                     std::string delimiter = " ";
 
@@ -257,15 +255,11 @@ void Server::ft_server()
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
                     if (!this->Authen && tokens.size() == 6)
-                        Authentication();
-                    std::map<int, Client>::iterator it;
-                    for (it = client.begin(); it != client.end(); it++)
-                        std::cout << it->first << std::endl;
-                    // std::cout << pass << nick << user << std::endl;
+                        Authentication(i);
                 }
+                if (this->Authen)
+                    client_handling();
             }
-            if (this->Authen)
-                client_handling();
         }
     }
     for (int i = 0; i < clientSocket; ++i)
@@ -275,26 +269,7 @@ void Server::ft_server()
 
     close(this->server_fd);
 }
-// -------------------------------- Spinoza
-std::string getHostName()
-{
-    char hostNames[256];
-    if (!gethostname(hostNames, sizeof(hostNames)))
-        return (hostNames);
-    return "";
-}
 
-
-
-std::vector<std::string> splitStrToVec(std::string str, char del)
-{
-    std::vector<std::string> ret;
-    std::string token;
-    std::istringstream tokenStream(str);
-    while (getline(tokenStream, token, del))
-        ret.push_back(token);
-    return (ret);
-}
 // -------------------------------- Mountassir
 
 Client Server::getClient(std::string name)
@@ -306,4 +281,15 @@ Client Server::getClient(std::string name)
             return it->second;
     }
     return Client();
+}
+
+Channel Server::getChannelByName(std::string channelName)
+{
+    std::map<std::string, Channel>::iterator it;
+    for (it = channel.begin(); it != channel.end(); it++)
+    {
+        if (!it->first.compare(channelName))
+            return it->second;
+    }
+    return Channel();
 }
