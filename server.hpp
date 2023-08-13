@@ -39,6 +39,7 @@ class Server {
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
         Channel  getChannelByName(std::string channelName);
+        std::map<std::string, Channel> getChannels();
         
     private:
         struct pollfd fds[1024];

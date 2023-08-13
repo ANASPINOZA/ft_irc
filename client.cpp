@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 15:56:53 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/13 20:48:37 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,24 @@ Client::~Client()
 //                     {
 //                         Channel newChannel(channels[i], client);
 //                         newChannel.getChannelClients()[client.getNickname()].isOperator = IS_OP;
-                        
+//                         server.getChannels().insert(std::make_pair(channels[i], newChannel));
+//                         server.getChannels()[channels[i]].getChannelOperators().push_back(client.getNickname());
+//                         size_t  userNum = server.getChannels()[channels[i]].getUsersNum();
+//                         server.getChannels()[channels[i]].setUsersNum(userNum + 1);
+//                         server.getChannels()[channels[i]]
+
+//                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
+//                         if (send(fd, message.c_str(), message.length(),0))
+//                             std::perror("send message error");
+//                         message = ":" + getHostName() + " MODE " + channels[i] + " " + "\r\n";
+//                         if (send(fd, message.c_str(), message.length(),0))
+//                             std::perror("send message error");
+//                         message = ":" + getHostName() + " 353 " + client.getNickname() + " = " + channels[i] + " :@" + client.getNickname() + "\r\n";
+//                         if (send(fd, message.c_str(), message.length(),0))
+//                             std::perror("send message error");
+//                         message = ":" + getHostName() + " 366 " + client.getNickname() + " " + channels[i] + " :End of /NAMES list.\r\n";
+//                         if (send(fd, message.c_str(), message.length(),0))
+//                             std::perror("send message error");
 //                         // channelClients[client.getNickname()].setOP(IS_OP);
 //                     }
 //                     else

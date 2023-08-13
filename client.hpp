@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 16:02:41 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/13 20:49:02 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <sstream>
 #include <unistd.h>
-
+// #include "server.hpp"
 
 #define IS_OP 4;
 #define IS_NOT_OP 5;
@@ -64,7 +64,7 @@ class Client
         void            checkTokens(std::vector<std::string> cmd);
         int            checkCmds(std::string cmd);
         // void            checkJoinParam(std::string param);
-        // void            checkJoinParam(std::vector<std::string> cmd, Client &client ,Server &server , int i);
+        void            checkJoinParam(std::vector<std::string> cmd, Client &client ,Server &server , int i);
         void            checkInviteParam(std::string param);
         void            checkKickParam(std::string param);
         void            checkTopicParam(std::string param);
