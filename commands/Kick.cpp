@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 19:23:33 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/13 19:47:07 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ void kick(std::vector<std::string> cmd, Client &c, Server &s)
         return;
     }
 
-    Channel channel = getChannelByName(channelName);
-    if (channel.getChannelName().empty())
+
+    if (s.isChannelIsThere(channelName) == false)
     {
         std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
+
+    Channel channel = s.getChannelByName(channelName);
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())

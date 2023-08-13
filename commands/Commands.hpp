@@ -31,10 +31,10 @@
 class commands
 {
 public:
-    void Kick(std::vector<std::string> cmd, Client c);
-    void Topic(std::vector<std::string> cmd, Client c);
-    void Invite(std::vector<std::string> cmd, Client c);
-    void Mode(std::vector<std::string> cmd, Client c);
+    void Kick(std::vector<std::string> cmd, Client &c, Server &s);
+    void Topic(std::vector<std::string> cmd, Client &c, Server &s);
+    void Invite(std::vector<std::string> cmd, Client &c, Server &s);
+    void Mode(std::vector<std::string> cmd, Client &c, Server &s);
 };
 
 #endif

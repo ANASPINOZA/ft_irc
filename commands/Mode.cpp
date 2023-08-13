@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 19:25:03 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/13 19:47:25 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,12 +164,13 @@ void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
         return;
     }
 
-    Channel channel = getChannelByName(channelName);
-    if (channel.getChannelName().empty())
+    if (s.isChannelIsThere(channelName) == false)
     {
         std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
+
+    Channel channel = s.getChannelByName(channelName);
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())

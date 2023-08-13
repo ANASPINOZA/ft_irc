@@ -6,13 +6,13 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 18:38:51 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/13 19:47:45 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Topic(std::vector<std::string> cmd, Client &c)
+void Topic(std::vector<std::string> cmd, Client &c, Server &s)
 {
     if (cmd.size() < 3)
     {
@@ -31,16 +31,13 @@ void Topic(std::vector<std::string> cmd, Client &c)
         std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
-
-    // Get the channel by name
-    Channel channel = getChannelByName(channelName);
-
-    // Check if the channel exists
-    if (channel.getChannelName().empty())
+    if (s.isChannelIsThere(channelName) == false)
     {
         std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
+
+    Channel channel = s.getChannelByName(channelName);
 
     // Get the user's presence in the channel
     Client userInChannel = channel.getClientInChannel(c.getNickname());

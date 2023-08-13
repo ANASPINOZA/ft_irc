@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 19:21:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/13 19:46:38 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void Invite(std::vector<std::string> cmd, Client &c, Server &s)
         return;
     }
 
-    Channel channel = getChannelByName(channelName);
-
-    if (channel.getChannelName().empty())
+    if (s.isChannelIsThere(channelName) == false)
     {
         std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
         return;
     }
+
+    Channel channel = s.getChannelByName(channelName);
 
     if (s.isNickThere(nickname) == false)
     {
