@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/14 16:23:48 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 18:48:48 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 
 class Client;
+class Server;
 
 class Channel
 {

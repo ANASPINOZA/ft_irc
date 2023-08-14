@@ -148,9 +148,12 @@ void Server::parseUserInfos(std::string userInfos, int client_fd)
 }
 /////////////////////////////////////////////////////////////////////////////
 
-void Server::client_handling()
+void Server::client_handling(int idx)
 {
     std::cout << "WELCOME TO OUR IRC" << std::endl;
+    client[fds[idx].fd].addVector(tokens);
+    if (!tokens.empty() && !tokens[0].compare("JOIN"))
+        std::cout << "ffff" << std::endl;
 }
 
 void Server::ft_server()
@@ -263,7 +266,7 @@ void Server::ft_server()
                         Authentication(i);
                 }
                 if (this->Authen)
-                    client_handling();
+                    client_handling(i);
             }
         }
     }
