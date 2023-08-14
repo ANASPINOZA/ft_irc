@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/13 19:47:25 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/14 02:28:57 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,19 @@ std::string parseMode(const std::string &mode)
 
     return parsedMode;
 }
-
 void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user)
 {
     if (mode.empty() || mode.size() < 2)
     {
-        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
+        std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
     if (!channel.isOperator(c.getNickname()))
     {
-        std::cout << ERR_CHANOPRIVSNEEDED(c.getNickname(), channel.getChannelName()) << std::endl;
+        std::string errorMsg = ERR_CHANOPRIVSNEEDED(c.getNickname(), channel.getChannelName()) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
@@ -57,12 +58,12 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setOnlyInvited(PRIVATE_CHANNEL);
-            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) << std::endl;
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
             channel.setOnlyInvited(PUBLIC_CHANNEL);
-            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         break;
 
@@ -70,12 +71,12 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setOnlyOperatorTopic(true);
-            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) << std::endl;
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
             channel.setOnlyOperatorTopic(false);
-            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         break;
 
@@ -84,12 +85,12 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         {
             if (channel.isOperator(user.getNickname()))
             {
-                std::cout << ERR_USERONCHANNEL(c.getNickname(), user.getNickname()) << std::endl;
+                sendMessage(ERR_USERONCHANNEL(c.getNickname(), user.getNickname()) + "\r\n", c.getFd());
             }
             else
             {
                 channel.setChannelOperators(user.getNickname());
-                std::cout << RPL_UMODEIS(c.getNickname(), "+" + modeOption) << std::endl;
+                sendMessage(RPL_UMODEIS(c.getNickname(), "+" + modeOption) + "\r\n", c.getFd());
             }
         }
         else if (modeSymbol == '-')
@@ -97,34 +98,34 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
             if (channel.isOperator(user.getNickname()))
             {
                 channel.removeOperator(user.getNickname());
-                std::cout << RPL_UMODEIS(c.getNickname(), "-" + modeOption) << std::endl;
+                sendMessage(RPL_UMODEIS(c.getNickname(), "-" + modeOption) + "\r\n", c.getFd());
             }
             else
             {
-                std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), user.getNickname()) << std::endl;
+                sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), user.getNickname()) + "\r\n", c.getFd());
             }
             break;
+        }
 
-        case 'k':
-            if (modeSymbol == '+')
+    case 'k':
+        if (modeSymbol == '+')
+        {
+            channel.setProtectedByPassword(true);
+            channel.setChannelPassword(mode.substr(2));
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) + "\r\n", c.getFd());
+        }
+        else if (modeSymbol == '-')
+        {
+            if (channel.getProtectedByPassword())
             {
-                channel.setProtectedByPassword(true);
-                channel.setChannelPassword(mode.substr(2));
-                std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) << std::endl;
+                channel.setProtectedByPassword(false);
+                channel.setChannelPassword("");
+                sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
             }
-            else if (modeSymbol == '-')
-            {
-                if (channel.getProtectedByPassword())
-                {
-                    channel.setProtectedByPassword(false);
-                    channel.setChannelPassword("");
-                    std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
-                }
-            }
-            else
-            {
-                std::cout << ERR_KEYSET(c.getNickname(), channel.getChannelName()) << std::endl;
-            }
+        }
+        else
+        {
+            sendMessage(ERR_KEYSET(c.getNickname(), channel.getChannelName()) + "\r\n", c.getFd());
         }
         break;
 
@@ -132,17 +133,17 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setMaxNumUsers(std::stoi(mode.substr(2)));
-            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) << std::endl;
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
             channel.setMaxNumUsers(0);
-            std::cout << RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) << std::endl;
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         break;
 
     default:
-        std::cout << ERR_UNKNOWNMODE(c.getNickname(), modeOption) << std::endl;
+        sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
     }
 }
 
@@ -150,7 +151,8 @@ void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
 {
     if (cmd.size() != 4)
     {
-        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
+        std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
@@ -160,13 +162,15 @@ void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
 
     if (channelName[0] != '#')
     {
-        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    if (s.isChannelIsThere(channelName) == false)
+    if (!s.isChannelIsThere(channelName))
     {
-        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
@@ -175,27 +179,31 @@ void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())
     {
-        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    if (s.isNickThere(nickname) == false)
+    if (!s.isNickThere(nickname))
     {
-        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
     Client client = s.getClient(nickname);
     if (client.getNickname() != nickname)
     {
-        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
     userInChannel = channel.getClientInChannel(nickname);
     if (userInChannel.getNickname() != nickname)
     {
-        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
