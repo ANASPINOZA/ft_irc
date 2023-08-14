@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/14 02:02:42 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/14 02:41:56 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void Invite(std::vector<std::string> cmd, Client &c, Server &s)
 {
     if (cmd.size() != 3)
     {
-        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
+        std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
@@ -25,47 +26,53 @@ void Invite(std::vector<std::string> cmd, Client &c, Server &s)
 
     if (channelName[0] != '#')
     {
-        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    if (s.isChannelIsThere(channelName) == false)
+    if (!s.isChannelIsThere(channelName))
     {
-        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
     Channel channel = s.getChannelByName(channelName);
 
-    if (s.isNickThere(nickname) == false)
+    if (!s.isNickThere(nickname))
     {
-        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
+        return;
+    }
+
+    Client invitedClient = s.getClient(nickname);
+
+    if (channel.getMaxNumUsers() > 0 && channel.getUsersNum() >= channel.getMaxNumUsers())
+    {
+        std::string errorMsg = ERR_CHANNELISFULL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
     Client userInChannel = channel.getClientInChannel(nickname);
-
     if (userInChannel.getNickname() == nickname)
     {
-        std::cout << ERR_USERONCHANNEL(c.getNickname(), nickname) << std::endl;
+        std::string errorMsg = ERR_USERONCHANNEL(c.getNickname(), nickname) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    Client client = s.getClient(nickname);
-
-    if (client.getNickname() != nickname)
+    if (!channel.isOperator(c.getNickname()))
     {
-        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
-        return;
-    }
-
-    if (channel.getMaxNumUsers() > 0 && channel.getUsersNum() >= channel.getMaxNumUsers())
-    {
-        std::cout << ERR_CHANNELISFULL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_CHANOPRIVSNEEDED(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
     }
 
     channel.setUsersNum(channel.getUsersNum() + 1);
-    channel.addClientToChannel(client);
-    std::cout << RPL_INVITING(c.getNickname(), nickname, channelName) << std::endl;
+    channel.addClientToChannel(invitedClient);
+    std::string successMsg = RPL_INVITING(c.getNickname(), nickname, channelName) + "\r\n";
+    sendMessage(successMsg, c.getFd());
 }

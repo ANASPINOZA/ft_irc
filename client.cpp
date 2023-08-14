@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 15:56:53 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 02:24:04 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
-
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
@@ -21,8 +20,6 @@ Client::Client()
 {
 }
 
-
-
 /*
 ** -------------------------------- DESTRUCTOR --------------------------------
 */
@@ -31,16 +28,13 @@ Client::~Client()
 {
 }
 
-
 /*
 ** --------------------------------- OVERLOAD ---------------------------------
 */
 
-
 /*
 ** --------------------------------- METHODS ----------------------------------
 */
-
 
 // int    Client::checkCmds(std::string cmd)
 // {
@@ -61,7 +55,7 @@ Client::~Client()
 //     size_t  chanelsNum;
 //     size_t  keysNum;
 //     std::string message;
-    
+
 //     cmd = splitStrToVec(cmd[i], ' ');
 //     if (cmd.size() > 1)
 //     {
@@ -88,7 +82,7 @@ Client::~Client()
 //                     {
 //                         Channel newChannel(channels[i], client);
 //                         newChannel.getChannelClients()[client.getNickname()].isOperator = IS_OP;
-                        
+
 //                         // channelClients[client.getNickname()].setOP(IS_OP);
 //                     }
 //                     else
@@ -98,15 +92,15 @@ Client::~Client()
 //                             std::perror("send message error");
 //                         return ;
 //                     }
-                    
+
 //                 }
 //                 else
 //                 {
 //                     // channel already exist
 //                 }
-                
+
 //             }
-            
+
 //         }
 //         else
 //         {
@@ -122,7 +116,7 @@ Client::~Client()
 // 			std::perror("send message error");
 //         return ;
 //     }
-        
+
 // }
 // void    Client::checkPrivmsgParam(std::string param)
 // {
@@ -130,15 +124,15 @@ Client::~Client()
 //     if (param.size() > 2)
 //     {
 //         if (param[0] != '#')
-//             // error ... 
+//             // error ...
 //         else
 //         {
-            
-//         }    
+
+//         }
 //     }
 //     else
 //     {
-//         // error ... send a reply to the client and following the limechat syntax   
+//         // error ... send a reply to the client and following the limechat syntax
 //     }
 // }
 
@@ -146,14 +140,14 @@ Client::~Client()
 // {
 //     //check param validation
 //     std::count(param.begin(), param.end(), '#');
-    
+
 // }
 
 // void    Client::checkTokens(std::vector<std::string> cmd)
 // {
 //     // std::string cmds[5] = {"JOIN", "INVITE", "KICK", "TOPIC", "MODE"};
 //     int     index = checkCmds(cmd[0]);
-    
+
 //     switch (index)
 //     {
 //     case 0
@@ -184,7 +178,6 @@ Client::~Client()
 //     }
 // }
 
-
 std::vector<std::string> splitStrToVec(std::string str, char del)
 {
     std::vector<std::string> ret;
@@ -206,18 +199,18 @@ std::string getHostName()
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
-void    Client::addData(std::string &new_token)
+void Client::addData(std::string &new_token)
 {
     tokens.push_back(new_token);
 }
 
-void    Client::addVector(std::vector<std::string> new_vector)
+void Client::addVector(std::vector<std::string> new_vector)
 {
     for (size_t i = 0; i < new_vector.size(); i++)
         tokens.push_back(new_vector[i]);
 }
 
-void    Client::printData()
+void Client::printData()
 {
     for (size_t i = 0; i < tokens.size(); i++)
     {
@@ -230,7 +223,7 @@ std::vector<std::string> Client::getTokens()
     return (this->tokens);
 }
 
-void    Client::setPass(bool type)
+void Client::setPass(bool type)
 {
     this->pass = type;
 }
@@ -240,47 +233,47 @@ void    Client::setPass(bool type)
 //     return (this->pass);
 // }
 
-void    Client::setNickname(std::string nickname)
+void Client::setNickname(std::string nickname)
 {
     this->nickname = nickname;
 }
 
-void    Client::setUserName(std::string username)
+void Client::setUserName(std::string username)
 {
     this->username = username;
 }
 
-void    Client::setUserMode(std::string usermode)
+void Client::setUserMode(std::string usermode)
 {
     this->usermode = usermode;
 }
 
-void    Client::setUnused(std::string unused)
+void Client::setUnused(std::string unused)
 {
     this->unused = unused;
 }
 
-void    Client::setRealName(std::string realname)
+void Client::setRealName(std::string realname)
 {
     this->realname = realname;
 }
 
-std::string     Client::getUserName()
+std::string Client::getUserName()
 {
     return (this->username);
 }
 
-std::string     Client::getUnused()
+std::string Client::getUnused()
 {
     return (this->unused);
 }
 
-std::string     Client::getUserMode()
+std::string Client::getUserMode()
 {
     return (this->usermode);
 }
 
-std::string     Client::getRealName()
+std::string Client::getRealName()
 {
     return (this->realname);
 }
@@ -292,12 +285,12 @@ std::string     Client::getRealName()
 //     this->user.setRealname(realname);
 // }
 
-std::string     Client::getNickname()
+std::string Client::getNickname()
 {
     return this->nickname;
 }
 
-void        Client::setOP(int state)
+void Client::setOP(int state)
 {
     this->isOperator = state;
 }
@@ -312,9 +305,9 @@ void        Client::setOP(int state)
 //     return this->user;
 // }
 
-// int            Client::getFd()
-// {
-//     return this->fd;
-// }
+int Client::getFd()
+{
+    return this->fd;
+}
 
 /* ************************************************************************** */
