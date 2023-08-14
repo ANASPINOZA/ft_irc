@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/14 04:08:39 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 15:09:50 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 #include <unistd.h>
 #include "server.hpp"
 
-#define IS_OP 4;
-#define IS_NOT_OP 5;
+#define IS_OP 4
+#define IS_NOT_OP 5
 
 class Client
 {
@@ -59,6 +59,7 @@ class Client
         std::string     getUnused();
         std::string     getRealName();
         std::string     getNickname();
+        int             getOp();
         void            parser(std::vector<std::string> tokens);
         // void            checkTokens(std::string cmd, std::string param, int *i); 
         void            checkTokens(std::vector<std::string> cmd);

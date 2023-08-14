@@ -6,12 +6,11 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/14 04:59:12 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 16:24:44 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
-
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
@@ -271,6 +270,38 @@ void	Channel::sendMsgToChannel(std::string message, int fd)
 				std::perror("send message error");
 		}
 	}	
+}
+
+std::string     Channel::getChannelMembers(std::string channelName, Server &server)
+{
+    std::string members = ":",  operators = "";
+    std::map<std::string, Client>::iterator it = server.getChannels()[channelName].getChannelClients().begin();
+    for (;it != server.getChannels()[channelName].getChannelClients().end(); it++)
+    {
+        if (it->second.getOp() != IS_OP)
+        {
+			members += it->second.getNickname() + " ";
+		}
+		else
+		{
+			operators += it->second.getNickname() + " ";
+		}    
+    }
+	if (!members.empty())
+		members += "@" + operators;
+    return (members);
+}
+
+
+bool	Channel::isClientisInvited(std::string nickname, Server& server)
+{
+	std::vector<std::string>::iterator it = server.getChannels()[channelName].getInvitedList().begin();
+	for (; it != server.getChannels()[channelName].getInvitedList().end(); it++)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
 }
 
 /*
