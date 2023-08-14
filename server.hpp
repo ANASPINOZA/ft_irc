@@ -23,7 +23,8 @@
 #define TRUE true
 #define FALSE false
 
-
+class Client;
+class Channel;
 
 class Server {
     public:
