@@ -6,76 +6,68 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/11 19:23:33 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/14 02:48:27 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void kick(std::vector<std::string> cmd, Client &c, Server &s)
+void kick(std::vector<std::string> cmd, Client &kicker, Server &server)
 {
-    if (cmd.size() < 4)
+    if (cmd.size() < 3)
     {
-        std::cout << ERR_NEEDMOREPARAMS(c.getNickname()) << std::endl;
+        std::string errorMsg = ERR_NEEDMOREPARAMS(kicker.getNickname()) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
     std::string channelName = cmd[1];
-    std::string nickname = cmd[2];
-    std::string comment = cmd[3];
+    std::string targetNickname = cmd[2];
+    std::string comment = (cmd.size() > 3) ? cmd[3] : "";
 
     if (channelName[0] != '#')
     {
-        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHCHANNEL(kicker.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    Channel channel = getChannelByName(channelName);
-    if (channel.getChannelName().empty())
+    if (!server.isChannelIsThere(channelName))
     {
-        std::cout << ERR_NOSUCHCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHCHANNEL(kicker.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    Client userInChannel = channel.getClientInChannel(c.getNickname());
-    if (userInChannel.getNickname() != c.getNickname())
+    Channel channel = server.getChannelByName(channelName);
+    Client targetClient = server.getClient(targetNickname);
+
+    if (!server.isNickThere(targetNickname))
     {
-        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
+        std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    if (s.isNickThere(nickname) == false)
+    Client userToKickInChannel = channel.getClientInChannel(targetNickname);
+    if (userToKickInChannel.getNickname() != targetNickname)
     {
-        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        std::string errorMsg = ERR_USERNOTINCHANNEL(kicker.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    Client client = s.getClient(nickname);
-    if (client.getNickname() != nickname)
+    if (!channel.isOperator(kicker.getNickname()))
     {
-        std::cout << ERR_NOSUCHNICK(c.getNickname(), nickname) << std::endl;
+        std::string errorMsg = ERR_CHANOPRIVSNEEDED(kicker.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    Client userToKickInChannel = channel.getClientInChannel(nickname);
-    if (userToKickInChannel.getNickname() != nickname)
-    {
-        std::cout << ERR_USERNOTINCHANNEL(c.getNickname(), channelName) << std::endl;
-        return;
-    }
-
-    if (channel.isOperator(c.getNickname()) == false)
-    {
-        std::cout << ERR_CHANOPRIVSNEEDED(c.getNickname(), channelName) << std::endl;
-        return;
-    }
-
-    if (channel.removeClientFromChannel(client))
+    if (channel.removeClientFromChannel(targetClient))
     {
         channel.setUsersNum(channel.getUsersNum() - 1);
-        if (!comment.empty())
-            std::cout << RPL_KICK(c.getNickname(), nickname, channelName, comment) << std::endl;
-        else
-            std::cout << RPL_KICK(c.getNickname(), nickname, channelName, "") << std::endl;
+        std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
+        sendMessage(successMsg, kicker.getFd());
     }
 }
