@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/14 02:49:32 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:11:38 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
-
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
@@ -32,6 +31,7 @@ Channel::Channel(std::string name, Client user)
 	channelIsPrivate = NOT_SET;
 	alreadyHasClients = HAS_CLIENTS;
 	usersNum = NOT_SET;
+	maxNumUsers = 256;
 	channelClients[user.getNickname()] = user;
 }
 
@@ -115,6 +115,12 @@ std::map<std::string, Client> Channel::getChannelClients() const
 {
 	return (channelClients);
 }
+
+std::string Channel::getChannelPassword() const
+{
+	return (channelPassword);
+}
+
 //----------------------------------------------------------------- Setters
 
 void Channel::setChannelName(std::string channelName)
@@ -252,6 +258,50 @@ void Channel::removeOperator(std::string nickname)
 			return;
 		}
 	}
+}
+
+void	Channel::sendMsgToChannel(std::string message, int fd)
+{
+	for (std::map<std::string, Client>::iterator it = channelClients.begin(); it != channelClients.end(); it++)
+	{
+		if (fd != it->second.getFd())
+		{
+			if(send(it->second.getFd(), message.c_str(), message.length(), 0))
+				std::perror("send message error");
+		}
+	}	
+}
+
+std::string     Channel::getChannelMembers(std::string channelName, Server &server)
+{
+    std::string members = ":",  operators = "";
+    std::map<std::string, Client>::iterator it = server.getChannels()[channelName].getChannelClients().begin();
+    for (;it != server.getChannels()[channelName].getChannelClients().end(); it++)
+    {
+        if (it->second.getOp() != IS_OP)
+        {
+			members += it->second.getNickname() + " ";
+		}
+		else
+		{
+			operators += it->second.getNickname() + " ";
+		}    
+    }
+	if (!members.empty())
+		members += "@" + operators;
+    return (members);
+}
+
+
+bool	Channel::isClientisInvited(std::string nickname, Server& server)
+{
+	std::vector<std::string>::iterator it = server.getChannels()[channelName].getInvitedList().begin();
+	for (; it != server.getChannels()[channelName].getInvitedList().end(); it++)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
 }
 
 /*

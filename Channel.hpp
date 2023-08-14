@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 15:59:38 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 16:23:48 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@
 #include <map>
 #include <vector>
 #include "client.hpp"
+#include "server.hpp"
 
 #define NOT_SET 0
 #define PRIVATE_CHANNEL 1 // invitation only
 #define PUBLIC_CHANNEL 2  // anyone can join
 #define HAS_CLIENTS 3
+
 
 class Client;
 
@@ -65,7 +67,10 @@ public:
 	size_t getUsersNum() const;
 	bool getOnlyOperatorTopic() const;
 	bool getProtectedByPassword() const;
+	std::string getChannelPassword() const;
 	std::map<std::string, Client> getChannelClients() const;
+	std::string getChannelMembers(std::string channelName, Server &server);
+	bool	isClientisInvited(std::string nickname, Server& server);
 	//----------------------------------------------------------------- Setters
 	void setChannelName(std::string channelName);
 	void setChannelOwner(std::string channelOwner);
@@ -88,6 +93,7 @@ public:
 	bool removeClientFromChannel(Client user);
 	bool isOperator(std::string nickname);
 	void removeOperator(std::string nickname);
+	void sendMsgToChannel(std::string message, int fd);
 	//----------------------------------------------------------------- Operators
 };
 

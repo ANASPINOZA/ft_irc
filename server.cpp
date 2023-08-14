@@ -29,6 +29,11 @@ void Server::SomeParss(char **av)
     get_PASS(av[2]);
 }
 
+std::map<std::string, Channel> Server::getChannels()
+{
+    return (this->channel);
+}
+
 /////////////////////////////   Authentication /////////////////////////////////
 
 int checkUserCmd(std::string Args)
