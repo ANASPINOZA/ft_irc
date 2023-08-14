@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 20:49:02 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 04:08:39 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <sstream>
 #include <unistd.h>
-// #include "server.hpp"
+#include "server.hpp"
 
 #define IS_OP 4;
 #define IS_NOT_OP 5;
@@ -71,7 +71,7 @@ class Client
         void            checkPrivmsgParam(std::string param);
         void            setOP(int state);
         // void            delelet
-        // std::string     getFd();
+        int     getFd();
         bool     getPass();
         // User            getUser();
 };

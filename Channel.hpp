@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 19:29:52 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 04:02:42 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ public:
 	size_t getUsersNum() const;
 	bool getOnlyOperatorTopic() const;
 	bool getProtectedByPassword() const;
+	std::string getChannelPassword() const;
 	std::map<std::string, Client> getChannelClients() const;
 	//----------------------------------------------------------------- Setters
 	void setChannelName(std::string channelName);
@@ -88,6 +89,7 @@ public:
 	bool removeClientFromChannel(Client user);
 	bool isOperator(std::string nickname);
 	void removeOperator(std::string nickname);
+	void sendMsgToChannel(std::string message, int fd);
 	//----------------------------------------------------------------- Operators
 };
 

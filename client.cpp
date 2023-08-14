@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/13 20:48:37 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 04:58:55 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ Client::~Client()
 //     size_t  chanelsNum;
 //     size_t  keysNum;
 //     std::string message;
+//     size_t  userNum;
     
 //     cmd = splitStrToVec(cmd[i], ' ');
 //     if (cmd.size() > 1)
@@ -90,9 +91,9 @@ Client::~Client()
 //                         newChannel.getChannelClients()[client.getNickname()].isOperator = IS_OP;
 //                         server.getChannels().insert(std::make_pair(channels[i], newChannel));
 //                         server.getChannels()[channels[i]].getChannelOperators().push_back(client.getNickname());
-//                         size_t  userNum = server.getChannels()[channels[i]].getUsersNum();
+//                         userNum = server.getChannels()[channels[i]].getUsersNum();
 //                         server.getChannels()[channels[i]].setUsersNum(userNum + 1);
-//                         server.getChannels()[channels[i]]
+//                         server.getChannels()[channels[i]].setChannelPassword(keys[i]);
 
 //                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
 //                         if (send(fd, message.c_str(), message.length(),0))
@@ -106,7 +107,6 @@ Client::~Client()
 //                         message = ":" + getHostName() + " 366 " + client.getNickname() + " " + channels[i] + " :End of /NAMES list.\r\n";
 //                         if (send(fd, message.c_str(), message.length(),0))
 //                             std::perror("send message error");
-//                         // channelClients[client.getNickname()].setOP(IS_OP);
 //                     }
 //                     else
 //                     {
@@ -120,6 +120,49 @@ Client::~Client()
 //                 else
 //                 {
 //                     // channel already exist
+//                     if (server.getChannels()[channels[i]].getMaxNumUsers() > server.getChannels()[channels[i]].getUsersNum())
+//                     {
+//                         if (server.getChannels()[channels[i]].getOnlyInvited() == PRIVATE_CHANNEL)
+//                         {
+//                             // if channel is private (invitation only)
+                            
+//                         }
+//                         else
+//                         {
+//                             // if channel is public (anyone can join)
+//                             if (server.getChannels()[channels[i]].getChannelPassword() != keys[i])
+//                             {
+//                                 message =  ":" + getHostName() + " 464 * :Password incorrect\r\n";
+//                                 if (send(fd, message.c_str(), message.length(),0))
+//                                     std::perror("send message error");
+//                             }
+//                             else
+//                             {
+//                                 if (server.getChannels()[channels[i]].getChannelClients().find(client.getNickname()) != server.getChannels()[channels[i]].getChannelClients().end())
+//                                 {
+//                                     message = ":" + getHostName() + " 400 " + client.getNickname() + " :this client is already exist in this channel !\r\n";
+//                                     if (send(fd, message.c_str(), message.length(),0))
+//                                         std::perror("send message error");
+//                                 }
+//                                 else
+//                                 {
+//                                     server.getChannels()[channels[i]].getChannelClients().insert(std::make_pair(client.getNickname(), client));
+//                                     userNum = server.getChannels()[channels[i]].getUsersNum();
+//                                     server.getChannels()[channels[i]].setUsersNum(userNum + 1);
+//                                     message = ":" + client.getNickname() + client.getUserName() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
+//                                     server.getChannels()[channels[i]].sendMsgToChannel(message, client.fd);
+//                                     message = ":" + getHostName() + " 353 " + client.getNickname() + " @ " + channels[i] + " " + 
+//                                 }
+//                             }
+//                         }
+//                     }
+//                     else
+//                     {
+//                         message = ":" + getHostName() + " 471 " + client.getNickname() + " " + channels[i] + " :Cannot join channel (+l)\r\n";
+//                         if (send(fd, message.c_str(), message.length(),0))
+//                             std::perror("send message error");
+//                         return ;
+//                     }
 //                 }
                 
 //             }
@@ -329,9 +372,9 @@ void        Client::setOP(int state)
 //     return this->user;
 // }
 
-// int            Client::getFd()
-// {
-//     return this->fd;
-// }
+int            Client::getFd()
+{
+    return (this->fd);
+}
 
 /* ************************************************************************** */
