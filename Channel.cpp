@@ -6,7 +6,7 @@
 /*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/14 18:11:38 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/14 19:16:38 by aadnane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,8 +275,9 @@ void	Channel::sendMsgToChannel(std::string message, int fd)
 std::string     Channel::getChannelMembers(std::string channelName, Server &server)
 {
     std::string members = ":",  operators = "";
-    std::map<std::string, Client>::iterator it = server.getChannels()[channelName].getChannelClients().begin();
-    for (;it != server.getChannels()[channelName].getChannelClients().end(); it++)
+	std::map<std::string, Client> clients = server.getChannels()[channelName].getChannelClients();
+    std::map<std::string, Client>::iterator it = clients.begin();
+    for (;it != clients.end(); it++)
     {
         if (it->second.getOp() != IS_OP)
         {
@@ -295,8 +296,9 @@ std::string     Channel::getChannelMembers(std::string channelName, Server &serv
 
 bool	Channel::isClientisInvited(std::string nickname, Server& server)
 {
-	std::vector<std::string>::iterator it = server.getChannels()[channelName].getInvitedList().begin();
-	for (; it != server.getChannels()[channelName].getInvitedList().end(); it++)
+	std::vector<std::string>	invitedUsers = server.getChannels()[channelName].getInvitedList();
+	std::vector<std::string>::iterator it = invitedUsers.begin();
+	for (; it != invitedUsers.end(); it++)
 	{
 		if (*it == nickname)
 			return true;
