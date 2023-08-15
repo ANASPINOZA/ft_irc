@@ -148,13 +148,17 @@ void Server::parseUserInfos(std::string userInfos, int client_fd)
 }
 /////////////////////////////////////////////////////////////////////////////
 
-void Server::client_handling()
+void Server::client_handling(Server &server, int idx)
 {
     std::cout << "WELCOME TO OUR IRC" << std::endl;
+    client[fds[idx].fd].addVector(tokens);
+    if (!tokens.empty() && !tokens[0].compare("JOIN"))
+        checkJoinParam(client[fds[idx].fd], server, 0);
 }
 
 void Server::ft_server()
 {
+    Server server;
     socklen_t addrSize = sizeof(struct sockaddr_in);
     int opt = 1;
 
@@ -263,7 +267,7 @@ void Server::ft_server()
                         Authentication(i);
                 }
                 if (this->Authen)
-                    client_handling();
+                    client_handling(server, i);
             }
         }
     }
