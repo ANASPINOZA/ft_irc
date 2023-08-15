@@ -19,6 +19,7 @@
 #include <sys/poll.h>
 #include <sstream>
 #include "Channel.hpp"
+#include "ChannelCommands.hpp"
 
 #define TRUE true
 #define FALSE false
@@ -34,7 +35,7 @@ class Server {
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
         bool    Authentication(int idx);
-        void    client_handling(int idx);
+        void    client_handling(Server &server,int idx);
         bool    isNickThere(std::string nickName);
         bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);

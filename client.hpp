@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/14 18:48:27 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:59:26 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ class Server;
 
 #define IS_OP 4
 #define IS_NOT_OP 5
+
+class Server;
 
 class Client
 {
@@ -62,24 +64,25 @@ class Client
         std::string     getRealName();
         std::string     getNickname();
         int             getOp();
-        void            parser(std::vector<std::string> tokens);
+        // void            parser(std::vector<std::string> tokens);
         // void            checkTokens(std::string cmd, std::string param, int *i); 
-        void            checkTokens(std::vector<std::string> cmd);
-        int            checkCmds(std::string cmd);
+        // void            checkTokens(std::vector<std::string> cmd);
+        // int            checkCmds(std::string cmd);
         // void            checkJoinParam(std::string param);
-        void            checkJoinParam(std::vector<std::string> cmd, Client &client ,Server &server , int i);
-        void            checkInviteParam(std::string param);
-        void            checkKickParam(std::string param);
-        void            checkTopicParam(std::string param);
-        void            checkPrivmsgParam(std::string param);
+        // void            checkJoinParam(Client &client ,Server &server , int i);
+        // void            checkInviteParam(std::string param);
+        // void            checkKickParam(std::string param);
+        // void            checkTopicParam(std::string param);
+        // void            checkPrivmsgParam(std::string param);
         void            setOP(int state);
         // void            delelet
-        int     getFd();
-        bool     getPass();
+        int             getFd();
+        bool            getPass();
         // User            getUser();
 };
 
 std::string getHostName();
 std::vector<std::string> splitStrToVec(std::string str, char del);
+std::vector<std::string> splitVec(std::vector<std::string> vec, char del);
 
 #endif
