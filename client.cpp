@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/15 00:41:55 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/15 16:29:25 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,12 @@ std::string getHostName()
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
+
+void Client::setFd(int Fd)
+{
+    this->fd = Fd;
+}
+
 
 void Client::addData(std::string &new_token)
 {
