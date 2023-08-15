@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/15 15:59:26 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:29:28 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ class Client
         void            setOP(int state);
         // void            delelet
         int             getFd();
+        void            setFd(int Fd);
         bool            getPass();
         // User            getUser();
 };
