@@ -188,13 +188,19 @@ void    ChannelCommands::checkJoinParam(Client &client, Server &server , int i)
 
 //     cmd = splitVec(client.tokens, ' ');
 
-//     if (cmd.size() > 3)
+//     if (cmd.size() > 2)
 //     {
 //         if (cmd[i][0] != '#')
-//             // error ...
+//         {
+//           // error ...
+//         }
 //         else
 //         {
-
+//             std::vector<std::string> users = splitStrToVec(cmd[1], ',');
+//             for(size_t i = 0; i < users.size(); i++)
+//             {
+//                 server.
+//             }
 //         }
 //     }
 //     else
