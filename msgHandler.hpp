@@ -4,7 +4,10 @@
 #include <string>
 #include <unistd.h>
 #include <iostream>
-
+#include "Channel.hpp"
+#include "User.hpp"
+#include "Server.hpp"
+#include "Client.hpp"
 void sendMessage(const std::string &message, int fd);
 
 #endif
