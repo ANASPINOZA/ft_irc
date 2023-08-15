@@ -17,7 +17,7 @@ class Server;
 // 	public:
 
 // };
-void            checkJoinParam(Client &client ,Server &server , int i);
+void            checkJoinParam(Client &client ,Server &server);
 void            checkInviteParam(std::string param);
 void            checkKickParam(std::string param);
 void            checkTopicParam(std::string param);
