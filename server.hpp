@@ -42,6 +42,7 @@ class Server {
         Client  getClient(std::string nickName); //Mountassir
         Channel  getChannelByName(std::string channelName);
         std::map<std::string, Channel> getChannels();
+        std::map<std::string, Channel> channel;
         
     private:
         struct pollfd fds[1024];
@@ -50,7 +51,6 @@ class Server {
         std::vector<int>    tab;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
-        std::map<std::string, Channel> channel;
         std::map<int, Client > client;
         std::string PASS;
         int server_fd;
