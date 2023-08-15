@@ -10,7 +10,7 @@
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void    checkJoinParam(Client &client, Server &server , int i)
+void    checkJoinParam(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
@@ -19,10 +19,12 @@ void    checkJoinParam(Client &client, Server &server , int i)
     std::string message;
     size_t  userNum;
     std::vector<std::string> cmd;
+    int     i = 0;
     
     // cmd = client;
     std::cout << "HERE" << std::endl;
-    cmd = splitStrToVec(cmd[i], ' ');
+    cmd = client.getTokens();
+    cmd = splitVec(cmd, ' ');
     if (cmd.size() > 1)
     {
         if (cmd.size() > 2)

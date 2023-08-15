@@ -153,7 +153,7 @@ void Server::client_handling(Server &server, int idx)
     std::cout << "WELCOME TO OUR IRC" << std::endl;
     client[fds[idx].fd].addVector(tokens);
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
-        checkJoinParam(client[fds[idx].fd], server, 0);
+        checkJoinParam(client[fds[idx].fd], server);
 }
 
 void Server::ft_server()
