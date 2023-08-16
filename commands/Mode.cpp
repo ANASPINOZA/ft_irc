@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/14 17:41:44 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:16:05 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,9 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
     }
 }
 
-void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
+void Mode(Client &c, Server &s)
 {
+    std::vector<std::string> cmd = c.getTokens();
     if (cmd.size() != 4)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";

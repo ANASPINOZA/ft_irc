@@ -6,14 +6,15 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/14 02:41:56 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:16:21 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Invite(std::vector<std::string> cmd, Client &c, Server &s)
+void Invite(Client &c, Server &s)
 {
+    std::vector<std::string> cmd = c.getTokens();
     if (cmd.size() != 3)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
