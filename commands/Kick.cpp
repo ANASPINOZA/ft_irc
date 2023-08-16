@@ -6,25 +6,25 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 17:14:46 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 20:51:40 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
+
 void kick(Client &kicker, Server &server)
 {
-    if (kicker.getTokens().size() < 3)
+    std::vector<std::string> cmd = splitCommand(kicker.getTokens()[1]);
+    if (cmd.size() < 2)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(kicker.getNickname()) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
         return;
     }
-
-    std::vector<std::string> cmd = kicker.getTokens();
-    std::string channelName = cmd[1];
-    std::string targetNickname = cmd[2];
-    std::string comment = (cmd.size() > 3) ? cmd[3] : "";
+    std::string channelName = cmd[0];
+    std::string targetNickname = cmd[1];
+    std::string comment = (cmd.size() > 2) ? cmd[2] : "";
 
     if (channelName[0] != '#')
     {

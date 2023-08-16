@@ -6,36 +6,11 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 17:55:39 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:09:22 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
-
-#include <string>
-
-std::string parseMode(const std::string &mode)
-{
-    std::string parsedMode;
-
-    for (std::string::const_iterator it = mode.begin(); it != mode.end(); ++it)
-    {
-        char c = *it;
-        if (c == '+' || c == '-')
-        {
-            if (parsedMode.empty() || parsedMode[parsedMode.size() - 1] != c)
-            {
-                parsedMode += c;
-            }
-        }
-        else if (c == 't' || c == 'l' || c == 'k' || c == 'o' || c == 'i')
-        {
-            parsedMode += c;
-        }
-    }
-
-    return parsedMode;
-}
 
 void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user)
 {
@@ -153,17 +128,17 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
 
 void Mode(Client &c, Server &s)
 {
-    std::vector<std::string> cmd = c.getTokens();
-    if (cmd.size() != 4)
+    std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
+    if (cmd.size() != 3)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    std::string channelName = cmd[1];
-    std::string mode = parseMode(cmd[2]);
-    std::string nickname = cmd[3];
+    std::string channelName = cmd[0];
+    std::string mode = parseModeOptions(cmd[1]);
+    std::string nickname = cmd[2];
 
     if (channelName[0] != '#')
     {

@@ -9,6 +9,7 @@
 #include "../client.hpp"
 #include "../channel.hpp"
 #include "../msgHandler.hpp"
+#include "parsing.cpp"
 
 // -------------------------------------- MSGS -------------------------------------- //
 #define ERR_USERONCHANNEL(nick, channel) "443 " + nick + " " + channel + " :is already on channel"
