@@ -9,5 +9,5 @@
 #include "Server.hpp"
 #include "Client.hpp"
 void sendMessage(const std::string &message, int fd);
-
+void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message);
 #endif
