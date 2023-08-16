@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/16 18:53:02 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/16 20:01:49 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ std::vector<std::string> splitStrToVec(std::string str, char del)
 
 std::vector<std::string> splitVec(std::vector<std::string> vec, char del)
 {
-    std::vector<std::string>ret;
+    std::vector<std::string> ret;
     std::string holder;
     std::string token;
-    for(std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); it++)
+    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); it++)
     {
         holder += *it + " ";
     }
@@ -77,7 +77,6 @@ void Client::setFd(int Fd)
 {
     this->fd = Fd;
 }
-
 
 void Client::addData(std::string &new_token)
 {
@@ -170,12 +169,12 @@ std::string Client::getNickname()
     return this->nickname;
 }
 
-int        Client::getOp()
+int Client::getOp()
 {
     return (this->isOperator);
 }
 
-void        Client::setOP(int state)
+void Client::setOP(int state)
 {
     this->isOperator = state;
 }
@@ -190,7 +189,7 @@ void        Client::setOP(int state)
 //     return this->user;
 // }
 
-int            Client::getFd()
+int Client::getFd() const
 {
     return (this->fd);
 }

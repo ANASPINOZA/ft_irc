@@ -8,10 +8,10 @@ void sendMessage(const std::string &message, const int fd)
     }
 }
 
-void sendMessageToChannel(const Channel &channel, Client &sender, const std::string &message)
+void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message)
 {
-    const std::map<int, Client> &channelClients = channel.getChannelClients();
-    std::map<int, Client>::const_iterator it;
+    const std::map<std::string, Client> &channelClients = channel.getChannelClients();
+    std::map<std::string, Client>::const_iterator it;
 
     for (it = channelClients.begin(); it != channelClients.end(); ++it)
     {

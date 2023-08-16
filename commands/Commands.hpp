@@ -8,6 +8,7 @@
 #include "../server.hpp"
 #include "../client.hpp"
 #include "../msgHandler.hpp"
+#include "parsing.cpp"
 
 class Client;
 class Server;

@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 18:00:47 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:14:39 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 void commands::Invite(Client &c, Server &s)
 {
-    std::vector<std::string> cmd = c.getTokens();
-    if (cmd.size() != 3)
+    std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
+    if (cmd.size() != 2)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    std::string channelName = cmd[1];
-    std::string nickname = cmd[2];
+    std::string channelName = cmd[0];
+    std::string nickname = cmd[1];
 
     if (channelName[0] != '#')
     {
