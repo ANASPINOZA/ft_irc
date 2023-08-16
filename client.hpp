@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/15 16:29:28 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:35:20 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 #include <unistd.h>
 #include "server.hpp"
 
+
 class Server;
+class commands;
 
 #define IS_OP 4
 #define IS_NOT_OP 5
@@ -68,8 +70,6 @@ class Client
         // void            checkTokens(std::string cmd, std::string param, int *i); 
         // void            checkTokens(std::vector<std::string> cmd);
         // int            checkCmds(std::string cmd);
-        // void            checkJoinParam(std::string param);
-        // void            checkJoinParam(Client &client ,Server &server , int i);
         // void            checkInviteParam(std::string param);
         // void            checkKickParam(std::string param);
         // void            checkTopicParam(std::string param);

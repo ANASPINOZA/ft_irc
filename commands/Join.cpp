@@ -1,4 +1,4 @@
-#include "ChannelCommands.hpp"
+
 
 
 /*
@@ -10,7 +10,9 @@
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void    checkJoinParam(Client &client, Server &server)
+#include "Commands.hpp"
+
+void    commands::checkJoinParam(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
@@ -22,7 +24,6 @@ void    checkJoinParam(Client &client, Server &server)
     int     i = 1;
     
     // cmd = client;
-    // std::cout << "HERE" << std::endl;
     cmd = client.getTokens();
     cmd = splitVec(cmd, ' ');
     if (cmd.size() > 1)
@@ -43,7 +44,6 @@ void    checkJoinParam(Client &client, Server &server)
         {
             for (size_t i = 0; i < channels.size(); i++)
             {
-                std::cout << channels[i] << std::endl;
                 int isChannelThere = server.isChannelIsThere(channels[i]);
                 if (!isChannelThere)
                 {
@@ -58,7 +58,7 @@ void    checkJoinParam(Client &client, Server &server)
                         server.channel[channels[i]].setUsersNum(userNum + 1);
                         server.channel[channels[i]].setChannelPassword(keys[i]);
                         
-                        // std::cout << "------------> " << client.getNickname() << std::endl;
+                        std::cout << "------------> " << client.getNickname() << std::endl;
                         message.clear();
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
                         if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
@@ -90,7 +90,6 @@ void    checkJoinParam(Client &client, Server &server)
                 else
                 {
                     // channel already exist
-                    std::cout << "HEEEEEEER" << std::endl;
                     if (server.channel[channels[i]].getMaxNumUsers() > server.channel[channels[i]].getUsersNum())
                     {
                         if (server.channel[channels[i]].getOnlyInvited() == PRIVATE_CHANNEL)
@@ -132,8 +131,6 @@ void    checkJoinParam(Client &client, Server &server)
                         else
                         {
                             // if channel is public (anyone can join)
-                            std::cout << "[[" << server.channel[channels[i]].getChannelPassword() << "]]"<< std::endl;
-                            std::cout << "key : [[" << keys[i] << "]]"<< std::endl;
                             if (server.channel[channels[i]].getChannelPassword() != keys[i])
                             {
                                 message =  ":" + getHostName() + " 464 * :Password incorrect\r\n";

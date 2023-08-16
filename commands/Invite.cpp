@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 17:17:03 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:00:47 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Invite(Client &c, Server &s)
+void commands::Invite(Client &c, Server &s)
 {
     std::vector<std::string> cmd = c.getTokens();
     if (cmd.size() != 3)
