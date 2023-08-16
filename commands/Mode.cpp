@@ -6,21 +6,24 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 17:16:05 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:55:39 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
+#include <string>
+
 std::string parseMode(const std::string &mode)
 {
     std::string parsedMode;
 
-    for (char c : mode)
+    for (std::string::const_iterator it = mode.begin(); it != mode.end(); ++it)
     {
+        char c = *it;
         if (c == '+' || c == '-')
         {
-            if (parsedMode.empty() || parsedMode.back() != c)
+            if (parsedMode.empty() || parsedMode[parsedMode.size() - 1] != c)
             {
                 parsedMode += c;
             }
@@ -33,6 +36,7 @@ std::string parseMode(const std::string &mode)
 
     return parsedMode;
 }
+
 void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user)
 {
     if (mode.empty() || mode.size() < 2)
