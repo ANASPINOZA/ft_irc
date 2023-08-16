@@ -50,8 +50,22 @@ int checkUserCmd(std::string Args)
 }
 
 
+void trimCRLF(std::vector<std::string>& lines) {
+    for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
+        std::string& line = *it;
+        size_t pos = line.find_last_not_of("\r\n");
+        
+        if (pos != std::string::npos) {
+            line.erase(pos + 1);
+        }
+    }
+}
+
+
 bool    Server::Authentication(int idx)
 {
+    // for (size_t i = 0; i < tokens.size();i++)
+    //     std::cout << tokens[i] << std::endl;
     std::string cmd[3] = {"PASS", "NICK", "USER"};
     for (size_t j = 0; j < tokens.size(); j = j + 2)
     {
@@ -64,7 +78,7 @@ bool    Server::Authentication(int idx)
         switch (i)
         {
         case 0:
-            tokens[i + 1].erase(tokens[i + 1].size() - 1);
+            // tokens[i + 1].erase(tokens[i + 1].size() - 1);
             if (!tokens[i + 1].compare(this->PASS))
                 this->pass = TRUE;
             break;
@@ -89,12 +103,17 @@ bool    Server::Authentication(int idx)
             }
         }
     }
+    std::cout << user << nick << pass << std::endl;
     if (pass && nick && user)
     {
         char host[256];
         gethostname(host, sizeof(host));
-        std::string mssg = std::string(":") + host + " 001 " + client.at(fds[idx].fd).getNickname()+" :Welcome to Our IRC Server!, " + client[fds[idx].fd].getNickname() +"\r\n"; \
-        if (send(fds[idx].fd, mssg.c_str(), mssg.size() + 1, 0) == -1)
+        std::string mssg; 
+        mssg = std::string(":") + host + " 001 " + client.at(fds[idx].fd).getNickname()+" :Welcome to Our IRC Server!, " + client[fds[idx].fd].getNickname() +"\r\n";
+        if (send(fds[idx].fd, mssg.c_str(), mssg.size(), 0) == -1)
+            std::perror("send error");
+        mssg = std::string(":") + host + " 002 " + client.at(fds[idx].fd).getNickname()+" :Your host is " + host + "\r\n";
+        if (send(fds[idx].fd, mssg.c_str(), mssg.size(), 0) == -1)
             std::perror("send error");
         this->Authen = TRUE;
         tokens.clear();
@@ -153,9 +172,11 @@ void Server::client_handling(Server &server, int idx)
     // std::cout << "WELCOME TO OUR IRC" << std::endl;
     client[fds[idx].fd].addVector(tokens);
     client[fds[idx].fd].setFd(fds[idx].fd);
-    // std::cout << "JOIN fd "  << fds[idx].fd << std::endl;
+
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
         checkJoinParam(client[fds[idx].fd], server);
+    client[fds[idx].fd].tokens.clear();
+    tokens.clear();
 }
 
 void Server::ft_server()
@@ -252,7 +273,7 @@ void Server::ft_server()
                     continue;
                 }
                 else {
-                    std::cout << buffer;
+                    // std::cout << buffer;
                     std::string input = buffer;
                     std::string delimiter = " ";
 
@@ -265,6 +286,7 @@ void Server::ft_server()
                         input.erase(0, pos + delimiter.length());
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
+                    trimCRLF(tokens);
                     if (!this->Authen && tokens.size() == 6)
                         Authentication(i);
                 }
