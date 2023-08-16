@@ -6,13 +6,13 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 21:12:00 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:14:39 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Invite(Client &c, Server &s)
+void commands::Invite(Client &c, Server &s)
 {
     std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
     if (cmd.size() != 2)

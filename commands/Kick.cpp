@@ -6,14 +6,14 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 20:51:40 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:15:09 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
 
-void kick(Client &kicker, Server &server)
+void commands::Kick(Client &kicker, Server &server)
 {
     std::vector<std::string> cmd = splitCommand(kicker.getTokens()[1]);
     if (cmd.size() < 2)

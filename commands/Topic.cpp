@@ -6,13 +6,13 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 20:58:25 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:15:00 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Topic(Client &c, Server &s)
+void commands::Topic(Client &c, Server &s)
 {
     std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
     if (cmd.size() < 1 || cmd.size() > 2)
