@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 17:15:34 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:01:30 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Topic(Client &c, Server &s)
+void commands::Topic(Client &c, Server &s)
 {
     std::vector<std::string> cmd = c.getTokens();
     if (cmd.size() < 2)

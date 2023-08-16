@@ -8,11 +8,11 @@ void sendMessage(const std::string &message, const int fd)
     }
 }
 
-void sendMessageToChannel(const Channel &channel, Client &sender, const std::string &message)
-{
-    for (auto &client : channel.getChannelClients())
-    {
-        sendMessage(message, client.second.getFd());
-    }
-    sendMessage(message, sender.getFd());
-}
+// void sendMessageToChannel(const Channel &channel, Client &sender, const std::string &message)
+// {
+//     for (auto &client : channel.getChannelClients())
+//     {
+//         sendMessage(message, client.second.getFd());
+//     }
+//     sendMessage(message, sender.getFd());
+// }

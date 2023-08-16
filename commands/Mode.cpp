@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 17:55:39 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:01:19 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
     }
 }
 
-void Mode(Client &c, Server &s)
+void commands::Mode(Client &c, Server &s)
 {
     std::vector<std::string> cmd = c.getTokens();
     if (cmd.size() != 4)
