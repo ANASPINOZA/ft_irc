@@ -22,7 +22,9 @@
 #include <unistd.h>
 #include "server.hpp"
 
+
 class Server;
+class commands;
 
 #define IS_OP 4
 #define IS_NOT_OP 5
@@ -81,6 +83,7 @@ public:
     void setFd(int Fd);
     bool getPass();
     // User            getUser();
+
 };
 
 std::string getHostName();

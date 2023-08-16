@@ -1,5 +1,4 @@
 #include "server.hpp"
-#include <string>
 
 Server::Server()
 {
@@ -170,11 +169,14 @@ void Server::parseUserInfos(std::string userInfos, int client_fd)
 void Server::client_handling(Server &server, int idx)
 {
     // std::cout << "WELCOME TO OUR IRC" << std::endl;
+    commands cmd;
     client[fds[idx].fd].addVector(tokens);
     client[fds[idx].fd].setFd(fds[idx].fd);
 
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
-        checkJoinParam(client[fds[idx].fd], server);
+        cmd.checkJoinParam(client[fds[idx].fd], server);
+    if (!tokens.empty() && !tokens[0].compare("KICK"))
+        cmd.Kick(client[fds[idx].fd], server);
     client[fds[idx].fd].tokens.clear();
     tokens.clear();
 }

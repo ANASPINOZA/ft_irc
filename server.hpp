@@ -19,13 +19,15 @@
 #include <sys/poll.h>
 #include <sstream>
 #include "Channel.hpp"
-#include "ChannelCommands.hpp"
+#include "./commands/Commands.hpp"
+
 
 #define TRUE true
 #define FALSE false
 
 class Client;
 class Channel;
+class commands;
 
 class Server {
     public:
