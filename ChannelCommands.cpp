@@ -240,7 +240,18 @@ void    checkPrivmsgParam(Client &client ,Server &server)
                 channel = server.channel;
                 if (channel.find(users[i]) != channel.end())
                 {
-
+                    if (channel[users[i]].channelClients.find(client.getNickname()) != channel[users[i]].channelClients.end())
+                    {
+                        message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG ";
+                        for(size_t k = 0; k < cmd.size(); k++)
+                            message += " " + cmd[k];
+                        message += "\r\n";
+                        server.channel[users[i]].sendMsgToChannel(message, client.getFd());
+                    }
+                    else
+                    {
+                        
+                    }
                 }
                 else
                 {
@@ -253,6 +264,9 @@ void    checkPrivmsgParam(Client &client ,Server &server)
     else
     {
         // error ... send a reply to the client and following the limechat syntax
+        message = ":" + getHostName() + " 461 " + client.getNickname() + " :PRIVMSG command requires 2 arguments\r\n";
+        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+			std::perror("send message error");
     }
 }
 
