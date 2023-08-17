@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 15:05:12 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/17 15:51:58 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ void Channel::sendMsgToChannel(std::string message, int fd)
 	{
 		if (fd != it->second.getFd())
 		{
-			if (send(it->second.getFd(), message.c_str(), message.length(), 0))
+			if (send(it->second.getFd(), message.c_str(), message.length(), 0) == -1)
 				std::perror("send message error");
 		}
 	}

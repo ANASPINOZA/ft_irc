@@ -1,8 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <map>
-#include <sstream>
+#include "Commands.hpp"
 
 std::vector<std::string> splitCommand(const std::string &cmd)
 {

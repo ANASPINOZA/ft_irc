@@ -131,6 +131,16 @@ bool    Server::isNickThere(std::string nickName)
     return (false);
 }
 
+bool    Server::isNickInChannel(Server &server, std::string nickName, std::string channelName)
+{
+    std::map<std::string, Client> client = server.channel[channelName].channelClients;
+    std::map<std::string, Client>::iterator it;
+    for (it = client.begin(); it != client.end(); it++)
+        if (it->second.getNickname() == nickName)
+            return (true);
+    return (false);
+}
+
 bool Server::isChannelIsThere(std::string channelName)
 {
     std::map<std::string, Channel>::iterator it;
