@@ -249,7 +249,7 @@ void    checkPrivmsgParam(Client &client ,Server &server)
                     }
                     else
                     {
-                        
+                        message = ":" + getHostName
                     }
                 }
                 else
