@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 15:44:40 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/17 19:32:09 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ public:
 	//----------------------------------------------------------------- Methods
 	bool addClientToChannel(Client user);
 	Client getClientInChannel(std::string nickname);
-	bool removeClientFromChannel(Client user);
+	bool removeClientFromChannel(Server &server, Client user, std::string channelName);
 	bool isOperator(std::string nickname);
 	void removeOperator(std::string nickname);
 	void sendMsgToChannel(std::string message, int fd);

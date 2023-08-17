@@ -131,6 +131,19 @@ bool    Server::isNickThere(std::string nickName)
     return (false);
 }
 
+
+Client  Server::getClientFromChannel(Server &server, std::string nickName, std::string channelName)
+{
+    std::map<std::string, Client> client = server.channel[channelName].channelClients;
+    std::map<std::string, Client>::iterator it;
+    for (it = client.begin(); it != client.end(); it++)
+    {
+        if (it->first == nickName)
+            return it->second;
+    }
+    return Client();
+}
+
 bool    Server::isNickInChannel(Server &server, std::string nickName, std::string channelName)
 {
     std::map<std::string, Client> client = server.channel[channelName].channelClients;
@@ -334,7 +347,10 @@ Channel Server::getChannelByName(std::string channelName)
     for (it = channel.begin(); it != channel.end(); it++)
     {
         if (!it->first.compare(channelName))
+        {
+            std::cout << "channel Name: " << it->first << std::endl;
             return it->second;
+        }
     }
     return Channel();
 }

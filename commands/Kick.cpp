@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/17 16:14:31 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/17 19:32:26 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void commands::Kick(Client &kicker, Server &server)
     }
 
     Channel channel = server.getChannelByName(channelName);
-    Client targetClient = server.getClient(targetNickname);
+    Client targetClient = server.getClientFromChannel(server, targetNickname, channelName);
+    std::cout << "_>>>>>>>>>" << targetClient.getNickname() << std::endl;
 
     if (!server.isNickInChannel(server, targetNickname, channelName))
     {
@@ -53,6 +54,7 @@ void commands::Kick(Client &kicker, Server &server)
     Client userToKickInChannel = channel.getClientInChannel(targetNickname);
     if (userToKickInChannel.getNickname() != targetNickname)
     {
+        std::cout << "###################" << std::endl;
         std::string errorMsg = ERR_USERNOTINCHANNEL(kicker.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
         return;
@@ -60,12 +62,13 @@ void commands::Kick(Client &kicker, Server &server)
 
     if (!channel.isOperator(kicker.getNickname()))
     {
+        std::cout << "$$$$$$$$$$$$$$" << std::endl;
         std::string errorMsg = ERR_CHANOPRIVSNEEDED(kicker.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    if (channel.removeClientFromChannel(targetClient))
+    if (channel.removeClientFromChannel(server, targetClient, channelName))
     {
         std::cout << "TEST" << std::endl;
         channel.setUsersNum(channel.getUsersNum() - 1);

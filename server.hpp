@@ -43,6 +43,7 @@ class Server {
         bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
+        Client  getClientFromChannel(Server &server, std::string nickName, std::string channelName);
         Channel  getChannelByName(std::string channelName);
         std::map<std::string, Channel> getChannels();
         std::map<std::string, Channel> channel;
