@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/17 16:06:41 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:14:31 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,7 @@ void commands::Kick(Client &kicker, Server &server)
     Channel channel = server.getChannelByName(channelName);
     Client targetClient = server.getClient(targetNickname);
 
-    // if (!server.isNickInChannel(server, targetNickname, channelName))
-    // {
-    //     std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
-    //     sendMessage(errorMsg, kicker.getFd());
-    //     return;
-    // }
-
-    if (!server.isNickThere(targetNickname))
+    if (!server.isNickInChannel(server, targetNickname, channelName))
     {
         std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
