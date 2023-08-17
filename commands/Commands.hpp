@@ -7,10 +7,14 @@
 #include <map>
 #include "../server.hpp"
 #include "../client.hpp"
-#include "../channel.hpp"
 #include "../msgHandler.hpp"
+#include "parsing.cpp"
 
-// -------------------------------------- MSGS -------------------------------------- //
+class Client;
+class Server;
+
+
+// // -------------------------------------- MSGS -------------------------------------- //
 #define ERR_USERONCHANNEL(nick, channel) "443 " + nick + " " + channel + " :is already on channel"
 #define ERR_USERNOTINCHANNEL(nick, channel) "441 " + nick + " " + channel + " :They aren't on that channel"
 #define ERR_NOTONCHANNEL(nick, channel) "442 " + nick + " " + channel + " :You're not on that channel"
@@ -31,11 +35,13 @@
 
 class commands
 {
-public:
-    void Kick(std::vector<std::string> cmd, Client &c, Server &s);
-    void Topic(std::vector<std::string> cmd, Client &c, Server &s);
-    void Invite(std::vector<std::string> cmd, Client &c, Server &s);
-    void Mode(std::vector<std::string> cmd, Client &c, Server &s);
+    public:
+        void Kick(Client &c, Server &s);
+        void Topic(Client &c, Server &s);
+        void Invite(Client &c, Server &s);
+        void Mode(Client &c, Server &s);
+        void            checkJoinParam(Client &client ,Server &server);
+
 };
 
 #endif

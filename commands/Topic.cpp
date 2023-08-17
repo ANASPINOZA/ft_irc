@@ -3,29 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   Topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/14 02:33:53 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:15:00 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void Topic(std::vector<std::string> cmd, Client &c, Server &s)
+void commands::Topic(Client &c, Server &s)
 {
-    if (cmd.size() < 2)
+    std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
+    if (cmd.size() < 1 || cmd.size() > 2)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    std::string channelName = cmd[1];
+    std::string channelName = cmd[0];
     std::string topic;
 
-    if (cmd.size() > 2)
-        topic = cmd[2];
+    if (cmd.size() > 1)
+        topic = cmd[1];
 
     if (channelName[0] != '#')
     {
@@ -58,20 +59,12 @@ void Topic(std::vector<std::string> cmd, Client &c, Server &s)
     }
     else
     {
-        if (!channel.isOperator(c.getNickname()))
+        if (channel.getOnlyOperatorTopic() && !channel.isOperator(c.getNickname()))
         {
             std::string errorMsg = ERR_CHANOPRIVSNEEDED(c.getNickname(), channelName) + "\r\n";
             sendMessage(errorMsg, c.getFd());
             return;
         }
-
-        if (channel.getChannelTopic() == topic)
-        {
-            std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, topic) + "\r\n";
-            sendMessage(topicMsg, c.getFd());
-            return;
-        }
-
         channel.setChannelTopic(topic);
         std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, topic) + "\r\n";
         sendMessage(topicMsg, c.getFd());

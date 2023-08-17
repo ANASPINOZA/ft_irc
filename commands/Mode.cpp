@@ -3,36 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/14 17:41:44 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:14:49 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-std::string parseMode(const std::string &mode)
-{
-    std::string parsedMode;
-
-    for (char c : mode)
-    {
-        if (c == '+' || c == '-')
-        {
-            if (parsedMode.empty() || parsedMode.back() != c)
-            {
-                parsedMode += c;
-            }
-        }
-        else if (c == 't' || c == 'l' || c == 'k' || c == 'o' || c == 'i')
-        {
-            parsedMode += c;
-        }
-    }
-
-    return parsedMode;
-}
 void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user)
 {
     if (mode.empty() || mode.size() < 2)
@@ -147,18 +126,19 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
     }
 }
 
-void Mode(std::vector<std::string> &cmd, Client &c, Server &s)
+void commands::Mode(Client &c, Server &s)
 {
-    if (cmd.size() != 4)
+    std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
+    if (cmd.size() != 3)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    std::string channelName = cmd[1];
-    std::string mode = parseMode(cmd[2]);
-    std::string nickname = cmd[3];
+    std::string channelName = cmd[0];
+    std::string mode = parseModeOptions(cmd[1]);
+    std::string nickname = cmd[2];
 
     if (channelName[0] != '#')
     {

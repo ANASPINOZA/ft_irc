@@ -1,12 +1,12 @@
 NAME = server
 
-SRC = server.cpp main.cpp client.cpp Channel.cpp ChannelCommands.cpp
+SRC = server.cpp main.cpp client.cpp Channel.cpp ./Commands/Join.cpp  ./Commands/Kick.cpp ./Commands/Invite.cpp ./Commands/Mode.cpp ./Commands/Topic.cpp msgHandler.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 CPP = c++
 
-INC = server.hpp client.hpp Channel.hpp ChannelCommands.hpp
+INC = server.hpp client.hpp Channel.hpp  ./commands/Commands.hpp msgHandler.hpp
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
