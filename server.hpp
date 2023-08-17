@@ -39,6 +39,7 @@ class Server {
         bool    Authentication(int idx);
         void    client_handling(Server &server,int idx);
         bool    isNickThere(std::string nickName);
+        bool    isNickInChannel(Server &server, std::string nickName, std::string channelName);
         bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir

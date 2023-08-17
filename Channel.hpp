@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 15:05:57 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/17 15:44:40 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ private:
 	std::string channelName;
 	std::string channelOwner;
 	std::string channelTopic;
-	std::vector<std::string> channelOperators;
 	std::vector<std::string> invitedList;
 	std::string channelPassword;
 	int onlyInvited;
@@ -56,6 +55,7 @@ public:
 	~Channel();
 
 	std::map<std::string, Client> channelClients;
+	std::vector<std::string> channelOperators;
 	//----------------------------------------------------------------- Getters
 	std::string getChannelName() const;
 	std::string getChannelOwner() const;

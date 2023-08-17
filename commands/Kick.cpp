@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 21:15:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:06:41 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void commands::Kick(Client &kicker, Server &server)
     }
     std::string channelName = cmd[0];
     std::string targetNickname = cmd[1];
+    std::cout << targetNickname << std::endl;
     std::string comment = (cmd.size() > 2) ? cmd[2] : "";
 
     if (channelName[0] != '#')
@@ -41,6 +42,13 @@ void commands::Kick(Client &kicker, Server &server)
 
     Channel channel = server.getChannelByName(channelName);
     Client targetClient = server.getClient(targetNickname);
+
+    // if (!server.isNickInChannel(server, targetNickname, channelName))
+    // {
+    //     std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
+    //     sendMessage(errorMsg, kicker.getFd());
+    //     return;
+    // }
 
     if (!server.isNickThere(targetNickname))
     {
@@ -66,6 +74,7 @@ void commands::Kick(Client &kicker, Server &server)
 
     if (channel.removeClientFromChannel(targetClient))
     {
+        std::cout << "TEST" << std::endl;
         channel.setUsersNum(channel.getUsersNum() - 1);
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
         sendMessage(successMsg, kicker.getFd());
