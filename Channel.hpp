@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/15 15:57:41 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:05:54 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <vector>
 #include "client.hpp"
 #include "server.hpp"
+#include "./commands/Commands.hpp"
 
 #define NOT_SET 0
 #define PRIVATE_CHANNEL 1 // invitation only
@@ -28,6 +29,7 @@
 
 class Client;
 class Server;
+class commands;
 
 class Channel
 {
