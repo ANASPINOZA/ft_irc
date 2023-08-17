@@ -8,7 +8,7 @@
 #include "../server.hpp"
 #include "../client.hpp"
 #include "../msgHandler.hpp"
-#include "parsing.cpp"
+// #include "parsing.cpp"
 
 class Client;
 class Server;
@@ -43,5 +43,8 @@ class commands
         void            checkJoinParam(Client &client ,Server &server);
 
 };
+
+std::vector<std::string> splitCommand(const std::string &cmd);
+std::string parseModeOptions(const std::string &input);
 
 #endif
