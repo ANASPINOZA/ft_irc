@@ -215,35 +215,46 @@ void    checkJoinParam(Client &client, Server &server)
     }
 }
 
-// void    ChannelCommands::checkPrivmsgParam(Client &client ,Server &server)
-// {
-//     //check param validation
-//     std::vector<std::string> cmd;
-//     std::string message;
-//     int     i = 0;
+void    checkPrivmsgParam(Client &client ,Server &server)
+{
+    //check param validation
+    std::vector<std::string> users;
+    std::vector<std::string> cmd;
+    std::map<std::string, Channel> channel;
+    std::string message;
+    int     i = 0;
 
-//     cmd = splitVec(client.tokens, ' ');
+    cmd = splitVec(client.tokens, ' ');
 
-//     if (cmd.size() > 2)
-//     {
-//         if (cmd[i][0] != '#')
-//         {
-//           // error ...
-//         }
-//         else
-//         {
-//             std::vector<std::string> users = splitStrToVec(cmd[1], ',');
-//             for(size_t i = 0; i < users.size(); i++)
-//             {
-//                 server.
-//             }
-//         }
-//     }
-//     else
-//     {
-//         // error ... send a reply to the client and following the limechat syntax
-//     }
-// }
+    if (cmd.size() > 2)
+    {
+        users = splitStrToVec(cmd[1], ',');
+        for(size_t i = 0; i < users.size(); i++)
+        {
+            if (cmd[i][0] != '#')
+            {
+            // error ...
+            }
+            else
+            {
+                channel = server.channel;
+                if (channel.find(users[i]) != channel.end())
+                {
+
+                }
+                else
+                {
+                    
+                }
+            }
+
+        }
+    }
+    else
+    {
+        // error ... send a reply to the client and following the limechat syntax
+    }
+}
 
 // int    ChannelCommands::checkCmds(std::string cmd)
 // {
