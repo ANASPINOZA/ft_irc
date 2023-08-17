@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/15 15:58:39 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/17 14:08:37 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,11 @@ int Channel::getAlreadyHasClients() const
 int Channel::getOnlyOperatorMsg() const
 {
 	return onlyOperatorMsg;
+}
+
+bool Channel::getOnlyOperatorTopic() const
+{
+	return onlyOperatorTopic;
 }
 
 size_t Channel::getMaxNumUsers() const
@@ -260,41 +265,40 @@ void Channel::removeOperator(std::string nickname)
 	}
 }
 
-void	Channel::sendMsgToChannel(std::string message, int fd)
+void Channel::sendMsgToChannel(std::string message, int fd)
 {
 	for (std::map<std::string, Client>::iterator it = channelClients.begin(); it != channelClients.end(); it++)
 	{
 		if (fd != it->second.getFd())
 		{
-			if(send(it->second.getFd(), message.c_str(), message.length(), 0))
+			if (send(it->second.getFd(), message.c_str(), message.length(), 0))
 				std::perror("send message error");
 		}
-	}	
+	}
 }
 
-std::string     Channel::getChannelMembers(std::string channelName, Server &server)
+std::string Channel::getChannelMembers(std::string channelName, Server &server)
 {
-    std::string members = ":",  operators = "";
+	std::string members = ":", operators = "";
 	std::map<std::string, Client> client = server.getChannels()[channelName].getChannelClients();
-    std::map<std::string, Client>::iterator it = client.begin();
-    for (;it != client.end(); it++)
-    {
-        if (it->second.getOp() != IS_OP)
-        {
+	std::map<std::string, Client>::iterator it = client.begin();
+	for (; it != client.end(); it++)
+	{
+		if (it->second.getOp() != IS_OP)
+		{
 			members += it->second.getNickname() + " ";
 		}
 		else
 		{
 			operators += it->second.getNickname() + " ";
-		}    
-    }
+		}
+	}
 	if (!members.empty())
 		members += "@" + operators;
-    return (members);
+	return (members);
 }
 
-
-bool	Channel::isClientisInvited(std::string nickname, Server& server)
+bool Channel::isClientisInvited(std::string nickname, Server &server)
 {
 	std::vector<std::string> invitedUsers = server.getChannels()[channelName].getInvitedList();
 	std::vector<std::string>::iterator it = invitedUsers.begin();
