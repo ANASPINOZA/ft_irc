@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 18:39:25 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:50:15 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,13 @@ void commands::Invite(Client &c, Server &s)
         return;
     }
 
-    channel.setUsersNum(channel.getUsersNum() + 1);
-    channel.addClientToChannel(invitedClient);
+    if (!channel.addClientToChannel(invitedClient))
+    {
+        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        std::cout << "ERROR failed to add user" << std::endl;
+        sendMessage(errorMsg, c.getFd());
+        return;
+    }
     std::string successMsg = RPL_INVITING(c.getNickname(), nickname, channelName) + "\r\n";
     sendMessage(successMsg, c.getFd());
 }
