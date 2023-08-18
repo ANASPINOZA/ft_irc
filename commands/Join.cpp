@@ -25,8 +25,8 @@ void    commands::checkJoinParam(Client &client, Server &server)
     
     // cmd = client;
     // std::cout << "HERE" << std::endl;
-    std::cout << "CLIENT NICK NAME : " <<client.getNickname() <<std::endl;
-    std::cout << "client address : " << &client <<std::endl;
+    // std::cout << "CLIENT NICK NAME : " <<client.getNickname() <<std::endl;
+    // std::cout << "client address : " << &client <<std::endl;
     cmd = client.getTokens();
     cmd = splitVec(cmd, ' ');
     if (cmd.size() > 1)
@@ -50,7 +50,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
                 int isChannelThere = server.isChannelIsThere(channels[i]);
                 if (!isChannelThere)
                 {
-                    std::cout << "channel is not exist " << std::endl;
+                    // std::cout << "channel is not exist " << std::endl;
                     if (channels[i][0] == '#' && channels[i][1] != '\0')
                     {
                         Channel newChannel(channels[i], client);
@@ -58,12 +58,12 @@ void    commands::checkJoinParam(Client &client, Server &server)
                         newChannel.channelClients[client.getNickname()].setOP(IS_OP);
                         // server.getChannels().insert(std::make_pair(channels[i], newChannel));
                         server.channel.insert(std::make_pair(channels[i], newChannel));
-                        server.channel[channels[i]].getChannelOperators().push_back(client.getNickname());
+                        server.channel[channels[i]].channelOperators.push_back(client.getNickname());
                         userNum = server.channel[channels[i]].getUsersNum();
                         server.channel[channels[i]].setUsersNum(userNum + 1);
                         server.channel[channels[i]].setChannelPassword(keys[i]);
                         
-                        std::cout << "------------> " << client.getNickname() << std::endl;
+                        // std::cout << "------------> " << client.getNickname() << std::endl;
                         message.clear();
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
                         if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
@@ -95,8 +95,8 @@ void    commands::checkJoinParam(Client &client, Server &server)
                 else
                 {
                     // channel already exist
-                    std::cout << "channel is exist " << std::endl;
-                    std::cout << "HEEEEEEER" << std::endl;
+                    // std::cout << "channel is exist " << std::endl;
+                    // std::cout << "HEEEEEEER" << std::endl;
                     if (server.channel[channels[i]].getMaxNumUsers() > server.channel[channels[i]].getUsersNum())
                     {
                         if (server.channel[channels[i]].getOnlyInvited() == PRIVATE_CHANNEL)
@@ -149,7 +149,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
                             else
                             {
                                 // std::map<std::string, Client>::iterator it = server.channel[channels[i]].getChannelClients().find(client.getNickname());
-                                std::cout << "client : " << client.getNickname() <<std::endl;
+                                // std::cout << "client : " << client.getNickname() <<std::endl;
                                 // std::map<std::string, Client> clients = server.channel[channels[i]].getChannelClients();
                                 std::map<std::string, Client> clients = server.channel[channels[i]].channelClients;
                                 std::map<std::string, Client>::iterator it = clients.begin();
@@ -162,14 +162,14 @@ void    commands::checkJoinParam(Client &client, Server &server)
                                 // std::cout << "found client already exist : " << *(clients.find(client.getNickname())) <<std::endl;
                                 if (clients.find(client.getNickname()) != clients.end())
                                 {
-                                    std::cout << "if he find that the new client is already exist " << std::endl;
+                                    // std::cout << "if he find that the new client is already exist " << std::endl;
                                     message = ":" + getHostName() + " 400 " + client.getNickname() + " :this client is already exist in this channel !\r\n";
                                     if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
                                         std::perror("send message error");
                                 }
                                 else
                                 {
-                                    std::cout << "inserting new client to the existed channel" << std::endl;
+                                    // std::cout << "inserting new client to the existed channel" << std::endl;
                                     // server.channel[channels[i]].getChannelClients().insert(std::make_pair(client.getNickname(), client));
                                     server.channel[channels[i]].channelClients.insert(std::make_pair(client.getNickname(), client));
                                     userNum = server.channel[channels[i]].getUsersNum();
@@ -223,7 +223,7 @@ void    checkPrivmsgParam(Client &client ,Server &server)
     std::string message;
     // int     i = 0;
 
-    cmd = splitVec(client.tokens, ' ');
+//     cmd = splitVec(client.tokens, ' ');
 
     if (cmd.size() > 2)
     {

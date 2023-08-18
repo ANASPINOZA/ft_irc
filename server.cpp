@@ -48,20 +48,21 @@ int checkUserCmd(std::string Args)
     return 1;
 }
 
-
-void trimCRLF(std::vector<std::string>& lines) {
-    for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
-        std::string& line = *it;
+void trimCRLF(std::vector<std::string> &lines)
+{
+    for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it)
+    {
+        std::string &line = *it;
         size_t pos = line.find_last_not_of("\r\n");
-        
-        if (pos != std::string::npos) {
+
+        if (pos != std::string::npos)
+        {
             line.erase(pos + 1);
         }
     }
 }
 
-
-bool    Server::Authentication(int idx)
+bool Server::Authentication(int idx)
 {
     // for (size_t i = 0; i < tokens.size();i++)
     //     std::cout << tokens[i] << std::endl;
@@ -97,7 +98,7 @@ bool    Server::Authentication(int idx)
             {
                 std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
                 tokens.clear();
-                send(fds[idx].fd, failure.c_str(),failure.size() + 1, 0);
+                send(fds[idx].fd, failure.c_str(), failure.size() + 1, 0);
                 return FALSE;
             }
         }
@@ -107,11 +108,11 @@ bool    Server::Authentication(int idx)
     {
         char host[256];
         gethostname(host, sizeof(host));
-        std::string mssg; 
-        mssg = std::string(":") + host + " 001 " + client.at(fds[idx].fd).getNickname()+" :Welcome to Our IRC Server!, " + client[fds[idx].fd].getNickname() +"\r\n";
+        std::string mssg;
+        mssg = std::string(":") + host + " 001 " + client.at(fds[idx].fd).getNickname() + " :Welcome to Our IRC Server!, " + client[fds[idx].fd].getNickname() + "\r\n";
         if (send(fds[idx].fd, mssg.c_str(), mssg.size(), 0) == -1)
             std::perror("send error");
-        mssg = std::string(":") + host + " 002 " + client.at(fds[idx].fd).getNickname()+" :Your host is " + host + "\r\n";
+        mssg = std::string(":") + host + " 002 " + client.at(fds[idx].fd).getNickname() + " :Your host is " + host + "\r\n";
         if (send(fds[idx].fd, mssg.c_str(), mssg.size(), 0) == -1)
             std::perror("send error");
         this->Authen = TRUE;
@@ -134,6 +135,30 @@ bool    Server::isNickThere(std::string nickName)
 {
     std::map<int, Client>::iterator it;
     for (it = client.begin(); it != client.end(); it++)
+    {
+        if (it->second.getNickname() == nickName)
+            return (true);
+    }
+    return (false);
+}
+
+Client Server::getClientFromChannel(Server &server, std::string nickName, std::string channelName)
+{
+    std::map<std::string, Client> client = server.channel[channelName].channelClients;
+    std::map<std::string, Client>::iterator it;
+    for (it = client.begin(); it != client.end(); it++)
+    {
+        if (it->first == nickName)
+            return it->second;
+    }
+    return Client();
+}
+
+bool Server::isNickInChannel(Server &server, std::string nickName, std::string channelName)
+{
+    std::map<std::string, Client> client = server.channel[channelName].channelClients;
+    std::map<std::string, Client>::iterator it;
+    for (it = client.begin(); it != client.end(); it++)
         if (it->second.getNickname() == nickName)
             return (true);
     return (false);
@@ -147,7 +172,7 @@ bool Server::isChannelIsThere(std::string channelName)
             return (true);
     return (false);
 }
-//---------------------------------- Spinosa 
+//---------------------------------- Spinosa
 
 void Server::parseUserInfos(std::string userInfos, int client_fd)
 {
@@ -167,7 +192,7 @@ void Server::parseUserInfos(std::string userInfos, int client_fd)
             client[client_fd].setUnused(userInfos.substr(begin, lenght));
         else if (i == 3)
             client[client_fd].setRealName(userInfos.substr(begin, lenght));
-        begin = pos + 1;       
+        begin = pos + 1;
         pos = userInfos.find(" ", 0);
         i++;
     }
@@ -251,7 +276,8 @@ void Server::ft_server()
                 perror("Error accepting connection");
                 continue;
             }
-            if (client_fd >= 1024) {
+            if (client_fd >= 1024)
+            {
                 std::cout << "Maximum number of clients reached. Rejecting new connection." << std::endl;
                 close(clientSocket);
             }
@@ -282,7 +308,8 @@ void Server::ft_server()
                     client.erase(fds[i].fd);
                     continue;
                 }
-                else {
+                else
+                {
                     // std::cout << buffer;
                     std::string input = buffer;
                     std::string delimiter = " ";
@@ -326,13 +353,17 @@ Client Server::getClient(std::string name)
     return Client();
 }
 
-Channel Server::getChannelByName(std::string channelName)
+Channel &Server::getChannelByName(std::string channelName)
 {
     std::map<std::string, Channel>::iterator it;
     for (it = channel.begin(); it != channel.end(); it++)
     {
         if (!it->first.compare(channelName))
+        {
+            std::cout << "channel Name: " << it->first << std::endl;
             return it->second;
+        }
     }
-    return Channel();
+    --it;
+    return it->second;
 }

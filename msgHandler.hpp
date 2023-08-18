@@ -11,5 +11,5 @@
 
 
 void sendMessage(const std::string &message, int fd);
-void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message);
+// void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message);
 #endif

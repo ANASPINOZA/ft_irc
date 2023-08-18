@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aadnane <aadnane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 15:05:12 by aadnane          ###   ########.fr       */
+/*   Updated: 2023/08/17 19:34:55 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,16 +228,26 @@ Client Channel::getClientInChannel(std::string nickname)
 	return channelClients[nickname];
 }
 
-bool Channel::removeClientFromChannel(Client user)
+bool Channel::removeClientFromChannel(Server &server, Client user, std::string channelName)
 {
 	std::string nickname = user.getNickname();
 
-	if (channelClients.find(nickname) == channelClients.end())
+	std::cout << "niiiiick1 " << nickname << std::endl;
+	std::map<std::string, Client> client = server.channel[channelName].channelClients;
+	std::map<std::string , Client> client2 = client;
+	std::map<std::string, Client>::iterator it2;
+	for (it2 = client2.begin(); it2 != client2.end(); it2++)
+		std::cout << "| "<< it2->first << " |"<< std::endl;
+	if (client.find(nickname) == client.end())
 	{
 		return false;
 	}
 
-	channelClients.erase(nickname);
+	server.channel[channelName].channelClients.erase(nickname);
+	std::map<std::string , Client> client1 = client;
+	std::map<std::string, Client>::iterator it;
+	for (it = client1.begin(); it != client1.end(); it++)
+		std::cout << "| "<< it->first << " |"<< std::endl;
 	usersNum--;
 
 	return true;
@@ -271,7 +281,7 @@ void Channel::sendMsgToChannel(std::string message, int fd)
 	{
 		if (fd != it->second.getFd())
 		{
-			if (send(it->second.getFd(), message.c_str(), message.length(), 0))
+			if (send(it->second.getFd(), message.c_str(), message.length(), 0) == -1)
 				std::perror("send message error");
 		}
 	}

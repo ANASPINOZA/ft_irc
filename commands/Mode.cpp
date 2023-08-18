@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 21:14:49 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 17:39:06 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void commands::Mode(Client &c, Server &s)
         return;
     }
 
-    Channel channel = s.getChannelByName(channelName);
+    Channel &channel = s.getChannelByName(channelName);
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())
@@ -164,17 +164,17 @@ void commands::Mode(Client &c, Server &s)
         return;
     }
 
-    if (!s.isNickThere(nickname))
+    Client client = s.getClient(nickname);
+    if (client.getNickname() != nickname)
     {
         std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }
 
-    Client client = s.getClient(nickname);
-    if (client.getNickname() != nickname)
+    if (!s.isNickInChannel(s, nickname, channelName))
     {
-        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        std::string errorMsg = ERR_NOSUCHNICK(nickname, channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }

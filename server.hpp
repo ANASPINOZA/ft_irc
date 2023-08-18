@@ -21,7 +21,6 @@
 #include "Channel.hpp"
 #include "./commands/Commands.hpp"
 
-
 #define TRUE true
 #define FALSE false
 
@@ -39,11 +38,14 @@ class Server {
         bool    Authentication(int idx);
         void    client_handling(Server &server,int idx);
         bool    isNickThere(std::string nickName);
+        bool    isNickInChannel(Server &server, std::string nickName, std::string channelName);
         int     getFdOfExistedClient(std::string nickName, Server &server);
         bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
-        Channel  getChannelByName(std::string channelName);
+        Client getClientFromChannel(Server &server, std::string nickName, std::string channelName);
+        // Channel  getChannelByName(std::string channelName);
+        Channel &getChannelByName(std::string channelName);
         std::map<std::string, Channel> getChannels();
         std::map<std::string, Channel> channel;
         std::map<int, Client > client;

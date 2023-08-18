@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/16 21:15:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:17:09 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void commands::Kick(Client &kicker, Server &server)
     }
     std::string channelName = cmd[0];
     std::string targetNickname = cmd[1];
+    std::cout << targetNickname << std::endl;
     std::string comment = (cmd.size() > 2) ? cmd[2] : "";
 
     if (channelName[0] != '#')
@@ -39,19 +40,23 @@ void commands::Kick(Client &kicker, Server &server)
         return;
     }
 
-    Channel channel = server.getChannelByName(channelName);
-    Client targetClient = server.getClient(targetNickname);
+    Channel &channel = server.getChannelByName(channelName);
+    // Client targetClient = server.getClientFromChannel(server, targetNickname, channelName);
+    // std::cout << "_>>>>>>>>>" << targetClient.getNickname() << std::endl;
 
-    if (!server.isNickThere(targetNickname))
-    {
-        std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
-        sendMessage(errorMsg, kicker.getFd());
-        return;
-    }
+    // if (!server.isNickInChannel(server, targetNickname, channelName))
+    // {
+    //     std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
+    //     sendMessage(errorMsg, kicker.getFd());
+    //     return;
+    // }
+
+    // check if targetClient is in channel
 
     Client userToKickInChannel = channel.getClientInChannel(targetNickname);
     if (userToKickInChannel.getNickname() != targetNickname)
     {
+        std::cout << "###################" << std::endl;
         std::string errorMsg = ERR_USERNOTINCHANNEL(kicker.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
         return;
@@ -59,13 +64,15 @@ void commands::Kick(Client &kicker, Server &server)
 
     if (!channel.isOperator(kicker.getNickname()))
     {
+        std::cout << "$$$$$$$$$$$$$$" << std::endl;
         std::string errorMsg = ERR_CHANOPRIVSNEEDED(kicker.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
         return;
     }
 
-    if (channel.removeClientFromChannel(targetClient))
+    if (channel.removeClientFromChannel(server, userToKickInChannel, channelName))
     {
+        std::cout << "TEST" << std::endl;
         channel.setUsersNum(channel.getUsersNum() - 1);
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
         sendMessage(successMsg, kicker.getFd());
