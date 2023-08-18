@@ -194,9 +194,10 @@ void Server::client_handling(Server &server, int idx)
 {
     // std::cout << "WELCOME TO OUR IRC" << std::endl;
     commands cmd;
-    client[fds[idx].fd].addVector(tokens);
-    client[fds[idx].fd].setFd(fds[idx].fd);
-
+    server.client[fds[idx].fd].addVector(tokens);
+    server.client[fds[idx].fd].setFd(fds[idx].fd);
+    if (client[fds[idx].fd].tokens.empty())
+        std::cout << client[fds[idx].fd].tokens[0]  << " XXXXXX "<< std::endl;
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
         cmd.checkJoinParam(client[fds[idx].fd], server);
     if (!tokens.empty() && !tokens[0].compare("KICK"))
@@ -298,7 +299,7 @@ void Server::ft_server()
                     close(fds[i].fd);
                     fds[i] = fds[client_fd];
                     --client_fd;
-                    client.erase(fds[i].fd);
+                    // client.erase(fds[i].fd);
                     continue;
                 }
                 else
@@ -335,13 +336,16 @@ void Server::ft_server()
 
 // -------------------------------- Mountassir
 
-Client Server::getClient(std::string name)
+Client Server::getClient(Server &s,std::string name)
 {
+    std::cout << "getClient Called " << std::endl;
     std::map<int, Client>::iterator it;
-    for (it = client.begin(); it != client.end(); it++)
+    (void)name;
+    for (it = s.client.begin(); it != s.client.end(); it++)
     {
-        if (it->second.getUserName() == name)
-            return it->second;
+        std::cout << "MAP+++"<<it->second.getNickname() << std::endl;
+        // if (it->second.getNickname() == name)
+        //     return it->second;
     }
     return Client();
 }
