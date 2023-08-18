@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/17 16:17:41 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 17:39:06 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void commands::Mode(Client &c, Server &s)
         return;
     }
 
-    Channel channel = s.getChannelByName(channelName);
+    Channel &channel = s.getChannelByName(channelName);
 
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())

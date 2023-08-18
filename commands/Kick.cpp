@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/17 19:32:26 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/18 17:39:02 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void commands::Kick(Client &kicker, Server &server)
         return;
     }
 
-    Channel channel = server.getChannelByName(channelName);
+    Channel &channel = server.getChannelByName(channelName);
     Client targetClient = server.getClientFromChannel(server, targetNickname, channelName);
     std::cout << "_>>>>>>>>>" << targetClient.getNickname() << std::endl;
 
