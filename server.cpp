@@ -201,6 +201,8 @@ void Server::client_handling(Server &server, int idx)
         cmd.checkJoinParam(client[fds[idx].fd], server);
     if (!tokens.empty() && !tokens[0].compare("KICK"))
         cmd.Kick(client[fds[idx].fd], server);
+    if (!tokens.empty() && !tokens[0].compare("INVITE"))
+        cmd.Invite(client[fds[idx].fd], server);
     client[fds[idx].fd].tokens.clear();
     tokens.clear();
 }
