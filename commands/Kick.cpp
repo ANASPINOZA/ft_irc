@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 17:39:02 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:17:09 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,17 @@ void commands::Kick(Client &kicker, Server &server)
     }
 
     Channel &channel = server.getChannelByName(channelName);
-    Client targetClient = server.getClientFromChannel(server, targetNickname, channelName);
-    std::cout << "_>>>>>>>>>" << targetClient.getNickname() << std::endl;
+    // Client targetClient = server.getClientFromChannel(server, targetNickname, channelName);
+    // std::cout << "_>>>>>>>>>" << targetClient.getNickname() << std::endl;
 
-    if (!server.isNickInChannel(server, targetNickname, channelName))
-    {
-        std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
-        sendMessage(errorMsg, kicker.getFd());
-        return;
-    }
+    // if (!server.isNickInChannel(server, targetNickname, channelName))
+    // {
+    //     std::string errorMsg = ERR_NOSUCHNICK(kicker.getNickname(), channelName) + "\r\n";
+    //     sendMessage(errorMsg, kicker.getFd());
+    //     return;
+    // }
+
+    // check if targetClient is in channel
 
     Client userToKickInChannel = channel.getClientInChannel(targetNickname);
     if (userToKickInChannel.getNickname() != targetNickname)
@@ -68,7 +70,7 @@ void commands::Kick(Client &kicker, Server &server)
         return;
     }
 
-    if (channel.removeClientFromChannel(server, targetClient, channelName))
+    if (channel.removeClientFromChannel(server, userToKickInChannel, channelName))
     {
         std::cout << "TEST" << std::endl;
         channel.setUsersNum(channel.getUsersNum() - 1);
