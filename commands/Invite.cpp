@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 18:16:33 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:39:25 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void commands::Invite(Client &c, Server &s)
         return;
     }
 
-    std::string channelName = cmd[0];
-    std::string nickname = cmd[1];
+    std::string channelName = cmd[1];
+    std::string nickname = cmd[0];
 
     if (channelName[0] != '#')
     {
@@ -42,12 +42,6 @@ void commands::Invite(Client &c, Server &s)
     Channel &channel = s.getChannelByName(channelName); // reference for makeing changes directly to the server
 
     if (channel.getChannelName() != channelName)
-    {
-        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
-        return;
-    }
-    if (!s.isNickThere(nickname))
     {
         std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
         sendMessage(errorMsg, c.getFd());
