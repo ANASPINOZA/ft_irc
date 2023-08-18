@@ -221,7 +221,7 @@ void    checkPrivmsgParam(Client &client ,Server &server)
     std::vector<std::string> cmd;
     std::map<std::string, Channel> channel;
     std::string message;
-    int     i = 0;
+    // int     i = 0;
 
     cmd = splitVec(client.tokens, ' ');
 
