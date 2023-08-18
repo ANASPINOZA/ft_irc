@@ -39,12 +39,14 @@ class Server {
         bool    Authentication(int idx);
         void    client_handling(Server &server,int idx);
         bool    isNickThere(std::string nickName);
+        int     getFdOfExistedClient(std::string nickName, Server &server);
         bool    isChannelIsThere(std::string channelName);
         void    parseUserInfos(std::string userInfos, int client_fd);
         Client  getClient(std::string nickName); //Mountassir
         Channel  getChannelByName(std::string channelName);
         std::map<std::string, Channel> getChannels();
         std::map<std::string, Channel> channel;
+        std::map<int, Client > client;
         
     private:
         struct pollfd fds[1024];
@@ -53,7 +55,6 @@ class Server {
         std::vector<int>    tab;
         std::vector<int>    client_socket;
         std::vector<std::string> tokens;
-        std::map<int, Client > client;
         std::string PASS;
         int server_fd;
         int client_fd;

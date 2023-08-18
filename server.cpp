@@ -121,6 +121,14 @@ bool    Server::Authentication(int idx)
     return FALSE;
 }
 
+int     Server::getFdOfExistedClient(std::string nickName, Server &server)
+{
+    std::map<int, Client>::iterator it;
+    for (it = server.client.begin(); it != server.client.end(); it++)
+        if (it->second.getNickname() == nickName)
+            return (it->first);
+    return (-1);
+}
 
 bool    Server::isNickThere(std::string nickName)
 {
