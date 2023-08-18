@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 19:34:55 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:36:37 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,12 @@ bool Channel::addClientToChannel(Client user)
 
 Client Channel::getClientInChannel(std::string nickname)
 {
-	return channelClients[nickname];
+	std::map<std::string, Client>::iterator it = channelClients.find(nickname);
+	if (it != channelClients.end())
+	{
+		return it->second;
+	}
+	return Client();
 }
 
 bool Channel::removeClientFromChannel(Server &server, Client user, std::string channelName)
@@ -234,20 +239,20 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 
 	std::cout << "niiiiick1 " << nickname << std::endl;
 	std::map<std::string, Client> client = server.channel[channelName].channelClients;
-	std::map<std::string , Client> client2 = client;
+	std::map<std::string, Client> client2 = client;
 	std::map<std::string, Client>::iterator it2;
 	for (it2 = client2.begin(); it2 != client2.end(); it2++)
-		std::cout << "| "<< it2->first << " |"<< std::endl;
+		std::cout << "| " << it2->first << " |" << std::endl;
 	if (client.find(nickname) == client.end())
 	{
 		return false;
 	}
 
 	server.channel[channelName].channelClients.erase(nickname);
-	std::map<std::string , Client> client1 = client;
+	std::map<std::string, Client> client1 = client;
 	std::map<std::string, Client>::iterator it;
 	for (it = client1.begin(); it != client1.end(); it++)
-		std::cout << "| "<< it->first << " |"<< std::endl;
+		std::cout << "| " << it->first << " |" << std::endl;
 	usersNum--;
 
 	return true;

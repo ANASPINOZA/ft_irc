@@ -22,8 +22,8 @@ void commands::Invite(Client &c, Server &s)
         return;
     }
 
-    std::string channelName = cmd[0];
-    std::string nickname = cmd[1];
+    std::string channelName = cmd[1];
+    std::string nickname = cmd[0];
 
     if (channelName[0] != '#')
     {
@@ -47,12 +47,6 @@ void commands::Invite(Client &c, Server &s)
         sendMessage(errorMsg, c.getFd());
         return;
     }
-    // if (!s.isNickThere(nickname))
-    // {
-    //     std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
-    //     sendMessage(errorMsg, c.getFd());
-    //     return;
-    // }
 
     Client invitedClient = s.getClient(nickname);
 
