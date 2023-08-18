@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
 /*   Updated: 2023/08/18 18:50:15 by ahel-mou         ###   ########.fr       */
@@ -81,4 +81,8 @@ void commands::Invite(Client &c, Server &s)
     }
     std::string successMsg = RPL_INVITING(c.getNickname(), nickname, channelName) + "\r\n";
     sendMessage(successMsg, c.getFd());
+    std::map<std::string, Client> cc = channel.channelClients;
+    std::map<std::string, Client>::iterator it;
+    for (it = cc.begin(); it != cc.end(); it++)
+        std::cout << "| " << it->first << " |" << std::endl;
 }

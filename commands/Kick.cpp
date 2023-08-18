@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 18:17:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:37:09 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ void commands::Kick(Client &kicker, Server &server)
     // check if targetClient is in channel
 
     Client userToKickInChannel = channel.getClientInChannel(targetNickname);
+    std::map<std::string, Client> cc = channel.channelClients;
+    std::map<std::string, Client>::iterator it;
+    for (it = cc.begin(); it != cc.end(); it++)
+        std::cout << "*** " << it->first << " ***" << std::endl;
+    std::cout << "TO KICK--> " << userToKickInChannel.getNickname() << " Target -----> " << targetNickname << std::endl;
     if (userToKickInChannel.getNickname() != targetNickname)
     {
         std::cout << "###################" << std::endl;
