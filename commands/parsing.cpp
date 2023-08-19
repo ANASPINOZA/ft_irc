@@ -39,7 +39,6 @@ std::string parseModeOptions(const std::string &input)
         }
         else
         {
-            // If any other character is encountered, it's an error
             return "";
         }
     }

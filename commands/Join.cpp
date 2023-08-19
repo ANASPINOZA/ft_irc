@@ -1,10 +1,8 @@
 
 
-
 /*
 ** --------------------------------- OVERLOAD ---------------------------------
 */
-
 
 /*
 ** --------------------------------- METHODS ----------------------------------
@@ -12,18 +10,16 @@
 
 #include "Commands.hpp"
 
-void    commands::checkJoinParam(Client &client, Server &server)
+void commands::checkJoinParam(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
-    size_t  chanelsNum;
-    size_t  keysNum;
+    size_t chanelsNum;
+    size_t keysNum;
     std::string message;
-    size_t  userNum;
+    size_t userNum;
     std::vector<std::string> cmd;
-    int     i = 1;
-    
-
+    int i = 1;
 
     cmd = client.getTokens();
     cmd = splitVec(cmd, ' ');
@@ -50,7 +46,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
                 if (!isChannelThere)
                 {
                     std::cout << "channel is not exist " << std::endl;
-                     std::cout << "HEEEEEEEEERE 1" << std::endl;
+                    std::cout << "HEEEEEEEEERE 1" << std::endl;
                     if (channels[i][0] == '#' && channels[i][1] != '\0')
                     {
                         std::cout << "channel name : " << channels[i] << std::endl;
@@ -63,35 +59,34 @@ void    commands::checkJoinParam(Client &client, Server &server)
                         userNum = server.channel[channels[i]].getUsersNum();
                         server.channel[channels[i]].setUsersNum(userNum + 1);
                         server.channel[channels[i]].setChannelPassword(keys[i]);
-                        
+
                         std::cout << "------------> " << client.getFd() << std::endl;
                         message.clear();
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
                         // std::cout << "-------> "<< message << std::endl;
                         // message.clear();
                         message = std::string(":") + getHostName() + " MODE " + channels[i] + " " + "\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
                         // std::cout << "-------> "<< message << std::endl;
                         message = ":" + getHostName() + " 353 " + client.getNickname() + " = " + channels[i] + " :@" + client.getNickname() + "\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
                         // std::cout << "-------> "<< message << std::endl;
                         message = ":" + getHostName() + " 366 " + client.getNickname() + " " + channels[i] + " :End of /NAMES list.\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
                         // std::cout << "-------> "<< message << std::endl;
                     }
                     else
                     {
                         message = ":" + getHostName() + " 403 " + client.getNickname() + " :" + channels[i] + " No such channel\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
-                        return ;
+                        return;
                     }
-
                 }
                 else
                 {
@@ -113,7 +108,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
                             if (!isInvited)
                             {
                                 message = ":" + getHostName() + " 473 " + client.getNickname() + " :" + channels[i] + " Cannot join channel (+i)\r\n";
-                                if(send(client.getFd(), message.c_str(), message.length(), 0) == -1)
+                                if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                     std::perror("send message error");
                             }
                             else
@@ -123,7 +118,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
                                 if (server.channel[channels[i]].channelClients.find(client.getNickname()) != server.channel[channels[i]].channelClients.end())
                                 {
                                     message = ":" + getHostName() + " 400 " + client.getNickname() + " :this client is already exist in this channel !\r\n";
-                                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                         std::perror("send message error");
                                 }
                                 else
@@ -135,10 +130,10 @@ void    commands::checkJoinParam(Client &client, Server &server)
                                     message = ":" + client.getNickname() + client.getUserName() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
                                     server.channel[channels[i]].sendMsgToChannel(message, client.getFd());
                                     message = ":" + getHostName() + " 353 " + client.getNickname() + " @ " + channels[i] + " " + server.channel[channels[i]].getChannelMembers(channels[i], server) + "\r\n";
-                                    if(send(client.getFd(), message.c_str(), message.length(), 0) == -1)
+                                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                         std::perror("send message error");
                                     message = ":" + getHostName() + " 366 " + client.getNickname() + " " + channels[i] + ":End of /NAMES list.\r\n";
-                                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                         std::perror("send message error");
                                 }
                             }
@@ -152,8 +147,8 @@ void    commands::checkJoinParam(Client &client, Server &server)
                             if (keys.size() > i && server.channel[channels[i]].getChannelPassword() != keys[i])
                             {
                                 std::cout << "HEEEEEEEEERE 3" << std::endl;
-                                message =  ":" + getHostName() + " 464 * :Password incorrect\r\n";
-                                if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                                message = ":" + getHostName() + " 464 * :Password incorrect\r\n";
+                                if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                     std::perror("send message error");
                             }
                             else
@@ -170,18 +165,18 @@ void    commands::checkJoinParam(Client &client, Server &server)
                                 //     std::cout << "clients size " << clients.size() << std::endl;
                                 //     std::cout << "user : " << it->first << std::endl;
                                 // }
-                                // std::cout << it 
+                                // std::cout << it
                                 // std::cout << "found client already exist : " << *(clients.find(client.getNickname())) <<std::endl;
                                 if (clients.find(client.getNickname()) != clients.end())
                                 {
                                     // std::cout << "if he find that the new client is already exist " << std::endl;
                                     message = ":" + getHostName() + " 400 " + client.getNickname() + " :this client is already exist in this channel !\r\n";
-                                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                         std::perror("send message error");
                                 }
                                 else
                                 {
-                                    std::cout << "client wants to join : "<< client.getNickname() << std::endl;
+                                    std::cout << "client wants to join : " << client.getNickname() << std::endl;
                                     std::cout << "channel name that client wants to join : " << channels[i] << std::endl;
                                     // std::cout << "inserting new client to the existed channel" << std::endl;
                                     // server.channel[channels[i]].getChannelClients().insert(std::make_pair(client.getNickname(), client));
@@ -191,10 +186,10 @@ void    commands::checkJoinParam(Client &client, Server &server)
                                     message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
                                     server.channel[channels[i]].sendMsgToChannel(message, client.getFd());
                                     message = ":" + getHostName() + " 353 " + client.getNickname() + " @ " + channels[i] + " " + server.channel[channels[i]].getChannelMembers(channels[i], server) + "\r\n";
-                                    if(send(client.getFd(), message.c_str(), message.length(), 0) == -1)
+                                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                         std::perror("send message error");
                                     message = ":" + getHostName() + " 366 " + client.getNickname() + " " + channels[i] + ":End of /NAMES list.\r\n";
-                                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                                         std::perror("send message error");
                                 }
                                 std::cout << "HEEEEEEEEERE 5" << std::endl;
@@ -205,28 +200,26 @@ void    commands::checkJoinParam(Client &client, Server &server)
                     else
                     {
                         message = ":" + getHostName() + " 471 " + client.getNickname() + " " + channels[i] + " :Cannot join channel (+l)\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
-                        return ;
+                        return;
                     }
                 }
-
             }
-
         }
         else
         {
             message = ":" + getHostName() + " 400 " + client.getNickname() + "too much passwords for a channel\r\n";
-            if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+            if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                 std::perror("send message error");
         }
     }
     else
     {
         message = ":" + getHostName() + " 461 * " + " : " + "JOIN" + " Not enough parameters\r\n";
-        if (send(client.getFd(), message.c_str(), message.length(),0))
-			std::perror("send message error");
-        return ;
+        if (send(client.getFd(), message.c_str(), message.length(), 0))
+            std::perror("send message error");
+        return;
     }
 }
 
@@ -243,7 +236,7 @@ int Server::getFdOfExistedClient(std::string nickName, Server &server)
 
 void    commands::checkPrivmsgParam(Client &client ,Server &server)
 {
-    //check param validation
+    // check param validation
     std::vector<std::string> users;
     std::vector<std::string> cmd;
     std::map<std::string, Channel> channel;
@@ -254,25 +247,25 @@ void    commands::checkPrivmsgParam(Client &client ,Server &server)
     if (cmd.size() > 2)
     {
         users = splitStrToVec(cmd[1], ',');
-        for(size_t i = 0; i < users.size(); i++)
+        for (size_t i = 0; i < users.size(); i++)
         {
             if (cmd[i][0] != '#')
             {
-                std::map<int, Client>clients = server.client;
+                std::map<int, Client> clients = server.client;
                 int clienFd = server.getFdOfExistedClient(users[i], server);
                 if (clients.find(clienFd) != clients.end())
                 {
                     message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG ";
-                    for(size_t j = 1; j < cmd.size(); j++)
+                    for (size_t j = 1; j < cmd.size(); j++)
                         message += " " + cmd[j];
                     message += "\r\n";
-                    if (send(clienFd, message.c_str(), message.length(),0) == -1)
+                    if (send(clienFd, message.c_str(), message.length(), 0) == -1)
                         std::perror("send message error");
                 }
                 else
                 {
                     message = ":" + getHostName() + " 401 " + client.getRealName() + " " + cmd[1] + " :user doesn't exist\r\n";
-                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                         std::perror("send message error");
                 }
             }
@@ -284,34 +277,33 @@ void    commands::checkPrivmsgParam(Client &client ,Server &server)
                     if (channel[users[i]].channelClients.find(client.getNickname()) != channel[users[i]].channelClients.end())
                     {
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG ";
-                        for(size_t k = 1; k < cmd.size(); k++)
+                        for (size_t k = 1; k < cmd.size(); k++)
                             message += " " + cmd[k];
                         message += "\r\n";
                         server.channel[users[i]].sendMsgToChannel(message, client.getFd());
                     }
                     else
                     {
-                        message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + cmd[1] + " :you are not in this channel\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                        message = ":" + getHostName() + " 401 " + client.getNickname() + " " + cmd[1] + " :you are not in this channel\r\n";
+                        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                             std::perror("send message error");
                     }
                 }
                 else
                 {
                     message = ":" + getHostName() + " 401 " + client.getNickname() + " " + cmd[1] + " :channel doesn't exist\r\n";
-                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
+                    if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
                         std::perror("send message error");
                 }
             }
-
         }
     }
     else
     {
         // error ... send a reply to the client and following the limechat syntax
         message = ":" + getHostName() + " 461 " + client.getNickname() + " :PRIVMSG command requires 2 arguments\r\n";
-        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
-			std::perror("send message error");
+        if (send(client.getFd(), message.c_str(), message.length(), 0) == -1)
+            std::perror("send message error");
     }
 }
 
@@ -360,6 +352,5 @@ void    commands::checkPrivmsgParam(Client &client ,Server &server)
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
-
 
 /* ************************************************************************** */
