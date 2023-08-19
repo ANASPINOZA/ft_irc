@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 14:30:40 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 15:26:45 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void commands::Invite(Client &c, Server &s)
     std::string channelName = cmd[1];
     std::string nickname = cmd[0];
 
+    std::cout << "CHANNEL : " << cmd[1] << std::endl;
     if (channelName[0] != '#')
     {
         std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
@@ -36,6 +37,13 @@ void commands::Invite(Client &c, Server &s)
     if (!s.isChannelIsThere(channelName))
     {
         std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
+        return;
+    }
+
+    if (!s.isNickThere(s, nickname))
+    {
+        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }

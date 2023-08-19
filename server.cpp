@@ -203,7 +203,11 @@ void Server::client_handling(Server &server, int fds_fd)
         cmd.Kick(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("INVITE"))
         cmd.Invite(server.client[fds_fd], server);
-    client[fds_fd].tokens.clear();
+    if (!tokens.empty() && !tokens[0].compare("TOPIC"))
+        cmd.Topic(server.client[fds_fd], server);
+    if (!tokens.empty() && !tokens[0].compare("MODE"))
+        cmd.Mode(server.client[fds_fd], server);
+    server.client[fds_fd].tokens.clear();
     tokens.clear();
 }
 
