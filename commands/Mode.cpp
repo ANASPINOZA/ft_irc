@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 18:17:02 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:21:12 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void commands::Mode(Client &c, Server &s)
         sendMessage(errorMsg, c.getFd());
         return;
     }
-    if (mode[0] == 'o')
+    if (mode[1] == 'o')
     {
         std::string nickname = target;
         Client client = s.getClient(s, nickname);
