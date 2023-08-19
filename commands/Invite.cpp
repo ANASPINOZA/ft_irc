@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 21:17:03 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:30:40 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void commands::Invite(Client &c, Server &s)
 {
     std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
+
     if (cmd.size() != 2)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";

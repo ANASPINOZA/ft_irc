@@ -23,11 +23,8 @@ void    commands::checkJoinParam(Client &client, Server &server)
     std::vector<std::string> cmd;
     int     i = 1;
     
-    // cmd = client;
-    // std::cout << "HERE" << std::endl;
-    // std::cout << "CLIENT NICK NAME : " <<client.getNickname() <<std::endl;
-    // std::cout << "client address : " << &client <<std::endl;
-    Client cc = server.getClient(server, "issam");
+
+
     cmd = client.getTokens();
     cmd = splitVec(cmd, ' ');
     if (cmd.size() > 1)
@@ -64,7 +61,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
                         server.channel[channels[i]].setUsersNum(userNum + 1);
                         server.channel[channels[i]].setChannelPassword(keys[i]);
                         
-                        // std::cout << "------------> " << client.getNickname() << std::endl;
+                        std::cout << "------------> " << client.getFd() << std::endl;
                         message.clear();
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
                         if (send(client.getFd(), message.c_str(), message.length(),0) == -1)

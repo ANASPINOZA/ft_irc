@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/16 20:01:43 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:22:18 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ public:
     std::vector<std::string> getTokens();
     void setPass(bool type);
     void addData(std::string &new_token);
-    void addVector(std::vector<std::string> new_vector);
+    void addVector(Server &s, std::vector<std::string> new_vector, int fds_fd);
     void printData();
     void setIPV4(char *ip);
     void setNickname(std::string nickname);
@@ -80,7 +80,7 @@ public:
     void setOP(int state);
     // void            delelet
     int getFd() const;
-    void setFd(int Fd);
+    void setFd(Server &s, int Fd);
     bool getPass();
     // User            getUser();
 
