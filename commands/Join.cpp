@@ -31,6 +31,7 @@ void    commands::checkJoinParam(Client &client, Server &server)
     cmd = splitVec(cmd, ' ');
     if (cmd.size() > 1)
     {
+        std::cout << "cmd size : " << cmd.size() << std::endl;
         if (cmd.size() > 2)
         {
             channels = splitStrToVec(cmd[i], ',');
@@ -101,6 +102,11 @@ void    commands::checkJoinParam(Client &client, Server &server)
                     // std::cout << "HEEEEEEER" << std::endl;
                     if (server.channel[channels[i]].getMaxNumUsers() > server.channel[channels[i]].getUsersNum())
                     {
+                        std::cout << "HEEEEEEEEERE 0" << std::endl;
+                        std::cout << "channel password 1 " << server.channel[channels[i]].getChannelPassword() << std::endl;
+                        std::cout << "cmd size : " << cmd.size() << "i pos : " << i << std::endl;
+                        std::cout << "password ented size :  " << keys.size() << std::endl;
+                        // std::cout << "password enterd 1 " << keys[i] << std::endl;
                         if (server.channel[channels[i]].getOnlyInvited() == PRIVATE_CHANNEL)
                         {
                             // if channel is private (invitation only)
@@ -142,18 +148,22 @@ void    commands::checkJoinParam(Client &client, Server &server)
                         else
                         {
                             // if channel is public (anyone can join)
-                            if (server.channel[channels[i]].getChannelPassword() != keys[i])
+                            // std::cout << "password enterd " << keys[i] << std::endl;
+                            std::cout << "channel password " << server.channel[channels[i]].getChannelPassword() << std::endl;
+                            std::cout << "HEEEEEEEEERE 2" << std::endl;
+                            if (keys.size() > i && server.channel[channels[i]].getChannelPassword() != keys[i])
                             {
+                                std::cout << "HEEEEEEEEERE 3" << std::endl;
                                 message =  ":" + getHostName() + " 464 * :Password incorrect\r\n";
                                 if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
                                     std::perror("send message error");
                             }
                             else
                             {
+                                std::cout << "HEEEEEEEEERE 4" << std::endl;
                                 // std::map<std::string, Client>::iterator it = server.channel[channels[i]].getChannelClients().find(client.getNickname());
                                 // std::cout << "client : " << client.getNickname() <<std::endl;
                                 // std::map<std::string, Client> clients = server.channel[channels[i]].getChannelClients();
-                                std::cout << "HEEEEEEEEERE 2" << std::endl;
                                 std::map<std::string, Client> clients = server.channel[channels[i]].channelClients;
 
                                 // std::map<std::string, Client>::iterator it = clients.begin();
@@ -189,7 +199,9 @@ void    commands::checkJoinParam(Client &client, Server &server)
                                     if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
                                         std::perror("send message error");
                                 }
+                                std::cout << "HEEEEEEEEERE 5" << std::endl;
                             }
+                            std::cout << "HEEEEEEEEERE 6" << std::endl;
                         }
                     }
                     else
@@ -227,7 +239,6 @@ void    checkPrivmsgParam(Client &client ,Server &server)
     std::vector<std::string> cmd;
     std::map<std::string, Channel> channel;
     std::string message;
-    int     i = 0;
 
     cmd = splitVec(client.tokens, ' ');
 

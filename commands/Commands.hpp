@@ -41,7 +41,7 @@ class commands
         void Invite(Client &c, Server &s);
         void Mode(Client &c, Server &s);
         void checkJoinParam(Client &client ,Server &server);
-        void checkPrivmsgParam(Client &client ,Server &server)
+        void checkPrivmsgParam(Client &client ,Server &server);
 
 };
 
