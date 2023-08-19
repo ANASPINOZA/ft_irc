@@ -7,8 +7,6 @@
 #include <map>
 #include "../server.hpp"
 #include "../client.hpp"
-#include "../msgHandler.hpp"
-// #include "parsing.cpp"
 
 class Client;
 class Server;
@@ -44,5 +42,6 @@ public:
 
 std::vector<std::string> splitCommand(const std::string &cmd);
 std::string parseModeOptions(const std::string &input);
-
+void sendMessage(const std::string &message, int fd);
+void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message);
 #endif

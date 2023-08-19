@@ -1,12 +1,5 @@
 
 
-/*
-** --------------------------------- OVERLOAD ---------------------------------
-*/
-/*
-** --------------------------------- METHODS ----------------------------------
-*/
-
 #include "Commands.hpp"
 
 void commands::checkJoinParam(Client &client, Server &server)

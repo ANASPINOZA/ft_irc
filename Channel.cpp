@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 14:56:48 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 15:40:59 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,6 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 {
 	std::string nickname = user.getNickname();
 
-	std::cout << "niiiiick1 " << nickname << std::endl;
 	std::map<std::string, Client> client = server.channel[channelName].channelClients;
 	std::map<std::string, Client> client2 = client;
 	std::map<std::string, Client>::iterator it2;
@@ -258,7 +257,6 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 	std::map<std::string, Client>::iterator it;
 	for (it = client1.begin(); it != client1.end(); it++)
 		std::cout << "| " << it->first << " |" << std::endl;
-	usersNum--;
 
 	return true;
 }
