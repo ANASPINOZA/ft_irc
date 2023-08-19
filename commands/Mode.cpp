@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 13:51:33 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:55:13 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void commands::Mode(Client &c, Server &s)
         return;
     }
 
-    Client &client = s.getClient(nickname);
+    Client client = s.getClient(s, nickname);
     if (client.getNickname() != nickname)
     {
         std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";

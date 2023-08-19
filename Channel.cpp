@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 13:31:19 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:56:48 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,9 @@ bool Channel::addClientToChannel(Client user)
 	}
 
 	channelClients[nickname] = user;
+	std::map<std::string, Client>::iterator it;
+	for (it = channelClients.begin(); it != channelClients.end(); it++)
+		std::cout << "_: " << it->first << " _:" << std::endl;
 	usersNum++;
 
 	return true;
