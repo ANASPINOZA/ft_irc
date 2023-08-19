@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 18:37:09 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/18 23:18:27 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void commands::Kick(Client &kicker, Server &server)
     for (it = cc.begin(); it != cc.end(); it++)
         std::cout << "*** " << it->first << " ***" << std::endl;
     std::cout << "TO KICK--> " << userToKickInChannel.getNickname() << " Target -----> " << targetNickname << std::endl;
+
     if (userToKickInChannel.getNickname() != targetNickname)
     {
         std::cout << "###################" << std::endl;

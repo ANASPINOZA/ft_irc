@@ -197,6 +197,13 @@ void Server::client_handling(Server &server, int idx)
     client[fds[idx].fd].addVector(tokens);
     client[fds[idx].fd].setFd(fds[idx].fd);
 
+    // check if clients are added
+    std::cout << "(client_Handling) CLIENTS: " << std::endl;
+    for (std::map<int, Client>::iterator it = client.begin(); it != client.end(); ++it)
+    {
+        std::cout << it->first << " => " << it->second.getNickname() << '\n';
+    }
+
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
         cmd.checkJoinParam(client[fds[idx].fd], server);
     if (!tokens.empty() && !tokens[0].compare("KICK"))
@@ -335,7 +342,7 @@ void Server::ft_server()
 
 // -------------------------------- Mountassir
 
-Client Server::getClient(std::string name)
+Client &Server::getClient(std::string name)
 {
     std::map<int, Client>::iterator it;
     for (it = client.begin(); it != client.end(); it++)
@@ -343,20 +350,22 @@ Client Server::getClient(std::string name)
         if (it->second.getUserName() == name)
             return it->second;
     }
-    return Client();
+    static Client defaultClient;
+    return defaultClient;
 }
 
 Channel &Server::getChannelByName(std::string channelName)
 {
     std::map<std::string, Channel>::iterator it;
-    for (it = channel.begin(); it != channel.end(); it++)
+    for (it = channel.begin(); it != channel.end(); ++it)
     {
-        if (!it->first.compare(channelName))
+        if (it->first == channelName)
         {
-            std::cout << "channel Name: " << it->first << std::endl;
+            std::cout << "Channel Name: " << it->first << std::endl;
             return it->second;
         }
     }
-    --it;
-    return it->second;
+
+    static Channel defaultChannel;
+    return defaultChannel;
 }
