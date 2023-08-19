@@ -6,13 +6,13 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 18:21:12 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:48:37 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user, std::string &key)
+void handleMode(const std::string &mode, Channel &channel, Client &c, std::string &key)
 {
     if (mode.empty() || mode.size() < 2)
     {
@@ -58,34 +58,6 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         break;
-
-    case 'o':
-        if (modeSymbol == '+')
-        {
-            if (channel.isOperator(user.getNickname()))
-            {
-                sendMessage(ERR_USERONCHANNEL(c.getNickname(), user.getNickname()) + "\r\n", c.getFd());
-            }
-            else
-            {
-                channel.setChannelOperators(user.getNickname());
-                sendMessage(RPL_UMODEIS(c.getNickname(), "+" + modeOption) + "\r\n", c.getFd());
-            }
-        }
-        else if (modeSymbol == '-')
-        {
-            if (channel.isOperator(user.getNickname()))
-            {
-                channel.removeOperator(user.getNickname());
-                sendMessage(RPL_UMODEIS(c.getNickname(), "-" + modeOption) + "\r\n", c.getFd());
-            }
-            else
-            {
-                sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), user.getNickname()) + "\r\n", c.getFd());
-            }
-            break;
-        }
-
     case 'k':
         if (modeSymbol == '+')
         {
@@ -169,6 +141,8 @@ void commands::Mode(Client &c, Server &s)
     if (mode[1] == 'o')
     {
         std::string nickname = target;
+        if (nickname.empty())
+            sendMessage(" ERROR: No Client Found\r\n", c.getFd());
         Client client = s.getClient(s, nickname);
         if (client.getNickname() != nickname)
         {
@@ -191,9 +165,34 @@ void commands::Mode(Client &c, Server &s)
             sendMessage(errorMsg, c.getFd());
             return;
         }
+
+        if (mode[0] == '+')
+        {
+            if (channel.isOperator(userInChannel.getNickname()))
+            {
+                sendMessage(ERR_USERONCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
+            }
+            else
+            {
+                channel.setChannelOperators(userInChannel.getNickname());
+                sendMessage(RPL_UMODEIS(c.getNickname(), "+" + mode[1]) + "\r\n", c.getFd());
+            }
+        }
+        else if (mode[0] == '-')
+        {
+            if (channel.isOperator(userInChannel.getNickname()))
+            {
+                channel.removeOperator(userInChannel.getNickname());
+                sendMessage(RPL_UMODEIS(c.getNickname(), "-" + mode[1]) + "\r\n", c.getFd());
+            }
+            else
+            {
+                sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
+            }
+        }
     }
 
-    handleMode(mode, channel, c, userInChannel, target);
+    handleMode(mode, channel, c, target);
     // print channel password
     std::cout << "channel password : " << channel.getChannelPassword() << std::endl;
     // print channel topic

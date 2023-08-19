@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 17:40:33 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:26:30 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ void commands::Kick(Client &kicker, Server &server)
     else
     {
         std::cout << "ERROR : failed to kick user" << std::endl;
+        sendMessage("ERROR : failed to kick user\r\n", kicker.getFd());
     }
 }
