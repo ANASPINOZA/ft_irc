@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 19:32:09 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 19:21:55 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 #define PRIVATE_CHANNEL 1 // invitation only
 #define PUBLIC_CHANNEL 2  // anyone can join
 #define HAS_CLIENTS 3
-
 
 class Client;
 class Server;
@@ -66,14 +65,14 @@ public:
 	int getChannelIsPrivate() const;
 	int getAlreadyHasClients() const;
 	int getOnlyOperatorMsg() const;
-	size_t getMaxNumUsers() const;
-	size_t getUsersNum() const;
+	int getMaxNumUsers() const;
+	int getUsersNum() const;
 	bool getOnlyOperatorTopic() const;
 	bool getProtectedByPassword() const;
 	std::string getChannelPassword() const;
 	std::map<std::string, Client> getChannelClients() const;
 	std::string getChannelMembers(std::string channelName, Server &server);
-	bool	isClientisInvited(std::string nickname, Server& server);
+	bool isClientisInvited(std::string nickname, Server &server);
 	//----------------------------------------------------------------- Setters
 	void setChannelName(std::string channelName);
 	void setChannelOwner(std::string channelOwner);
@@ -85,8 +84,8 @@ public:
 	void setChannelIsPrivate(int channelIsPrivate);
 	void setAlreadyHasClients(int alreadyHasClients);
 	void setOnlyOperatorMsg(int onlyOperatorMsg);
-	void setMaxNumUsers(size_t maxNumUsers);
-	void setUsersNum(size_t usersNum);
+	void setMaxNumUsers(int maxNumUsers);
+	void setUsersNum(int usersNum);
 	void setOnlyOperatorTopic(bool onlyOperatorTopic);
 	void setProtectedByPassword(bool protectedByPassword);
 	// void setChannelClients(std::map<std::string, Client> clients);
