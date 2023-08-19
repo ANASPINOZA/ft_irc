@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 17:58:50 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:17:02 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,9 @@ void commands::Mode(Client &c, Server &s)
     std::string channelName = cmd[0];
     std::string mode = parseModeOptions(cmd[1]);
     std::string target = cmd[2];
+
+    if (mode.empty())
+        return;
 
     if (channelName[0] != '#')
     {
