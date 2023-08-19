@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 18:17:02 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:32:42 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void commands::Mode(Client &c, Server &s)
         sendMessage(errorMsg, c.getFd());
         return;
     }
-    if (mode[0] == 'o')
+    if (mode[1] == 'o')
     {
         std::string nickname = target;
         Client client = s.getClient(s, nickname);
@@ -194,7 +194,7 @@ void commands::Mode(Client &c, Server &s)
     }
 
     handleMode(mode, channel, c, userInChannel, target);
-    // print channel password
-    std::cout << "channel password : " << channel.getChannelPassword() << std::endl;
-    // print channel topic
+    // // print channel password
+    // std::cout << "channel password : " << channel.getChannelPassword() << std::endl;
+    // // print channel topic
 }
