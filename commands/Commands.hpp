@@ -45,6 +45,7 @@ public:
 
 std::vector<std::string> splitCommand(const std::string &cmd);
 std::string parseModeOptions(const std::string &input);
+std::vector<std::string> topicParsing(const std::string &input);
 void sendMessage(const std::string &message, int fd);
 void sendMessageToChannel(Channel &channel, const std::string &message);
 

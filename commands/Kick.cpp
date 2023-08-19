@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 18:26:30 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 22:42:34 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void commands::Kick(Client &kicker, Server &server)
     std::string channelName = cmd[0];
     std::string targetNickname = cmd[1];
     std::cout << targetNickname << std::endl;
-    std::string comment = (cmd.size() > 2) ? cmd[2] : "NO RESON GIVEN";
+    std::string comment = (cmd.size() > 2) ? cmd[2] : "-+-+-+-";
 
     if (channelName[0] != '#')
     {
