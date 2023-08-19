@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/16 20:01:49 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:22:13 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ std::string getHostName()
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
-void Client::setFd(int Fd)
+void Client::setFd(Server &s,int Fd)
 {
-    this->fd = Fd;
+    s.client[Fd].fd = Fd;
 }
 
 void Client::addData(std::string &new_token)
@@ -83,10 +83,10 @@ void Client::addData(std::string &new_token)
     tokens.push_back(new_token);
 }
 
-void Client::addVector(std::vector<std::string> new_vector)
+void Client::addVector(Server &s, std::vector<std::string> new_vector, int fds_fd)
 {
     for (size_t i = 0; i < new_vector.size(); i++)
-        tokens.push_back(new_vector[i]);
+        s.client[fds_fd].tokens.push_back(new_vector[i]);
 }
 
 void Client::printData()

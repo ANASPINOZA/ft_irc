@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/18 18:36:37 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:49:07 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,9 @@ bool Channel::addClientToChannel(Client user)
 	}
 
 	channelClients[nickname] = user;
+	std::map<std::string, Client>::iterator it;
+	for (it = channelClients.begin(); it != channelClients.end(); it++)
+		std::cout << "_: " << it->first << " _:" << std::endl;
 	usersNum++;
 
 	return true;
