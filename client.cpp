@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 14:22:13 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 14:56:15 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ std::string getHostName()
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
-void Client::setFd(Server &s,int Fd)
+void Client::setFd(Server &s, int Fd)
 {
     s.client[Fd].fd = Fd;
 }

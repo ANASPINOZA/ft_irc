@@ -196,6 +196,12 @@ void Server::client_handling(Server &server, int fds_fd)
     server.client[fds_fd].addVector(server, tokens, fds_fd);
     server.client[fds_fd].setFd(server, fds_fd);
 
+    // check if clients are added
+    std::cout << "(client_Handling) CLIENTS: " << std::endl;
+    for (std::map<int, Client>::iterator it = client.begin(); it != client.end(); ++it)
+    {
+        std::cout << it->first << " => " << it->second.getNickname() << '\n';
+    }
 
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
         cmd.checkJoinParam(server.client[fds_fd], server);
@@ -339,30 +345,32 @@ void Server::ft_server()
 
 // -------------------------------- Mountassir
 
-Client Server::getClient(Server &s,std::string name)
+Client Server::getClient(Server &s, std::string name)
 {
     std::cout << "getClient Called " << std::endl;
     std::map<int, Client>::iterator it;
     for (it = s.client.begin(); it != s.client.end(); it++)
     {
-        std::cout << "MAP+++"<<it->second.getNickname() << std::endl;
+        std::cout << "MAP+++" << it->second.getNickname() << std::endl;
         if (it->second.getNickname() == name)
             return it->second;
     }
-    return Client();
+    static Client defaultClient;
+    return defaultClient;
 }
 
 Channel &Server::getChannelByName(std::string channelName)
 {
     std::map<std::string, Channel>::iterator it;
-    for (it = channel.begin(); it != channel.end(); it++)
+    for (it = channel.begin(); it != channel.end(); ++it)
     {
-        if (!it->first.compare(channelName))
+        if (it->first == channelName)
         {
-            std::cout << "channel Name: " << it->first << std::endl;
+            std::cout << "Channel Name: " << it->first << std::endl;
             return it->second;
         }
     }
-    --it;
-    return it->second;
+
+    static Channel defaultChannel;
+    return defaultChannel;
 }

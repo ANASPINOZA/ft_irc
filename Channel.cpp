@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/18 18:49:07 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 15:40:59 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,9 @@ bool Channel::addClientToChannel(Client user)
 	{
 		return false;
 	}
-
+	std::cout << "++++++++insde addClient user++++++++" << std::endl
+			  << "NICKNAME : " << user.getNickname() << std::endl
+			  << "++++++++++++++++" << std::endl;
 	std::string nickname = user.getNickname();
 
 	if (channelClients.find(nickname) != channelClients.end())
@@ -240,7 +242,6 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 {
 	std::string nickname = user.getNickname();
 
-	std::cout << "niiiiick1 " << nickname << std::endl;
 	std::map<std::string, Client> client = server.channel[channelName].channelClients;
 	std::map<std::string, Client> client2 = client;
 	std::map<std::string, Client>::iterator it2;
@@ -256,7 +257,6 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 	std::map<std::string, Client>::iterator it;
 	for (it = client1.begin(); it != client1.end(); it++)
 		std::cout << "| " << it->first << " |" << std::endl;
-	usersNum--;
 
 	return true;
 }
