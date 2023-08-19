@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 19:00:06 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 19:22:18 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,12 @@ bool Channel::getOnlyOperatorTopic() const
 	return onlyOperatorTopic;
 }
 
-size_t Channel::getMaxNumUsers() const
+int Channel::getMaxNumUsers() const
 {
 	return maxNumUsers;
 }
 
-size_t Channel::getUsersNum() const
+int Channel::getUsersNum() const
 {
 	return usersNum;
 }
@@ -178,12 +178,12 @@ void Channel::setOnlyOperatorMsg(int onlyOperatorMsg)
 	this->onlyOperatorMsg = onlyOperatorMsg;
 }
 
-void Channel::setMaxNumUsers(size_t maxNumUsers)
+void Channel::setMaxNumUsers(int maxNumUsers)
 {
 	this->maxNumUsers = maxNumUsers;
 }
 
-void Channel::setUsersNum(size_t usersNum)
+void Channel::setUsersNum(int usersNum)
 {
 	this->usersNum = usersNum;
 }
