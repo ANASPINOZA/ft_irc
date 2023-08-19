@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 18:48:37 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 19:10:42 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
     case 'k':
         if (modeSymbol == '+')
         {
+            if (key.empty())
+            {
+                sendMessage(ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n", c.getFd());
+                return;
+            }
             channel.setProtectedByPassword(true);
             channel.setChannelPassword(key);
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
@@ -83,6 +88,11 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
     case 'l':
         if (modeSymbol == '+')
         {
+            if (key.empty())
+            {
+                sendMessage(ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n", c.getFd());
+                return;
+            }
             channel.setMaxNumUsers(std::stoi(key));
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
         }
@@ -142,7 +152,10 @@ void commands::Mode(Client &c, Server &s)
     {
         std::string nickname = target;
         if (nickname.empty())
+        {
             sendMessage(" ERROR: No Client Found\r\n", c.getFd());
+            return;
+        }
         Client client = s.getClient(s, nickname);
         if (client.getNickname() != nickname)
         {
