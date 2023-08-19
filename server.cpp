@@ -213,6 +213,8 @@ void Server::client_handling(Server &server, int fds_fd)
         cmd.Topic(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("MODE"))
         cmd.Mode(server.client[fds_fd], server);
+    if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
+        cmd.checkPrivmsgParam(server.client[fds_fd], server);
     server.client[fds_fd].tokens.clear();
     tokens.clear();
 }
@@ -300,7 +302,7 @@ void Server::ft_server()
         {
             if (fds[i].revents && POLLIN)
             {
-                this->valread = recv(fds[i].fd, buffer, 1024, 0);
+                this->valread = recv(fds[i].fd, buffer, sizeof(buffer), 0);
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
@@ -332,6 +334,7 @@ void Server::ft_server()
                 }
                 if (this->Authen)
                     client_handling(server, fds[i].fd);
+                memset(buffer, 0, sizeof(buffer));
             }
         }
     }
