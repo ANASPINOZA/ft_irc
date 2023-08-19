@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/17 19:34:55 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 15:40:59 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,9 @@ bool Channel::addClientToChannel(Client user)
 	{
 		return false;
 	}
-
+	std::cout << "++++++++insde addClient user++++++++" << std::endl
+			  << "NICKNAME : " << user.getNickname() << std::endl
+			  << "++++++++++++++++" << std::endl;
 	std::string nickname = user.getNickname();
 
 	if (channelClients.find(nickname) != channelClients.end())
@@ -218,6 +220,9 @@ bool Channel::addClientToChannel(Client user)
 	}
 
 	channelClients[nickname] = user;
+	std::map<std::string, Client>::iterator it;
+	for (it = channelClients.begin(); it != channelClients.end(); it++)
+		std::cout << "_: " << it->first << " _:" << std::endl;
 	usersNum++;
 
 	return true;
@@ -225,30 +230,33 @@ bool Channel::addClientToChannel(Client user)
 
 Client Channel::getClientInChannel(std::string nickname)
 {
-	return channelClients[nickname];
+	std::map<std::string, Client>::iterator it = channelClients.find(nickname);
+	if (it != channelClients.end())
+	{
+		return it->second;
+	}
+	return Client();
 }
 
 bool Channel::removeClientFromChannel(Server &server, Client user, std::string channelName)
 {
 	std::string nickname = user.getNickname();
 
-	std::cout << "niiiiick1 " << nickname << std::endl;
 	std::map<std::string, Client> client = server.channel[channelName].channelClients;
-	std::map<std::string , Client> client2 = client;
+	std::map<std::string, Client> client2 = client;
 	std::map<std::string, Client>::iterator it2;
 	for (it2 = client2.begin(); it2 != client2.end(); it2++)
-		std::cout << "| "<< it2->first << " |"<< std::endl;
+		std::cout << "| " << it2->first << " |" << std::endl;
 	if (client.find(nickname) == client.end())
 	{
 		return false;
 	}
 
 	server.channel[channelName].channelClients.erase(nickname);
-	std::map<std::string , Client> client1 = client;
+	std::map<std::string, Client> client1 = client;
 	std::map<std::string, Client>::iterator it;
 	for (it = client1.begin(); it != client1.end(); it++)
-		std::cout << "| "<< it->first << " |"<< std::endl;
-	usersNum--;
+		std::cout << "| " << it->first << " |" << std::endl;
 
 	return true;
 }

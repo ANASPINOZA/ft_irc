@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 17:39:06 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:00:17 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
 void commands::Mode(Client &c, Server &s)
 {
     std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
-    if (cmd.size() != 3)
+    if (cmd.size() < 2)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
@@ -164,7 +164,7 @@ void commands::Mode(Client &c, Server &s)
         return;
     }
 
-    Client client = s.getClient(nickname);
+    Client client = s.getClient(s, nickname);
     if (client.getNickname() != nickname)
     {
         std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";

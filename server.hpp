@@ -35,23 +35,28 @@ class Server {
         void    SomeParss(char **av);
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
-        bool    Authentication(int idx);
-        void    client_handling(Server &server,int idx);
-        bool    isNickThere(std::string nickName);
+        // bool    Authentication(int idx);
+        bool Authentication(Server &s, int fds_fd);
+        // void    client_handling(Server &server,int idx);
+        void    client_handling(Server &server, int fds_fd);
+        // bool    isNickThere(std::string nickName);
+        bool isNickThere(Server &s, std::string nickName);
         bool    isNickInChannel(Server &server, std::string nickName, std::string channelName);
         int     getFdOfExistedClient(std::string nickName, Server &server);
         bool    isChannelIsThere(std::string channelName);
-        void    parseUserInfos(std::string userInfos, int client_fd);
-        Client  getClient(std::string nickName); //Mountassir
+        // void    parseUserInfos(std::string userInfos, int client_fd);
+        void parseUserInfos(Server &s, std::string userInfos, int client_fd);
+        // Client  getClient(std::string nickName); //Mountassir
+        Client getClient(Server &server, std::string nickName); // Mountassir
         Client getClientFromChannel(Server &server, std::string nickName, std::string channelName);
         // Channel  getChannelByName(std::string channelName);
         Channel &getChannelByName(std::string channelName);
         std::map<std::string, Channel> getChannels();
         std::map<std::string, Channel> channel;
         std::map<int, Client > client;
+        struct pollfd fds[1024];
         
     private:
-        struct pollfd fds[1024];
         struct sockaddr_in address;
         struct sockaddr_in clientAddr;
         std::vector<int>    tab;
@@ -67,6 +72,7 @@ class Server {
         bool    nick;
         bool    user;
         bool    Authen;
+
 };
 
 #endif

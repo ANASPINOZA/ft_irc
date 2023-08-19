@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/18 17:39:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:06:27 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ void commands::Topic(Client &c, Server &s)
 
     if (topic.empty())
     {
+        std::cout << "*****************" << std::endl
+                  << "TOPIC param is empty" << std::endl
+                  << "*****************" << std::endl;
         std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, channel.getChannelTopic()) + "\r\n";
         sendMessage(topicMsg, c.getFd());
     }
@@ -61,12 +64,15 @@ void commands::Topic(Client &c, Server &s)
     {
         if (channel.getOnlyOperatorTopic() && !channel.isOperator(c.getNickname()))
         {
+            std::cout << "*****************" << std::endl
+                      << "ERROR : your are not an op to change the topc" << std::endl
+                      << "*****************" << std::endl;
             std::string errorMsg = ERR_CHANOPRIVSNEEDED(c.getNickname(), channelName) + "\r\n";
             sendMessage(errorMsg, c.getFd());
             return;
         }
         channel.setChannelTopic(topic);
         std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, topic) + "\r\n";
-        sendMessage(topicMsg, c.getFd());
+        sendMessageToChannel(channel, topicMsg);
     }
 }
