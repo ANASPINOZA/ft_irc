@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 14:22:18 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:32:30 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <sstream>
 #include <unistd.h>
 #include "server.hpp"
-
 
 class Server;
 class commands;
@@ -83,7 +82,6 @@ public:
     void setFd(Server &s, int Fd);
     bool getPass();
     // User            getUser();
-
 };
 
 std::string getHostName();
