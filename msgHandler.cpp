@@ -1,4 +1,4 @@
-#include "msgHandler.hpp"
+#include "commands/Commands.hpp"
 
 void sendMessage(const std::string &message, const int fd)
 {
