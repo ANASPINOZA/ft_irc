@@ -197,11 +197,11 @@ void Server::client_handling(Server &server, int fds_fd)
     server.client[fds_fd].setFd(server, fds_fd);
 
     // check if clients are added
-    std::cout << "(client_Handling) CLIENTS: " << std::endl;
-    for (std::map<int, Client>::iterator it = client.begin(); it != client.end(); ++it)
-    {
-        std::cout << it->first << " => " << it->second.getNickname() << '\n';
-    }
+    // std::cout << "(client_Handling) CLIENTS: " << std::endl;
+    // for (std::map<int, Client>::iterator it = client.begin(); it != client.end(); ++it)
+    // {
+    //     std::cout << it->first << " => " << it->second.getNickname() << '\n';
+    // }
 
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
         cmd.checkJoinParam(server.client[fds_fd], server);
@@ -313,7 +313,7 @@ void Server::ft_server()
                 }
                 else
                 {
-                    // std::cout << buffer;
+                    std::cout << buffer;
                     std::string input = buffer;
                     std::string delimiter = " ";
 

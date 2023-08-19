@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 15:47:55 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:40:33 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void commands::Kick(Client &kicker, Server &server)
     std::string channelName = cmd[0];
     std::string targetNickname = cmd[1];
     std::cout << targetNickname << std::endl;
-    std::string comment = (cmd.size() > 2) ? cmd[2] : "";
+    std::string comment = (cmd.size() > 2) ? cmd[2] : "NO RESON GIVEN";
 
     if (channelName[0] != '#')
     {
@@ -43,11 +43,6 @@ void commands::Kick(Client &kicker, Server &server)
     Channel &channel = server.getChannelByName(channelName);
 
     Client userToKickInChannel = channel.getClientInChannel(targetNickname);
-    std::map<std::string, Client> cc = channel.channelClients;
-    std::map<std::string, Client>::iterator it;
-    for (it = cc.begin(); it != cc.end(); it++)
-        std::cout << "*** " << it->first << " ***" << std::endl;
-    std::cout << "TO KICK--> " << userToKickInChannel.getNickname() << " Target -----> " << targetNickname << std::endl;
 
     if (userToKickInChannel.getNickname() != targetNickname)
     {
@@ -69,6 +64,10 @@ void commands::Kick(Client &kicker, Server &server)
         channel.setUsersNum(channel.getUsersNum() - 1);
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
         sendMessage(successMsg, userToKickInChannel.getFd());
-        sendMessageToChannel(channel, kicker, successMsg);
+        sendMessageToChannel(channel, successMsg);
+    }
+    else
+    {
+        std::cout << "ERROR : failed to kick user" << std::endl;
     }
 }

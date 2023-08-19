@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 15:40:59 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:33:22 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,22 +241,14 @@ Client Channel::getClientInChannel(std::string nickname)
 bool Channel::removeClientFromChannel(Server &server, Client user, std::string channelName)
 {
 	std::string nickname = user.getNickname();
-
 	std::map<std::string, Client> client = server.channel[channelName].channelClients;
-	std::map<std::string, Client> client2 = client;
-	std::map<std::string, Client>::iterator it2;
-	for (it2 = client2.begin(); it2 != client2.end(); it2++)
-		std::cout << "| " << it2->first << " |" << std::endl;
-	if (client.find(nickname) == client.end())
+
+	if (client.find(nickname) == client.end() || server.channel[channelName].getChannelOwner() == nickname)
 	{
 		return false;
 	}
 
 	server.channel[channelName].channelClients.erase(nickname);
-	std::map<std::string, Client> client1 = client;
-	std::map<std::string, Client>::iterator it;
-	for (it = client1.begin(); it != client1.end(); it++)
-		std::cout << "| " << it->first << " |" << std::endl;
 
 	return true;
 }

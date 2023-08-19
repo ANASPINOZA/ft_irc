@@ -7,9 +7,11 @@
 #include <map>
 #include "../server.hpp"
 #include "../client.hpp"
+#include "../Channel.hpp"
 
 class Client;
 class Server;
+class Channel;
 
 // // -------------------------------------- MSGS -------------------------------------- //
 #define ERR_USERONCHANNEL(nick, channel) "443 " + nick + " " + channel + " :is already on channel"
@@ -38,10 +40,12 @@ public:
     void Invite(Client &c, Server &s);
     void Mode(Client &c, Server &s);
     void checkJoinParam(Client &client, Server &server);
+    void checkPrivmsgParam(Client &client, Server &server);
 };
 
 std::vector<std::string> splitCommand(const std::string &cmd);
 std::string parseModeOptions(const std::string &input);
 void sendMessage(const std::string &message, int fd);
-void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message);
+void sendMessageToChannel(Channel &channel, const std::string &message);
+
 #endif

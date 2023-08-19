@@ -1,4 +1,4 @@
-#include "commands/Commands.hpp"
+#include "./commands/Commands.hpp"
 
 void sendMessage(const std::string &message, const int fd)
 {
@@ -8,7 +8,7 @@ void sendMessage(const std::string &message, const int fd)
     }
 }
 
-void sendMessageToChannel(Channel &channel, const Client &sender, const std::string &message)
+void sendMessageToChannel(Channel &channel, const std::string &message)
 {
     const std::map<std::string, Client> &channelClients = channel.getChannelClients();
     std::map<std::string, Client>::const_iterator it;
@@ -18,6 +18,4 @@ void sendMessageToChannel(Channel &channel, const Client &sender, const std::str
         const Client &client = it->second;
         sendMessage(message, client.getFd());
     }
-
-    sendMessage(message, sender.getFd());
 }

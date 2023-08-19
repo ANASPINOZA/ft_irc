@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 15:46:15 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:24:51 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,6 @@ void commands::Topic(Client &c, Server &s)
         }
         channel.setChannelTopic(topic);
         std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, topic) + "\r\n";
-        sendMessageToChannel(channel, c, topicMsg);
+        sendMessageToChannel(channel, topicMsg);
     }
 }
