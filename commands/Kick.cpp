@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 15:47:55 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:05:56 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ void commands::Kick(Client &kicker, Server &server)
         channel.setUsersNum(channel.getUsersNum() - 1);
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
         sendMessage(successMsg, userToKickInChannel.getFd());
-        sendMessageToChannel(channel, kicker, successMsg);
+        sendMessageToChannel(channel, successMsg);
     }
 }
