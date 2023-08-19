@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 17:41:09 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 22:43:00 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,24 +92,6 @@ void commands::Invite(Client &c, Server &s)
         sendMessage(errorMsg, c.getFd());
         return;
     }
-    std::cout << "++++++++++++++++++++++++++Channel conf" << std::endl
-              << "channelName : " << channel.getChannelName() << std::endl
-              << "channelOwner : " << channel.getChannelOwner() << std::endl
-              << "channelTopic : " << channel.getChannelTopic() << std::endl
-              << "channelPassword : " << channel.getChannelPassword() << std::endl
-              << "onlyInvited : " << channel.getOnlyInvited() << std::endl
-              << "channelIsPrivate : " << channel.getChannelIsPrivate() << std::endl
-              << "alreadyHasClients : " << channel.getAlreadyHasClients() << std::endl
-              << "onlyOperatorMsg : " << channel.getOnlyOperatorMsg() << std::endl
-              << "onlyOperatorTopic : " << channel.getOnlyOperatorTopic() << std::endl
-              << "protectedByPassword : " << channel.getProtectedByPassword() << std::endl
-              << "maxNumUsers : " << channel.getMaxNumUsers() << std::endl
-              << "usersNum : " << channel.getUsersNum() << std::endl
-              << "++++++++++++++++++++++++++ Users" << std::endl
-              << "nickname : " << invitedClient.getNickname() << std::endl
-              << "inviter : " << c.getNickname() << std::endl
-              << "inviter in channel : " << channel.getClientInChannel(c.getNickname()).getNickname() << std::endl
-              << "++++++++++++++++++++++++++" << std::endl;
 
     if (!channel.addClientToChannel(invitedClient))
     {
@@ -122,10 +104,4 @@ void commands::Invite(Client &c, Server &s)
     }
     std::string successMsg = RPL_INVITING(c.getNickname(), nickname, channelName) + "\r\n";
     sendMessage(successMsg, c.getFd());
-
-    // -------------------------------------------------- check users in channel
-    std::map<std::string, Client> cc = channel.getChannelClients();
-    std::map<std::string, Client>::iterator it;
-    for (it = cc.begin(); it != cc.end(); it++)
-        std::cout << "*** " << it->first << " ***" << std::endl;
 }
