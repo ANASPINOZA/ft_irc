@@ -6,13 +6,13 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 17:33:24 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:58:50 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user)
+void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user, std::string &key)
 {
     if (mode.empty() || mode.size() < 2)
     {
@@ -90,8 +90,8 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         if (modeSymbol == '+')
         {
             channel.setProtectedByPassword(true);
-            channel.setChannelPassword(mode.substr(2));
-            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) + "\r\n", c.getFd());
+            channel.setChannelPassword(key);
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
@@ -111,8 +111,8 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
     case 'l':
         if (modeSymbol == '+')
         {
-            channel.setMaxNumUsers(std::stoi(mode.substr(2)));
-            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) + "\r\n", c.getFd());
+            channel.setMaxNumUsers(std::stoi(key));
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
@@ -129,7 +129,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
 void commands::Mode(Client &c, Server &s)
 {
     std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
-    if (cmd.size() < 2)
+    if (cmd.size() < 2 || cmd.size() > 3)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
@@ -138,7 +138,7 @@ void commands::Mode(Client &c, Server &s)
 
     std::string channelName = cmd[0];
     std::string mode = parseModeOptions(cmd[1]);
-    std::string nickname = cmd[2];
+    std::string target = cmd[2];
 
     if (channelName[0] != '#')
     {
@@ -163,29 +163,35 @@ void commands::Mode(Client &c, Server &s)
         sendMessage(errorMsg, c.getFd());
         return;
     }
-
-    Client client = s.getClient(s, nickname);
-    if (client.getNickname() != nickname)
+    if (mode[0] == 'o')
     {
-        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
-        return;
+        std::string nickname = target;
+        Client client = s.getClient(s, nickname);
+        if (client.getNickname() != nickname)
+        {
+            std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+            sendMessage(errorMsg, c.getFd());
+            return;
+        }
+
+        if (!s.isNickInChannel(s, nickname, channelName))
+        {
+            std::string errorMsg = ERR_NOSUCHNICK(nickname, channelName) + "\r\n";
+            sendMessage(errorMsg, c.getFd());
+            return;
+        }
+
+        userInChannel = channel.getClientInChannel(nickname);
+        if (userInChannel.getNickname() != nickname)
+        {
+            std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
+            sendMessage(errorMsg, c.getFd());
+            return;
+        }
     }
 
-    if (!s.isNickInChannel(s, nickname, channelName))
-    {
-        std::string errorMsg = ERR_NOSUCHNICK(nickname, channelName) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
-        return;
-    }
-
-    userInChannel = channel.getClientInChannel(nickname);
-    if (userInChannel.getNickname() != nickname)
-    {
-        std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
-        return;
-    }
-
-    handleMode(mode, channel, c, userInChannel);
+    handleMode(mode, channel, c, userInChannel, target);
+    // print channel password
+    std::cout << "channel password : " << channel.getChannelPassword() << std::endl;
+    // print channel topic
 }
