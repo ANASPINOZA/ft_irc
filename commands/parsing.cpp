@@ -66,6 +66,11 @@ std::vector<std::string> topicParsing(const std::string &input)
     std::string channelName = input.substr(0, start);
     std::string topic = input.substr(start + 1, end - start - 1);
 
+    std::cout << "{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}" << input << std::endl;
+    std::cout << "channelName: " << channelName << std::endl;
+    std::cout << "topic: " << topic << std::endl;
+    std::cout << "{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}" << input << std::endl;
+
     size_t additionalArgs = input.find_first_not_of(" \t", end + 1);
     if (additionalArgs != std::string::npos)
         return result;

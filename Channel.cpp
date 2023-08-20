@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 19:22:18 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 02:43:43 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ Channel::Channel()
 {
 }
 
-// Channel::Channel( const Channel & src )
-// {
-// }
-
 Channel::Channel(std::string name, Client user)
 {
 	channelName = name;
@@ -31,8 +27,9 @@ Channel::Channel(std::string name, Client user)
 	channelIsPrivate = NOT_SET;
 	alreadyHasClients = HAS_CLIENTS;
 	usersNum = NOT_SET;
-	maxNumUsers = 256;
+	maxNumUsers = 1000;
 	channelClients[user.getNickname()] = user;
+	setOnlyOperatorTopic(true);
 }
 
 /*
@@ -43,13 +40,6 @@ Channel::~Channel()
 {
 }
 
-/*
-** --------------------------------- OVERLOAD ---------------------------------
-*/
-
-/*
-** --------------------------------- METHODS ----------------------------------
-*/
 //----------------------------------------------------------------- Getters
 std::string Channel::getChannelName() const
 {
@@ -197,12 +187,6 @@ void Channel::setProtectedByPassword(bool protectedByPassword)
 	this->protectedByPassword = protectedByPassword;
 }
 
-// void Channel::setChannelClients(std::map<std::string, Client> clients)
-// {
-// 	this->channelClients = clients;
-// }
-//----------------------------------------------------------------- Methods
-
 bool Channel::addClientToChannel(Client user)
 {
 	if (usersNum >= maxNumUsers)
@@ -218,9 +202,6 @@ bool Channel::addClientToChannel(Client user)
 	}
 
 	channelClients[nickname] = user;
-	std::map<std::string, Client>::iterator it;
-	for (it = channelClients.begin(); it != channelClients.end(); it++)
-		std::cout << "_: " << it->first << " _:" << std::endl;
 	usersNum++;
 
 	return true;
@@ -317,9 +298,3 @@ bool Channel::isClientisInvited(std::string nickname, Server &server)
 	}
 	return false;
 }
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
-/* ************************************************************************** */

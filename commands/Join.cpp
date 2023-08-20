@@ -67,7 +67,7 @@ void    commands::Join(Client &client, Server &server)
                 }
                 else
                 {
-                    // channel already exist
+
                     if (server.channel[channels[i]].getMaxNumUsers() > server.channel[channels[i]].getUsersNum() || server.channel[channels[i]].getMaxNumUsers() == 0)
                     {
                         if (server.channel[channels[i]].getOnlyInvited() == PRIVATE_CHANNEL)

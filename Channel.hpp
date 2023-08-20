@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 19:21:55 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 02:39:11 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ public:
 	void setUsersNum(int usersNum);
 	void setOnlyOperatorTopic(bool onlyOperatorTopic);
 	void setProtectedByPassword(bool protectedByPassword);
-	// void setChannelClients(std::map<std::string, Client> clients);
 	//----------------------------------------------------------------- Methods
 	bool addClientToChannel(Client user);
 	Client getClientInChannel(std::string nickname);

@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 12:07:52 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/20 02:54:07 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void commands::Topic(Client &c, Server &s)
 {
-    std::vector<std::string> cmd = topicParsing(c.getTokens()[1]);
+    std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
     if (cmd.size() < 1)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
+    }
+    else if (cmd.size() > 2)
+    {
+        cmd = topicParsing(c.getTokens()[1]);
+        
     }
 
     std::string channelName = cmd[0];
@@ -46,6 +51,9 @@ void commands::Topic(Client &c, Server &s)
     Client userInChannel = channel.getClientInChannel(c.getNickname());
     if (userInChannel.getNickname() != c.getNickname())
     {
+        std::cout << "*****************" << std::endl
+                  << "ERROR : user not in channel" << std::endl
+                  << "*****************" << std::endl;
         std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
@@ -58,6 +66,7 @@ void commands::Topic(Client &c, Server &s)
                   << "*****************" << std::endl;
         std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, channel.getChannelTopic()) + "\r\n";
         sendMessage(topicMsg, c.getFd());
+        return;
     }
     else
     {
