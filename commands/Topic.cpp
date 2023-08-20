@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 02:54:07 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 11:46:07 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void commands::Topic(Client &c, Server &s)
     else if (cmd.size() > 2)
     {
         cmd = topicParsing(c.getTokens()[1]);
-        
     }
 
     std::string channelName = cmd[0];
