@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 15:43:41 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 15:57:20 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 16:01:26 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void checkIfDisconnected(Server &server)
             {
                 if (channelIt->second.getChannelOwner() == clientIt->second.getNickname())
                 {
-                    // set the next client as the owner
                     std::map<std::string, Client>::iterator nextClientIt = clients.begin();
                     nextClientIt++;
                     if (nextClientIt != clients.end())
