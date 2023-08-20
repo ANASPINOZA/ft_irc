@@ -2,6 +2,7 @@
 #define SERVER
 
 #include <iostream>
+
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +37,7 @@ class Server {
         void    CheckPort(char *port);
         void    get_PASS(char *pass);
         // bool    Authentication(int idx);
-        bool Authentication(Server &s, int fds_fd);
+        bool Authentication(Server &s, int fds_fd, int idx);
         // void    client_handling(Server &server,int idx);
         void    client_handling(Server &server, int fds_fd);
         // bool    isNickThere(std::string nickName);
@@ -54,10 +55,13 @@ class Server {
         std::map<std::string, Channel> getChannels();
         std::map<std::string, Channel> channel;
         std::map<int, Client > client;
-        struct pollfd fds[1024];
-        void    checkPASS(std::string param);
-        void    checkNICK(Server &s, std::string nick, int fd);
-        void    checkUSER(Server &s, std::string user, int fd);
+        // struct pollfd fds[1024];
+        std::vector<pollfd> fds;
+        bool    checkPASS(std::string param, int idx, int fds_fd);
+        bool    checkNICK(Server &s, std::string nick, int fd, int idx);
+        bool    checkUSER(Server &s, std::string user, int fd, int idx);
+        void    resetBool();
+        void    Failure(int fds_fd, int idx);
         
     private:
         struct sockaddr_in address;
