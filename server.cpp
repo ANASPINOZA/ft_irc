@@ -119,17 +119,30 @@ bool Server::Authentication(Server &s, int fds_fd)
                 }
         }
     }
+    std::cout << user << nick << pass << std::endl;
     if (pass && nick && user)
     {
         char host[256];
         gethostname(host, sizeof(host));
         std::string mssg;
         mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :Welcome to Our IRC Server!, " + s.client[fds_fd].getNickname() + "\r\n";
-        if (send(fds_fd, mssg.c_str(), mssg.size(), 0) == -1)
-            std::perror("send error");
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :       ::::    ::: :::::::::: ::::::::  ::::    :::" + "\r\n";
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :      :+:+:   :+: :+:       :+:    :+: :+:+:   :+:" + "\r\n";
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :     :+:+:+  +:+ +:+       +:+    +:+ :+:+:+  +:+" + "\r\n";
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :    +#+ +:+ +#+ +#++:++#  +#+    +:+ +#+ +:+ +#+" + "\r\n";
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :   +#+  +#+#+# +#+       +#+    +#+ +#+  +#+#+#" + "\r\n";
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :  #+#   #+#+# #+#       #+#    #+# #+#   #+#+#" + "\r\n";
+        sendMessage(mssg, fds_fd);
+        mssg = std::string(":") + host + " 001 " + s.client.at(fds_fd).getNickname() + " :###    #### ########## ########  ###    ####" + "\r\n";
+        sendMessage(mssg, fds_fd);
         mssg = std::string(":") + host + " 002 " + s.client.at(fds_fd).getNickname() + " :Your host is " + host + "\r\n";
-        if (send(fds_fd, mssg.c_str(), mssg.size(), 0) == -1)
-            std::perror("send error");
+        sendMessage(mssg, fds_fd);
         this->Authen = TRUE;
         tokens.clear();
         return TRUE;
