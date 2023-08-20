@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 02:20:33 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 14:21:52 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ void commands::Invite(Client &c, Server &s)
 
     if (channelName[0] != '#')
     {
-        std::cout << "+++++++++++++++++++++++++++++++++++++++" << std::endl
-                  << "ERROR : channel name must start with #" << std::endl
-                  << "+++++++++++++++++++++++++++++++++++++++" << std::endl;
         std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
@@ -45,9 +42,6 @@ void commands::Invite(Client &c, Server &s)
 
     if (!s.isNickThere(s, nickname))
     {
-        std::cout << "++++++++++++++++++++++++++" << std::endl
-                  << "ERROR : user not on the server" << std::endl
-                  << "++++++++++++++++++++++++++" << std::endl;
         std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
@@ -57,9 +51,6 @@ void commands::Invite(Client &c, Server &s)
 
     if (channel.getChannelName() != channelName) // assuming a default channel got returned
     {
-        std::cout << "++++++++++++++++++++++++++" << std::endl
-                  << "ERROR : failed to get channel" << std::endl
-                  << "++++++++++++++++++++++++++" << std::endl;
         std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
@@ -69,9 +60,6 @@ void commands::Invite(Client &c, Server &s)
 
     if (channel.getMaxNumUsers() > 0 && channel.getUsersNum() >= channel.getMaxNumUsers())
     {
-        std::cout << "++++++++++++++++++++++++++" << std::endl
-                  << "ERROR : channel is full" << std::endl
-                  << "++++++++++++++++++++++++++" << std::endl;
         std::string errorMsg = ERR_CHANNELISFULL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
@@ -94,10 +82,7 @@ void commands::Invite(Client &c, Server &s)
 
     if (!channel.addClientToChannel(invitedClient))
     {
-        std::cout << "++++++++++++++++++++++++++" << std::endl
-                  << "ERROR : failed to add user" << std::endl
-                  << "++++++++++++++++++++++++++" << std::endl;
-        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        std::string errorMsg = "ERROR : failed to invite user, Channel Full or User Doesnt exist\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }

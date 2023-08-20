@@ -31,26 +31,27 @@ class Channel;
 #define RPL_INVITING(nick, user, channel) "341 " + nick + " " + user + " " + channel + " :Inviting"
 #define RPL_TOPIC(nick, channel, topic) "332 " + nick + " " + channel + " :" + topic
 #define RPL_NOTOPIC(nick, channel) "331 " + nick + " " + channel + " :No topic is set"
-
-// //------------------------------------Authen                                            // 
+#define RPL_YOUREOPER(nick) "381 " + nick + " :You are now an IRC operator"
+// //------------------------------------Authen                                            //
 
 #define ERR_NICKNAMEINUSE(nick) "433 " + nick + " :Nickname is already in use"
-#define ERR_NONICKNAMEGIVEN "431" " :No nickname given\r\n"
+#define ERR_NONICKNAMEGIVEN "431" \
+                            " :No nickname given\r\n"
 
 class commands
 {
-    public:
-        void Kick(Client &c, Server &s);
-        void Topic(Client &c, Server &s);
-        void Invite(Client &c, Server &s);
-        void Mode(Client &c, Server &s);
-        void Join(Client &client ,Server &server);
-        void Privmsg(Client &client ,Server &server);
+public:
+    void Kick(Client &c, Server &s);
+    void Topic(Client &c, Server &s);
+    void Invite(Client &c, Server &s);
+    void Mode(Client &c, Server &s);
+    void Join(Client &client, Server &server);
+    void Privmsg(Client &client, Server &server);
 };
 
 std::vector<std::string> splitCommand(const std::string &cmd);
 std::string parseModeOptions(const std::string &input);
-std::vector<std::string> topicParsing(const std::string &input);
+std::string getTextAfterColon(const std::string &cmd);
 void sendMessage(const std::string &message, int fd);
 void sendMessageToChannel(Channel &channel, const std::string &message);
 
