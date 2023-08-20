@@ -1,6 +1,6 @@
 #include "Commands.hpp"
 
-void commands::Join(Client &client, Server &server)
+void    commands::Join(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
@@ -167,16 +167,6 @@ void commands::Join(Client &client, Server &server)
             std::perror("send message error");
         return;
     }
-}
-int Server::getFdOfExistedClient(std::string nickName, Server &server)
-{
-    std::map<int, Client>::iterator it;
-    for (it = server.client.begin(); it != server.client.end(); it++)
-    {
-        if (it->second.getNickname() == nickName)
-            return it->first;
-    }
-    return -1;
 }
 
 /*
