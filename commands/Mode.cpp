@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 02:41:46 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 14:23:29 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,12 +220,12 @@ void commands::Mode(Client &c, Server &s)
         {
             if (channel.isOperator(userInChannel.getNickname()))
             {
-                sendMessage(ERR_USERONCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
+                sendMessage("ERROR: User is already an operator\r\n", c.getFd());
             }
             else
             {
                 channel.setChannelOperators(userInChannel.getNickname());
-                sendMessage(RPL_UMODEIS(c.getNickname(), "+" + mode[1]) + "\r\n", c.getFd());
+                sendMessage(RPL_YOUREOPER(userInChannel.getNickname()) + "\r\n", userInChannel.getFd());
             }
         }
         else if (mode[0] == '-')

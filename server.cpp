@@ -62,14 +62,13 @@ void trimCRLF(std::vector<std::string> &lines)
     }
 }
 
-void    Server::checkPASS(std::string param)
+void Server::checkPASS(std::string param)
 {
     if (!param.compare(this->PASS))
         this->pass = TRUE;
 }
 
-
-void    Server::checkNICK(Server &s, std::string nick, int fd)
+void Server::checkNICK(Server &s, std::string nick, int fd)
 {
     if (!isNickThere(s, nick))
     {
@@ -78,7 +77,7 @@ void    Server::checkNICK(Server &s, std::string nick, int fd)
     }
 }
 
-void    Server::checkUSER(Server &s, std::string user, int fd)
+void Server::checkUSER(Server &s, std::string user, int fd)
 {
     if (!checkUserCmd(user))
     {
@@ -89,7 +88,7 @@ void    Server::checkUSER(Server &s, std::string user, int fd)
 
 bool Server::Authentication(Server &s, int fds_fd)
 {
-    
+
     std::string cmd[3] = {"PASS", "NICK", "USER"};
     for (size_t j = 0; j < tokens.size(); j = j + 2)
     {
@@ -101,22 +100,22 @@ bool Server::Authentication(Server &s, int fds_fd)
         }
         switch (i)
         {
-            case 0:
-                checkPASS(tokens[j + 1]);
-                break;
-            case 1:
-                checkNICK(s, tokens[j + 1], fds_fd);
-                break;
-            case 2:
-                checkUSER(s, tokens[j + 1], fds_fd);
-            default:
-                if (!pass || !nick || !user)
-                {
-                    std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
-                    tokens.clear();
-                    send(fds_fd, failure.c_str(), failure.size() + 1, 0);
-                    return FALSE;
-                }
+        case 0:
+            checkPASS(tokens[j + 1]);
+            break;
+        case 1:
+            checkNICK(s, tokens[j + 1], fds_fd);
+            break;
+        case 2:
+            checkUSER(s, tokens[j + 1], fds_fd);
+        default:
+            if (!pass || !nick || !user)
+            {
+                std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
+                tokens.clear();
+                send(fds_fd, failure.c_str(), failure.size() + 1, 0);
+                return FALSE;
+            }
         }
     }
     std::cout << user << nick << pass << std::endl;
@@ -150,7 +149,7 @@ bool Server::Authentication(Server &s, int fds_fd)
     return FALSE;
 }
 
-int     Server::getFdOfExistedClient(std::string nickName, Server &server)
+int Server::getFdOfExistedClient(std::string nickName, Server &server)
 {
     std::map<int, Client>::iterator it;
     for (it = server.client.begin(); it != server.client.end(); it++)
