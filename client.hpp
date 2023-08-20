@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 17:32:30 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/19 20:36:45 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ public:
     // void            checkTokens(std::string cmd, std::string param, int *i);
     // void            checkTokens(std::vector<std::string> cmd);
     // int            checkCmds(std::string cmd);
-    // void            checkJoinParam(std::string param);
-    // void            checkJoinParam(Client &client ,Server &server , int i);
+    // void            Join(std::string param);
+    // void            Join(Client &client ,Server &server , int i);
     // void            checkInviteParam(std::string param);
     // void            checkKickParam(std::string param);
     // void            checkTopicParam(std::string param);
-    // void            checkPrivmsgParam(std::string param);
+    // void            Privmsg(std::string param);
     void setOP(int state);
     // void            delelet
     int getFd() const;

@@ -32,6 +32,11 @@ class Channel;
 #define RPL_TOPIC(nick, channel, topic) "332 " + nick + " " + channel + " :" + topic
 #define RPL_NOTOPIC(nick, channel) "331 " + nick + " " + channel + " :No topic is set"
 
+// //------------------------------------Authen                                            // 
+
+#define ERR_NICKNAMEINUSE(nick) "433 " + nick + " :Nickname is already in use"
+#define ERR_NONICKNAMEGIVEN "431" " :No nickname given\r\n"
+
 class commands
 {
 public:
@@ -39,8 +44,8 @@ public:
     void Topic(Client &c, Server &s);
     void Invite(Client &c, Server &s);
     void Mode(Client &c, Server &s);
-    void checkJoinParam(Client &client, Server &server);
-    void checkPrivmsgParam(Client &client, Server &server);
+    void Join(Client &client, Server &server);
+    void Privmsg(Client &client, Server &server);
 };
 
 std::vector<std::string> splitCommand(const std::string &cmd);
