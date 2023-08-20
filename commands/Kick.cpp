@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 02:21:19 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 14:19:57 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void commands::Kick(Client &kicker, Server &server)
     std::string channelName = cmd[0];
     std::string targetNickname = cmd[1];
     std::cout << targetNickname << std::endl;
-    std::string comment = (cmd.size() > 2) ? cmd[2] : " - KICKED";
+    std::string comment = (cmd.size() > 2) ? getTextAfterColon(kicker.getTokens()[1]) : "";
 
     if (channelName[0] != '#')
     {
@@ -46,7 +46,6 @@ void commands::Kick(Client &kicker, Server &server)
 
     if (userToKickInChannel.getNickname() != targetNickname)
     {
-        std::cout << "###################" << std::endl;
         std::string errorMsg = ERR_USERNOTINCHANNEL(kicker.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, kicker.getFd());
         return;
@@ -67,8 +66,5 @@ void commands::Kick(Client &kicker, Server &server)
         sendMessageToChannel(channel, successMsg);
     }
     else
-    {
-        std::cout << "ERROR : failed to kick user" << std::endl;
         sendMessage("ERROR : failed to kick user\r\n", kicker.getFd());
-    }
 }
