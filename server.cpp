@@ -121,6 +121,15 @@ bool Server::Authentication(Server &s, int fds_fd)
     return FALSE;
 }
 
+int     Server::getFdOfExistedClient(std::string nickName, Server &server)
+{
+    std::map<int, Client>::iterator it;
+    for (it = server.client.begin(); it != server.client.end(); it++)
+        if (it->second.getNickname() == nickName)
+            return (it->first);
+    return (-1);
+}
+
 bool Server::isNickThere(Server &s, std::string nickName)
 {
     std::map<int, Client>::iterator it;
@@ -204,7 +213,7 @@ void Server::client_handling(Server &server, int fds_fd)
     // }
 
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
-        cmd.checkJoinParam(server.client[fds_fd], server);
+        cmd.Join(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("KICK"))
         cmd.Kick(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("INVITE"))
@@ -213,6 +222,8 @@ void Server::client_handling(Server &server, int fds_fd)
         cmd.Topic(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("MODE"))
         cmd.Mode(server.client[fds_fd], server);
+    if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
+        cmd.Privmsg(server.client[fds_fd], server);
     server.client[fds_fd].tokens.clear();
     tokens.clear();
 }

@@ -12,7 +12,7 @@
 
 #include "Commands.hpp"
 
-void    commands::checkJoinParam(Client &client, Server &server)
+void    commands::Join(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
@@ -230,10 +230,10 @@ void    commands::checkJoinParam(Client &client, Server &server)
     }
 }
 
-void    checkPrivmsgParam(Client &client ,Server &server)
+void    commands::Privmsg(Client &client ,Server &server)
 {
     //check param validation
-    std::vector<std::string> users;
+    std::vector<std::string> target;
     std::vector<std::string> cmd;
     std::map<std::string, Channel> channel;
     std::string message;
@@ -242,17 +242,17 @@ void    checkPrivmsgParam(Client &client ,Server &server)
 
     if (cmd.size() > 2)
     {
-        users = splitStrToVec(cmd[1], ',');
-        for(size_t i = 0; i < users.size(); i++)
+        target = splitStrToVec(cmd[1], ',');
+        for(size_t i = 0; i < target.size(); i++)
         {
-            if (cmd[i][0] != '#')
+            if (target[i][0] != '#')
             {
                 std::map<int, Client>clients = server.client;
-                int clienFd = server.getFdOfExistedClient(users[i], server);
+                int clienFd = server.getFdOfExistedClient(target[i], server);
                 if (clients.find(clienFd) != clients.end())
                 {
                     message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG ";
-                    for(size_t j = 1; j < cmd.size(); j++)
+                    for(size_t j = 2; j < cmd.size(); j++)
                         message += " " + cmd[j];
                     message += "\r\n";
                     if (send(clienFd, message.c_str(), message.length(),0) == -1)
@@ -268,26 +268,26 @@ void    checkPrivmsgParam(Client &client ,Server &server)
             else
             {
                 channel = server.channel;
-                if (channel.find(users[i]) != channel.end())
+                if (channel.find(target[i]) != channel.end())
                 {
-                    if (channel[users[i]].channelClients.find(client.getNickname()) != channel[users[i]].channelClients.end())
+                    if (channel[target[i]].channelClients.find(client.getNickname()) != channel[target[i]].channelClients.end())
                     {
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG ";
-                        for(size_t k = 1; k < cmd.size(); k++)
+                        for(size_t k = 2; k < cmd.size(); k++)
                             message += " " + cmd[k];
                         message += "\r\n";
-                        server.channel[users[i]].sendMsgToChannel(message, client.getFd());
+                        server.channel[target[i]].sendMsgToChannel(message, client.getFd());
                     }
                     else
                     {
-                        message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + cmd[1] + " :you are not in this channel\r\n";
+                        message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + target[1] + " :you are not in this channel\r\n";
                         if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
                             std::perror("send message error");
                     }
                 }
                 else
                 {
-                    message = ":" + getHostName() + " 401 " + client.getNickname() + " " + cmd[1] + " :channel doesn't exist\r\n";
+                    message = ":" + getHostName() + " 401 " + client.getNickname() + " " + target[1] + " :channel doesn't exist\r\n";
                     if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
                         std::perror("send message error");
                 }
