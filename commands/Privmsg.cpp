@@ -3,7 +3,6 @@
 
 void    commands::Privmsg(Client &client ,Server &server)
 {
-    //check param validation
     std::vector<std::string> target;
     std::vector<std::string> cmd;
     std::map<std::string, Channel> channel;
