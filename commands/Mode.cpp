@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 19:11:54 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/19 20:16:38 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
         sendMessage(errorMsg, c.getFd());
         return;
     }
-
     char modeSymbol = mode[0];
     char modeOption = mode[1];
 
@@ -93,8 +92,25 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
                 sendMessage(ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n", c.getFd());
                 return;
             }
-            channel.setMaxNumUsers(std::stoi(key));
-            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
+            try
+            {
+                int numUsers = std::stoi(key);
+                if (numUsers > std::numeric_limits<int>::max())
+                {
+                    sendMessage("ERROR: Value is too large\r\n", c.getFd());
+                    return;
+                }
+                channel.setMaxNumUsers(numUsers);
+                sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
+            }
+            catch (const std::invalid_argument &)
+            {
+                sendMessage("ERROR: Invalid number format\r\n", c.getFd());
+            }
+            catch (const std::out_of_range &)
+            {
+                sendMessage("ERROR: Value is out of range for int\r\n", c.getFd());
+            }
         }
         else if (modeSymbol == '-')
         {
@@ -203,6 +219,7 @@ void commands::Mode(Client &c, Server &s)
                 sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
             }
         }
+        return;
     }
 
     handleMode(mode, channel, c, target);

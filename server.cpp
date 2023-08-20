@@ -62,10 +62,34 @@ void trimCRLF(std::vector<std::string> &lines)
     }
 }
 
+void    Server::checkPASS(std::string param)
+{
+    if (!param.compare(this->PASS))
+        this->pass = TRUE;
+}
+
+
+void    Server::checkNICK(Server &s, std::string nick, int fd)
+{
+    if (!isNickThere(s, nick))
+    {
+        this->nick = TRUE;
+        s.client[fd].setNickname(nick);
+    }
+}
+
+void    Server::checkUSER(Server &s, std::string user, int fd)
+{
+    if (!checkUserCmd(user))
+    {
+        this->user = TRUE;
+        parseUserInfos(s, user, fd);
+    }
+}
+
 bool Server::Authentication(Server &s, int fds_fd)
 {
-    // for (size_t i = 0; i < tokens.size();i++)
-    //     std::cout << tokens[i] << std::endl;
+    
     std::string cmd[3] = {"PASS", "NICK", "USER"};
     for (size_t j = 0; j < tokens.size(); j = j + 2)
     {
@@ -77,30 +101,22 @@ bool Server::Authentication(Server &s, int fds_fd)
         }
         switch (i)
         {
-        case 0:
-            // tokens[i + 1].erase(tokens[i + 1].size() - 1);
-            if (!tokens[i + 1].compare(this->PASS))
-                this->pass = TRUE;
-            break;
-        case 1:
-            if (!isNickThere(s, tokens[j + 1]))
-            {
-                this->nick = TRUE;
-                s.client[fds_fd].setNickname(tokens[j + 1]);
-            }
-            break;
-        case 2:
-            if (!checkUserCmd(tokens[j + 1]))
-                this->user = TRUE;
-            parseUserInfos(s, tokens[j + 1], fds_fd);
-        default:
-            if (!pass || !nick || !user)
-            {
-                std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
-                tokens.clear();
-                send(fds_fd, failure.c_str(), failure.size() + 1, 0);
-                return FALSE;
-            }
+            case 0:
+                checkPASS(tokens[j + 1]);
+                break;
+            case 1:
+                checkNICK(s, tokens[j + 1], fds_fd);
+                break;
+            case 2:
+                checkUSER(s, tokens[j + 1], fds_fd);
+            default:
+                if (!pass || !nick || !user)
+                {
+                    std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
+                    tokens.clear();
+                    send(fds_fd, failure.c_str(), failure.size() + 1, 0);
+                    return FALSE;
+                }
         }
     }
     if (pass && nick && user)
@@ -191,20 +207,12 @@ void Server::parseUserInfos(Server &s, std::string userInfos, int fds_fd)
 
 void Server::client_handling(Server &server, int fds_fd)
 {
-    // std::cout << "WELCOME TO OUR IRC" << std::endl;
     commands cmd;
     server.client[fds_fd].addVector(server, tokens, fds_fd);
     server.client[fds_fd].setFd(server, fds_fd);
 
-    // check if clients are added
-    // std::cout << "(client_Handling) CLIENTS: " << std::endl;
-    // for (std::map<int, Client>::iterator it = client.begin(); it != client.end(); ++it)
-    // {
-    //     std::cout << it->first << " => " << it->second.getNickname() << '\n';
-    // }
-
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
-        cmd.checkJoinParam(server.client[fds_fd], server);
+        cmd.Join(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("KICK"))
         cmd.Kick(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("INVITE"))
@@ -214,7 +222,7 @@ void Server::client_handling(Server &server, int fds_fd)
     if (!tokens.empty() && !tokens[0].compare("MODE"))
         cmd.Mode(server.client[fds_fd], server);
     if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
-        cmd.checkPrivmsgParam(server.client[fds_fd], server);
+        cmd.Privmsg(server.client[fds_fd], server);
     server.client[fds_fd].tokens.clear();
     tokens.clear();
 }
@@ -240,14 +248,12 @@ void Server::ft_server()
         throw std::runtime_error("Error: bind failed");
 
     for (int i = 0; i < FD_SETSIZE; i++)
-    {
         this->client_socket.insert(client_socket.begin() + i, 0);
-    }
 
     if (listen(this->server_fd, SOMAXCONN) < 0)
         throw std::runtime_error("Error: listen");
 
-    std::cout << "Server listening on port 4444..." << std::endl;
+    std::cout << "Server listening on port " << Port << "..." << std::endl;
 
     memset(fds, 0, sizeof(server.fds));
 
@@ -259,15 +265,10 @@ void Server::ft_server()
     {
         int pollResult = poll(fds, client_fd + 1, -1);
         if (pollResult == -1)
-        {
-            perror("Error in poll");
-            break;
-        }
+            std::runtime_error("Error: poll failed");
 
         if (pollResult == 0)
-        {
             continue;
-        }
         if (fds[0].revents && POLLIN)
         {
             this->Authen = FALSE;
@@ -310,7 +311,7 @@ void Server::ft_server()
                     close(fds[i].fd);
                     fds[i] = server.fds[client_fd];
                     --client_fd;
-                    // client.erase(fds[i].fd);
+                    client.erase(fds[i].fd);
                     continue;
                 }
                 else
@@ -329,7 +330,7 @@ void Server::ft_server()
                         tokens.push_back(input.substr(0, input.find("\n")));
                     }
                     trimCRLF(tokens);
-                    if (!this->Authen && tokens.size() == 6)
+                    if (!this->Authen)
                         Authentication(server, fds[i].fd);
                 }
                 if (this->Authen)
