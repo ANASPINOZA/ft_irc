@@ -93,7 +93,7 @@ void commands::checkJoinParam(Client &client, Server &server)
                     // channel already exist
                     std::cout << "channel exist " << std::endl;
                     // std::cout << "HEEEEEEER" << std::endl;
-                    if (server.channel[channels[i]].getMaxNumUsers() >= server.channel[channels[i]].getUsersNum() || server.channel[channels[i]].getMaxNumUsers() == 0)
+                    if (server.channel[channels[i]].getMaxNumUsers() > server.channel[channels[i]].getUsersNum() || server.channel[channels[i]].getMaxNumUsers() == 0)
                     {
                         std::cout << "HEEEEEEEEERE 0" << std::endl;
                         std::cout << "channel password 1 " << server.channel[channels[i]].getChannelPassword() << std::endl;

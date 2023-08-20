@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 22:43:00 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 02:20:33 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ void commands::Invite(Client &c, Server &s)
     std::string channelName = cmd[1];
     std::string nickname = cmd[0];
 
-    std::cout << "CHANNEL : " << cmd[1] << std::endl;
     if (channelName[0] != '#')
     {
-        std::cout << "+++++++++" << std::endl
+        std::cout << "+++++++++++++++++++++++++++++++++++++++" << std::endl
                   << "ERROR : channel name must start with #" << std::endl
-                  << "+++++++++" << std::endl;
+                  << "+++++++++++++++++++++++++++++++++++++++" << std::endl;
         std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;

@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 22:47:07 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 02:41:46 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
             channel.setOnlyInvited(PUBLIC_CHANNEL);
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
+        else
+        {
+            sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
+        }
         break;
 
     case 't':
@@ -50,11 +54,16 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
         {
             channel.setOnlyOperatorTopic(true);
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
+            sendMessage("Current topic is: " + channel.getChannelTopic() + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
             channel.setOnlyOperatorTopic(false);
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
+        }
+        else
+        {
+            sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
         }
         break;
     case 'k':
@@ -77,10 +86,14 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
                 channel.setChannelPassword("");
                 sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
             }
+            else
+            {
+                sendMessage("ERROR: Channel is not protected by password\r\n", c.getFd());
+            }
         }
         else
         {
-            sendMessage(ERR_KEYSET(c.getNickname(), channel.getChannelName()) + "\r\n", c.getFd());
+            sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
         }
         break;
 
@@ -116,6 +129,10 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
         {
             channel.setMaxNumUsers(0);
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
+        }
+        else
+        {
+            sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
         }
         break;
 
