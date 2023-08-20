@@ -39,7 +39,6 @@ std::string parseModeOptions(const std::string &input)
         }
         else
         {
-            // If any other character is encountered, it's an error
             return "";
         }
     }
@@ -50,4 +49,29 @@ std::string parseModeOptions(const std::string &input)
     }
 
     return std::string(1, firstChar) + secondChar;
+}
+
+std::vector<std::string> topicParsing(const std::string &input)
+{
+    std::vector<std::string> result;
+
+    size_t start = input.find('"');
+    if (start == std::string::npos)
+        return result;
+
+    size_t end = input.find('"', start + 1);
+    if (end == std::string::npos)
+        return result;
+
+    std::string channelName = input.substr(0, start);
+    std::string topic = input.substr(start + 1, end - start - 1);
+
+    size_t additionalArgs = input.find_first_not_of(" \t", end + 1);
+    if (additionalArgs != std::string::npos)
+        return result;
+
+    result.push_back(channelName);
+    result.push_back(topic);
+
+    return result;
 }

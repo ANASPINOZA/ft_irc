@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 16:06:27 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/20 12:07:52 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void commands::Topic(Client &c, Server &s)
 {
-    std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
-    if (cmd.size() < 1 || cmd.size() > 2)
+    std::vector<std::string> cmd = topicParsing(c.getTokens()[1]);
+    if (cmd.size() < 1)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
@@ -24,7 +24,6 @@ void commands::Topic(Client &c, Server &s)
 
     std::string channelName = cmd[0];
     std::string topic;
-
     if (cmd.size() > 1)
         topic = cmd[1];
 

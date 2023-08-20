@@ -1,6 +1,5 @@
 #include "./commands/Commands.hpp"
 
-
 void sendMessage(const std::string &message, const int fd)
 {
     if (send(fd, message.c_str(), message.length(), 0) == -1)
@@ -19,6 +18,4 @@ void sendMessageToChannel(Channel &channel, const std::string &message)
         const Client &client = it->second;
         sendMessage(message, client.getFd());
     }
-
-    // sendMessage(message, sender.getFd());
 }

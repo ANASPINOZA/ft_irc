@@ -6,13 +6,13 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 16:00:17 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/20 12:08:17 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-void handleMode(const std::string &mode, Channel &channel, Client &c, Client &user)
+void handleMode(const std::string &mode, Channel &channel, Client &c, std::string &key)
 {
     if (mode.empty() || mode.size() < 2)
     {
@@ -27,7 +27,6 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
         sendMessage(errorMsg, c.getFd());
         return;
     }
-
     char modeSymbol = mode[0];
     char modeOption = mode[1];
 
@@ -58,40 +57,17 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         break;
-
-    case 'o':
-        if (modeSymbol == '+')
-        {
-            if (channel.isOperator(user.getNickname()))
-            {
-                sendMessage(ERR_USERONCHANNEL(c.getNickname(), user.getNickname()) + "\r\n", c.getFd());
-            }
-            else
-            {
-                channel.setChannelOperators(user.getNickname());
-                sendMessage(RPL_UMODEIS(c.getNickname(), "+" + modeOption) + "\r\n", c.getFd());
-            }
-        }
-        else if (modeSymbol == '-')
-        {
-            if (channel.isOperator(user.getNickname()))
-            {
-                channel.removeOperator(user.getNickname());
-                sendMessage(RPL_UMODEIS(c.getNickname(), "-" + modeOption) + "\r\n", c.getFd());
-            }
-            else
-            {
-                sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), user.getNickname()) + "\r\n", c.getFd());
-            }
-            break;
-        }
-
     case 'k':
         if (modeSymbol == '+')
         {
+            if (key.empty())
+            {
+                sendMessage(ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n", c.getFd());
+                return;
+            }
             channel.setProtectedByPassword(true);
-            channel.setChannelPassword(mode.substr(2));
-            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) + "\r\n", c.getFd());
+            channel.setChannelPassword(key);
+            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
@@ -111,8 +87,30 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
     case 'l':
         if (modeSymbol == '+')
         {
-            channel.setMaxNumUsers(std::stoi(mode.substr(2)));
-            sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + mode.substr(2)) + "\r\n", c.getFd());
+            if (key.empty())
+            {
+                sendMessage(ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n", c.getFd());
+                return;
+            }
+            try
+            {
+                int numUsers = std::stoi(key);
+                if (numUsers > std::numeric_limits<int>::max())
+                {
+                    sendMessage("ERROR: Value is too large\r\n", c.getFd());
+                    return;
+                }
+                channel.setMaxNumUsers(numUsers);
+                sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
+            }
+            catch (const std::invalid_argument &)
+            {
+                sendMessage("ERROR: Invalid number format\r\n", c.getFd());
+            }
+            catch (const std::out_of_range &)
+            {
+                sendMessage("ERROR: Value is out of range for int\r\n", c.getFd());
+            }
         }
         else if (modeSymbol == '-')
         {
@@ -129,7 +127,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, Client &us
 void commands::Mode(Client &c, Server &s)
 {
     std::vector<std::string> cmd = splitCommand(c.getTokens()[1]);
-    if (cmd.size() < 2)
+    if (cmd.size() < 2 || cmd.size() > 3)
     {
         std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
         sendMessage(errorMsg, c.getFd());
@@ -138,7 +136,14 @@ void commands::Mode(Client &c, Server &s)
 
     std::string channelName = cmd[0];
     std::string mode = parseModeOptions(cmd[1]);
-    std::string nickname = cmd[2];
+    std::string target = cmd[2];
+
+    if (mode.empty())
+    {
+        std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
+        return;
+    }
 
     if (channelName[0] != '#')
     {
@@ -163,29 +168,63 @@ void commands::Mode(Client &c, Server &s)
         sendMessage(errorMsg, c.getFd());
         return;
     }
-
-    Client client = s.getClient(s, nickname);
-    if (client.getNickname() != nickname)
+    if (mode[1] == 'o')
     {
-        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
+        std::string nickname = target;
+        if (nickname.empty())
+        {
+            sendMessage(" ERROR: No Client Found\r\n", c.getFd());
+            return;
+        }
+        Client client = s.getClient(s, nickname);
+        if (client.getNickname() != nickname)
+        {
+            std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+            sendMessage(errorMsg, c.getFd());
+            return;
+        }
+
+        if (!s.isNickInChannel(s, nickname, channelName))
+        {
+            std::string errorMsg = ERR_NOSUCHNICK(nickname, channelName) + "\r\n";
+            sendMessage(errorMsg, c.getFd());
+            return;
+        }
+
+        userInChannel = channel.getClientInChannel(nickname);
+        if (userInChannel.getNickname() != nickname)
+        {
+            std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
+            sendMessage(errorMsg, c.getFd());
+            return;
+        }
+
+        if (mode[0] == '+')
+        {
+            if (channel.isOperator(userInChannel.getNickname()))
+            {
+                sendMessage(ERR_USERONCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
+            }
+            else
+            {
+                channel.setChannelOperators(userInChannel.getNickname());
+                sendMessage(RPL_UMODEIS(c.getNickname(), "+" + mode[1]) + "\r\n", c.getFd());
+            }
+        }
+        else if (mode[0] == '-')
+        {
+            if (channel.isOperator(userInChannel.getNickname()))
+            {
+                channel.removeOperator(userInChannel.getNickname());
+                sendMessage(RPL_UMODEIS(c.getNickname(), "-" + mode[1]) + "\r\n", c.getFd());
+            }
+            else
+            {
+                sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
+            }
+        }
         return;
     }
 
-    if (!s.isNickInChannel(s, nickname, channelName))
-    {
-        std::string errorMsg = ERR_NOSUCHNICK(nickname, channelName) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
-        return;
-    }
-
-    userInChannel = channel.getClientInChannel(nickname);
-    if (userInChannel.getNickname() != nickname)
-    {
-        std::string errorMsg = ERR_USERNOTINCHANNEL(c.getNickname(), channelName) + "\r\n";
-        sendMessage(errorMsg, c.getFd());
-        return;
-    }
-
-    handleMode(mode, channel, c, userInChannel);
+    handleMode(mode, channel, c, target);
 }

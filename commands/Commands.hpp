@@ -32,6 +32,11 @@ class Channel;
 #define RPL_TOPIC(nick, channel, topic) "332 " + nick + " " + channel + " :" + topic
 #define RPL_NOTOPIC(nick, channel) "331 " + nick + " " + channel + " :No topic is set"
 
+// //------------------------------------Authen                                            // 
+
+#define ERR_NICKNAMEINUSE(nick) "433 " + nick + " :Nickname is already in use"
+#define ERR_NONICKNAMEGIVEN "431" " :No nickname given\r\n"
+
 class commands
 {
     public:
@@ -45,6 +50,7 @@ class commands
 
 std::vector<std::string> splitCommand(const std::string &cmd);
 std::string parseModeOptions(const std::string &input);
+std::vector<std::string> topicParsing(const std::string &input);
 void sendMessage(const std::string &message, int fd);
 void sendMessageToChannel(Channel &channel, const std::string &message);
 

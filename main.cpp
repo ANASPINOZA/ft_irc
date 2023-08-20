@@ -7,7 +7,7 @@ int main(int ac, char **av)
 
     try {
         if (ac != 3)
-            throw std::runtime_error("ARG: error");
+            throw std::runtime_error("UTILS: ./IrcServer <PORT> <PASSWORD>");
         server.SomeParss(av);
         server.ft_server();
     }
