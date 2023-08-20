@@ -39,13 +39,13 @@ class Channel;
 
 class commands
 {
-public:
-    void Kick(Client &c, Server &s);
-    void Topic(Client &c, Server &s);
-    void Invite(Client &c, Server &s);
-    void Mode(Client &c, Server &s);
-    void Join(Client &client, Server &server);
-    void Privmsg(Client &client, Server &server);
+    public:
+        void Kick(Client &c, Server &s);
+        void Topic(Client &c, Server &s);
+        void Invite(Client &c, Server &s);
+        void Mode(Client &c, Server &s);
+        void Join(Client &client ,Server &server);
+        void Privmsg(Client &client ,Server &server);
 };
 
 std::vector<std::string> splitCommand(const std::string &cmd);
