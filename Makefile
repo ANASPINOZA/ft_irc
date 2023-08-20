@@ -1,6 +1,6 @@
 NAME = server
 
-SRC = server.cpp main.cpp client.cpp Channel.cpp ./commands/Join.cpp ./commands/Invite.cpp ./commands/Mode.cpp ./commands/Topic.cpp ./commands/Kick.cpp msgHandler.cpp ./commands/parsing.cpp
+SRC = server.cpp main.cpp client.cpp Channel.cpp ./commands/Join.cpp ./commands/Invite.cpp ./commands/Privmsg.cpp ./commands/Mode.cpp ./commands/Topic.cpp ./commands/Kick.cpp msgHandler.cpp ./commands/parsing.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

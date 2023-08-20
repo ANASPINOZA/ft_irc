@@ -55,6 +55,9 @@ class Server {
         std::map<std::string, Channel> channel;
         std::map<int, Client > client;
         struct pollfd fds[1024];
+        void    checkPASS(std::string param);
+        void    checkNICK(Server &s, std::string nick, int fd);
+        void    checkUSER(Server &s, std::string user, int fd);
         
     private:
         struct sockaddr_in address;
