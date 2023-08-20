@@ -54,5 +54,5 @@ std::string parseModeOptions(const std::string &input);
 std::string getTextAfterColon(const std::string &cmd);
 void sendMessage(const std::string &message, int fd);
 void sendMessageToChannel(Channel &channel, const std::string &message);
-
+void checkIfDisconnected(Server &server);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 14:19:57 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 15:50:26 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void commands::Kick(Client &kicker, Server &server)
 
     if (channel.removeClientFromChannel(server, userToKickInChannel, channelName))
     {
-        channel.setUsersNum(channel.getUsersNum() - 1);
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
         sendMessage(successMsg, userToKickInChannel.getFd());
         sendMessageToChannel(channel, successMsg);

@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/20 13:22:46 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/20 15:50:37 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 	}
 
 	server.channel[channelName].channelClients.erase(nickname);
+	server.channel[channelName].usersNum--;
 
 	return true;
 }
