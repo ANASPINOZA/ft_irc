@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/19 20:16:38 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/20 12:08:17 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,11 @@ void commands::Mode(Client &c, Server &s)
     std::string target = cmd[2];
 
     if (mode.empty())
+    {
+        std::string errorMsg = ERR_NEEDMOREPARAMS(c.getNickname()) + "\r\n";
+        sendMessage(errorMsg, c.getFd());
         return;
+    }
 
     if (channelName[0] != '#')
     {
@@ -223,7 +227,4 @@ void commands::Mode(Client &c, Server &s)
     }
 
     handleMode(mode, channel, c, target);
-    // // print channel password
-    // std::cout << "channel password : " << channel.getChannelPassword() << std::endl;
-    // // print channel topic
 }

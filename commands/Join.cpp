@@ -168,7 +168,6 @@ void commands::Join(Client &client, Server &server)
         return;
     }
 }
-
 int Server::getFdOfExistedClient(std::string nickName, Server &server)
 {
     std::map<int, Client>::iterator it;
