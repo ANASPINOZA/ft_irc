@@ -26,14 +26,12 @@ void    commands::Privmsg(Client &client ,Server &server)
                     for(size_t j = 2; j < cmd.size(); j++)
                         message += " " + cmd[j];
                     message += "\r\n";
-                    if (send(clienFd, message.c_str(), message.length(),0) == -1)
-                        std::perror("send message error");
+                    sendMessage(message, clienFd);
                 }
                 else
                 {
                     message = ":" + getHostName() + " 401 " + client.getRealName() + " " + cmd[1] + " :user doesn't exist\r\n";
-                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
-                        std::perror("send message error");
+                    sendMessage(message, clienFd);
                 }
             }
             else
@@ -52,15 +50,13 @@ void    commands::Privmsg(Client &client ,Server &server)
                     else
                     {
                         message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + target[1] + " :you are not in this channel\r\n";
-                        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
-                            std::perror("send message error");
+                        sendMessage(message, client.getFd());
                     }
                 }
                 else
                 {
                     message = ":" + getHostName() + " 401 " + client.getNickname() + " " + target[1] + " :channel doesn't exist\r\n";
-                    if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
-                        std::perror("send message error");
+                    sendMessage(message, client.getFd());
                 }
             }
 
@@ -68,9 +64,7 @@ void    commands::Privmsg(Client &client ,Server &server)
     }
     else
     {
-        // error ... send a reply to the client and following the limechat syntax
         message = ":" + getHostName() + " 461 " + client.getNickname() + " :PRIVMSG command requires 2 arguments\r\n";
-        if (send(client.getFd(), message.c_str(), message.length(),0) == -1)
-			std::perror("send message error");
+        sendMessage(message, client.getFd());
     }
 }
