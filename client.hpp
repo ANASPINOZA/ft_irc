@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 17:23:16 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:36:19 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ public:
     void setOP(int state);
     int getFd() const;
     void setFd(Server &s, int Fd);
+    void setIp(char *ip);
+    char *getIp();
 };
 
 std::string getHostName();

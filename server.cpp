@@ -142,7 +142,6 @@ bool Server::isFdThere(Server &s, int fd)
 
 void Server::Failure(Server &s, int fds_fd, int idx)
 {
-    (void)idx;
     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
     std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
     send(fds_fd, failure.c_str(), failure.size() + 1, 0);
@@ -274,10 +273,11 @@ void Server::parseUserInfos(Server &s, std::string userInfos, int fds_fd)
 }
 /////////////////////////////////////////////////////////////////////////////
 
-void Server::client_handling(Server &server, int fds_fd)
+void Server::client_handling(Server &server, int fds_fd, int idx)
 {
     commands cmd;
     server.client[fds_fd].addVector(server, tokens, fds_fd);
+    server.client[fds_fd].setIp(inet_ntoa(clientAddr.sin_addr));
     server.client[fds_fd].setFd(server, fds_fd);
     checkIfDisconnected(server);
 
@@ -296,7 +296,10 @@ void Server::client_handling(Server &server, int fds_fd)
     else if (!tokens.empty() && !tokens[0].compare("BOT"))
         cmd.Bot(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("QUIT"))
-        std::cout << "Client Quit......" << std::endl;
+    {
+        close(fds_fd);
+        fds.erase(fds.begin() + idx);
+    }
     else if (!tokens.empty() && !tokens[0].compare("PONG"))
         std::cout << "PING..." << std::endl;
     else if (!tokens.empty())
@@ -363,7 +366,6 @@ void Server::ft_server()
             tokens.clear();
             this->clientSocket = accept(this->server_fd, (struct sockaddr *)&clientAddr, &addrSize);
             fcntl(clientSocket, F_SETFL, O_NONBLOCK);
-            printf("socket : %d\n", clientSocket); // 4
             if (clientSocket == -1)
             {
                 perror("Error accepting connection");
@@ -408,7 +410,6 @@ void Server::ft_server()
                 }
                 else
                 {
-                    std::cout << server.client[fds[i].fd].buffer << std::endl;
                     std::string input = server.client[fds[i].fd].buffer;
                     tmp = save + input;
                     if (!containsNewline(tmp))
@@ -439,7 +440,7 @@ void Server::ft_server()
                     if (!server.client[fds[i].fd].getAuthen() && !Authentication(server, fds[i].fd, i))
                         break;
                     else if (server.client[fds[i].fd].getAuthen())
-                        client_handling(server, fds[i].fd);
+                        client_handling(server, fds[i].fd, i);
                 }
             }
         }
@@ -475,32 +476,3 @@ Channel &Server::getChannelByName(std::string channelName)
 }
 
 // -------------------------------- Mountassir
-
-// bool Server::removeClientFromServer(Server &s, int fd, int idx)
-// {
-//     (void)s;
-//     std::map<int, Client>::iterator it;
-//     // std::vector<pollfd>::iterator it2;
-//     // for (it2 = fds.begin(); it2 != fds.end(); it2++)
-//     // {
-//     //     if (it2->fd == fd)
-//     //     {
-//     //         fds.erase(it2);
-//     //         break;
-//     //     }
-//     // }
-
-//     int res = 0;
-//     close(fd);
-//     for (it = s.client.begin(); it != s.client.end(); it++)
-//     {
-//         if (it->first == fd)
-//         {
-//             s.client.erase(it);
-//             res = 1;
-//         }
-//     }
-//     if (res)
-//         fds.erase(fds.begin() + idx);
-//     return (res);
-// }
