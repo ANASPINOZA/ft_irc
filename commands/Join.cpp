@@ -56,8 +56,7 @@ void commands::Join(Client &client, Server &server)
                     }
                     else
                     {
-                        message = ":" + getHostName() + " 403 " + client.getNickname() + " :" + channels[i] + " No such channel\r\n";
-                        sendMessage(message, client.getFd());
+                        sendMessage(ERR_NOSUCHCHANNEL(client.getNickname(), channels[i]) + "\r\n", client.getFd());
                         return;
                     }
                 }
@@ -72,16 +71,14 @@ void commands::Join(Client &client, Server &server)
                             bool isInvited = server.channel[channels[i]].isClientisInvited(client.getNickname(), server);
                             if (!isInvited)
                             {
-                                message = ":" + getHostName() + " 473 " + client.getNickname() + " :" + channels[i] + " Cannot join channel (+i)\r\n";
-                                sendMessage(message, client.getFd());
+                                sendMessage(ERR_INVITEONLYCHAN(client.getNickname(), channels[i]) + "\r\n", client.getFd());
                             }
                             else
                             {
                                 // is invited code here
                                 if (server.channel[channels[i]].channelClients.find(client.getNickname()) != server.channel[channels[i]].channelClients.end())
                                 {
-                                    message = ":" + getHostName() + " 400 " + client.getNickname() + " :this client is already exist in this channel !\r\n";
-                                    sendMessage(message, client.getFd());
+                                    sendMessage(ERR_USERONCHANNEL(client.getNickname(), channels[i]) + "\r\n", client.getFd());
                                 }
                                 else
                                 {
@@ -109,8 +106,7 @@ void commands::Join(Client &client, Server &server)
                                 std::map<std::string, Client> clients = server.channel[channels[i]].channelClients;
                                 if (clients.find(client.getNickname()) != clients.end())
                                 {
-                                    message = ":" + getHostName() + " 400 " + client.getNickname() + " :this client is already exist in this channel !\r\n";
-                                    sendMessage(message, client.getFd());
+                                    sendMessage(ERR_USERONCHANNEL(client.getNickname(), channels[i]) + "\r\n", client.getFd());
                                 }
                                 else
                                 {
@@ -129,7 +125,7 @@ void commands::Join(Client &client, Server &server)
                     }
                     else
                     {
-                        sendMessage(ERR_CHANNELISFULL(client.getNickname(), channels[i]), client.getFd());
+                        sendMessage(ERR_CHANNELISFULL(client.getNickname(), channels[i]) + "\r\n", client.getFd());
                         return;
                     }
                 }
@@ -143,8 +139,7 @@ void commands::Join(Client &client, Server &server)
     }
     else
     {
-        message = ":" + getHostName() + " 461 * " + " : " + "JOIN" + " Not enough parameters\r\n";
-        sendMessage(message, client.getFd());
+        sendMessage(ERR_NEEDMOREPARAMS(client.getNickname()) + "\r\n", client.getFd());
         return;
     }
 }

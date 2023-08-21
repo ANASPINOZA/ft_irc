@@ -29,8 +29,7 @@ void    commands::Privmsg(Client &client ,Server &server)
                 }
                 else
                 {
-                    message = ":" + getHostName() + " 401 " + client.getRealName() + " " + cmd[1] + " :user doesn't exist\r\n";
-                    sendMessage(message, clienFd);
+                    sendMessage(ERR_NOSUCHNICK(client.getNickname(), target[i]) + "\r\n", client.getFd());
                 }
             }
             else
@@ -48,14 +47,13 @@ void    commands::Privmsg(Client &client ,Server &server)
                     }
                     else
                     {
-                        message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + target[0] + " :you are not in this channel\r\n";
-                        sendMessage(message, client.getFd());
+                       sendMessage(ERR_NOSUCHNICK(client.getNickname(), target[i]) + "\r\n", client.getFd());
                     }
                 }
                 else
                 {
-                    message = ":" + getHostName() + " 401 " + client.getNickname() + " " + target[0] + " :channel doesn't exist\r\n";
-                    sendMessage(message, client.getFd());
+                    sendMessage(ERR_NOSUCHNICK(client.getNickname(), target[i]) + "\r\n", client.getFd());
+
                 }
             }
 
@@ -63,7 +61,6 @@ void    commands::Privmsg(Client &client ,Server &server)
     }
     else
     {
-        message = ":" + getHostName() + " 461 " + client.getNickname() + " :PRIVMSG command requires 2 arguments\r\n";
-        sendMessage(message, client.getFd());
+        sendMessage(ERR_NEEDMOREPARAMS(client.getNickname()) + "\r\n", client.getFd());
     }
 }
