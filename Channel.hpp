@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
 /*   Updated: 2023/08/21 19:35:12 by ielmakhf         ###   ########.fr       */
@@ -52,7 +52,7 @@ public:
 	Channel();
 	Channel(std::string name, Client user);
 	~Channel();
-	
+
 	std::map<std::string, Client> channelClients;
 	std::vector<std::string> channelOperators;
 	//----------------------------------------------------------------- Getters
@@ -95,7 +95,6 @@ public:
 	bool isOperator(std::string nickname);
 	void removeOperator(std::string nickname);
 	void sendMsgToChannel(std::string message, int fd);
-	//----------------------------------------------------------------- Operators
 };
 
 #endif

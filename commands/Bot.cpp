@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:30:27 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 18:54:41 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:57:18 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ std::vector<std::string> getSongs()
     songs.push_back("https://www.youtube.com/watch?v=EV-h9O4DzAg");
 
     return songs;
-    
 };
 
 std::string getRandomNumber()

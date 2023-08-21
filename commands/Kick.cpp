@@ -57,6 +57,12 @@ void commands::Kick(Client &kicker, Server &server)
         return;
     }
 
+    if (kicker.getNickname() == targetNickname)
+    {
+        std::string errorMsg = ERR_CANTKILLSERVER(kicker.getNickname()) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
+        return;
+    }
     if (channel.removeClientFromChannel(server, userToKickInChannel, channelName))
     {
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";

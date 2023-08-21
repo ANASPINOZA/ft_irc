@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 17:22:35 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:00:26 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
-/*
-** ------------------------------- CONSTRUCTOR --------------------------------
-*/
 
 Channel::Channel()
 {
@@ -31,10 +28,6 @@ Channel::Channel(std::string name, Client user)
 	channelClients[user.getNickname()] = user;
 	setOnlyOperatorTopic(true);
 }
-
-/*
-** -------------------------------- DESTRUCTOR --------------------------------
-*/
 
 Channel::~Channel()
 {
@@ -258,8 +251,8 @@ void Channel::sendMsgToChannel(std::string message, int fd)
 	(void)fd;
 	for (std::map<std::string, Client>::iterator it = channelClients.begin(); it != channelClients.end(); it++)
 	{
-			if (send(it->second.getFd(), message.c_str(), message.length(), 0) == -1)
-				std::perror("send message error");
+		if (send(it->second.getFd(), message.c_str(), message.length(), 0) == -1)
+			std::perror("send message error");
 	}
 }
 
