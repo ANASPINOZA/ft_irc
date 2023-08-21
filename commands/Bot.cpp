@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:30:27 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 18:54:41 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 21:10:52 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ std::vector<std::string> getSongs()
     songs.push_back("https://www.youtube.com/watch?v=EV-h9O4DzAg");
 
     return songs;
-    
 };
 
 std::string getRandomNumber()
@@ -63,9 +62,7 @@ std::string getRandomNumber()
 std::string getRandom(const std::vector<std::string> &data)
 {
     if (data.empty())
-    {
-        return "No data available.";
-    }
+        return "ERROR :No data available.";
     return data[rand() % data.size()];
 }
 
@@ -104,6 +101,6 @@ void commands::Bot(Client &c, Server &s)
     }
     else
     {
-        sendMessage("You are not on the server\r\n", c.getFd());
+        sendMessage("000 ERROR : You are not on the server\r\n", c.getFd());
     }
 }

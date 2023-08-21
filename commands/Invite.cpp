@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 20:38:02 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 21:10:06 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void commands::Invite(Client &c, Server &s)
 
     Channel &channel = s.getChannelByName(channelName);
 
-    if (channel.getChannelName() != channelName) // assuming a default channel got returned
+    if (channel.getChannelName() != channelName)
     {
         std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
@@ -82,7 +82,7 @@ void commands::Invite(Client &c, Server &s)
 
     if (!channel.addClientToChannel(invitedClient))
     {
-        std::string errorMsg = "ERROR : failed to invite user, Channel Full or User Doesnt exist\r\n";
+        std::string errorMsg = "000 ERROR : failed to invite user, Channel Full or User Doesnt exist\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }

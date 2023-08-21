@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
 /*   Updated: 2023/08/21 19:36:51 by ielmakhf         ###   ########.fr       */
@@ -92,7 +92,6 @@ void Client::setAuthen(bool type)
 {
     this->Authen = type;
 }
-
 
 bool Client::getPass()
 {

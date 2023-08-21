@@ -1,6 +1,6 @@
 #include "Commands.hpp"
 
-void    commands::Join(Client &client, Server &server)
+void commands::Join(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
@@ -43,6 +43,7 @@ void    commands::Join(Client &client, Server &server)
                         userNum = server.channel[channels[i]].getUsersNum();
                         server.channel[channels[i]].setUsersNum(userNum + 1);
                         server.channel[channels[i]].setChannelPassword(keys[i]);
+                        server.channel[channels[i]].setProtectedByPassword(true); //mountassir
 
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + server.hostBuffer + " JOIN " + channels[i] + "\r\n";
                         sendMessage(message, client.getFd());
@@ -98,7 +99,6 @@ void    commands::Join(Client &client, Server &server)
                         }
                         else
                         {
-                            // if channel is public (anyone can join)
                             if (keys.size() > i && server.channel[channels[i]].getChannelPassword() != keys[i])
                             {
                                 message = ":" + getHostName() + " 464 * :Password incorrect\r\n";
@@ -129,8 +129,7 @@ void    commands::Join(Client &client, Server &server)
                     }
                     else
                     {
-                        message = ":" + getHostName() + " 471 " + client.getNickname() + " " + channels[i] + " :Cannot join channel (+l)\r\n";
-                        sendMessage(message, client.getFd());
+                        sendMessage(ERR_CHANNELISFULL(client.getNickname(), channels[i]), client.getFd());
                         return;
                     }
                 }
@@ -149,9 +148,3 @@ void    commands::Join(Client &client, Server &server)
         return;
     }
 }
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
-/* ************************************************************************** */
