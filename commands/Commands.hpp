@@ -26,7 +26,7 @@ class Channel;
 #define ERR_INVITEONLYCHAN(nick, channel) "473 " + nick + " " + channel + " :Cannot join channel (+i)"
 #define RPL_CHANNELMODEIS(nick, channel, mode) "324 " + nick + " " + channel + " " + mode + " :Channel modes"
 #define RPL_UMODEIS(nick, mode) "221 " + nick + " " + mode + " :is your mode"
-#define RPL_KICK(nick, channel, user, reason) "KICK " + channel + " " + user + " " + reason
+#define RPL_KICK(nick, channel, user, target ,reason, host) nick + "!~" + user + host + "@" + " KICK " + channel + " " + target + " :" + reason + "\r\n"
 #define RPL_INVITING(nick, user, channel) "341 " + nick + " " + user + " " + channel + " :Inviting"
 #define RPL_TOPIC(nick, channel, topic) "332 " + nick + " " + channel + " :" + topic
 #define RPL_NOTOPIC(nick, channel) "331 " + nick + " " + channel + " :No topic is set"
