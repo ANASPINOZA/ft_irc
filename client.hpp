@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 12:18:58 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:55:36 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ private:
 public:
     Client();
     ~Client();
-    char    buffer[5];
+    char    buffer[1024];
     std::vector<std::string> tokens;
     std::vector<std::string> getTokens();
     void addData(std::string &new_token);
