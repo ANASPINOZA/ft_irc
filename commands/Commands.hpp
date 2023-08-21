@@ -47,6 +47,7 @@ public:
     void Mode(Client &c, Server &s);
     void Join(Client &client, Server &server);
     void Privmsg(Client &client, Server &server);
+    void Quit(Client &client, Server &server);
 };
 
 std::vector<std::string> splitCommand(const std::string &cmd);
