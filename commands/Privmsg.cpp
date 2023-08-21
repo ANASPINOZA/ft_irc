@@ -48,13 +48,13 @@ void    commands::Privmsg(Client &client ,Server &server)
                     }
                     else
                     {
-                        message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + target[1] + " :you are not in this channel\r\n";
+                        message = ":" + getHostName() +  " 401 " + client.getNickname() + " " + target[0] + " :you are not in this channel\r\n";
                         sendMessage(message, client.getFd());
                     }
                 }
                 else
                 {
-                    message = ":" + getHostName() + " 401 " + client.getNickname() + " " + target[1] + " :channel doesn't exist\r\n";
+                    message = ":" + getHostName() + " 401 " + client.getNickname() + " " + target[0] + " :channel doesn't exist\r\n";
                     sendMessage(message, client.getFd());
                 }
             }
