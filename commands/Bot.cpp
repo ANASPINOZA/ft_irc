@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:30:27 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 18:18:25 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:54:41 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void commands::Bot(Client &c, Server &s)
     std::string botOption = getTextAfterColon(c.getTokens()[1]);
     if (botOption.empty())
     {
-        sendMessage("Bot Option is empty\n Usage: BOT :<option> \n Options: \n\t- d for dad jokes \n\t- s for random song \n\t- g for guess \n\t- f to get interesting facts  \r\n", c.getFd());
+        std::string mssg = ERR_BOT(c.getNickname());
+        sendMessage(mssg, c.getFd());
         return;
     }
     if (s.isNickThere(s, c.getNickname()))
@@ -84,25 +85,25 @@ void commands::Bot(Client &c, Server &s)
         switch (botOption[0])
         {
         case 'd':
-            response = "Dad Joke: \n" + getRandom(getJokes()) + "\r\n";
+            response = RPL_BOT(c.getNickname()) + " Dad Joke: " + getRandom(getJokes()) + "\r\n";
             break;
         case 's':
-            response = "Song: \n" + getRandom(getSongs()) + "\r\n";
+            response = RPL_BOT(c.getNickname()) + " Song: " + getRandom(getSongs()) + "\r\n";
             break;
         case 'g':
-            response = "Guess: \n" + getRandomNumber() + "\r\n";
+            response = RPL_BOT(c.getNickname()) + " Guess: " + getRandomNumber() + "\r\n";
             break;
         case 'f':
-            response = "Fact: \n" + getRandom(getInterestingFacts()) + "\r\n";
+            response = RPL_BOT(c.getNickname()) + " Fact: " + getRandom(getInterestingFacts()) + "\r\n";
             break;
         default:
-            response = "Invalid Bot Option\n";
+            response = ERR_BOT(c.getNickname());
             break;
         }
         sendMessage(response, c.getFd());
     }
     else
     {
-        sendMessage("You are not on the server\n", c.getFd());
+        sendMessage("You are not on the server\r\n", c.getFd());
     }
 }

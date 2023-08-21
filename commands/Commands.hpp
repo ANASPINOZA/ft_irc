@@ -32,6 +32,8 @@ class Channel;
 #define RPL_TOPIC(nick, channel, topic) "332 " + nick + " " + channel + " :" + topic
 #define RPL_NOTOPIC(nick, channel) "331 " + nick + " " + channel + " :No topic is set"
 #define RPL_YOUREOPER(nick) "381 " + nick + " :You are now an IRC operator"
+#define ERR_BOT(nick) "381 " + nick + " :Bot Option is empty Usage: BOT :<option>  Options: -d for dad jokes -s for random song -g for guess -f to get interesting facts" + "\r\n"
+#define RPL_BOT(nick) "381 " + nick
 // //------------------------------------Authen                                            //
 
 #define ERR_NICKNAMEINUSE(nick) "433 " + nick + " :Nickname is already in use"
