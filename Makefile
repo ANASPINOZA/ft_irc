@@ -7,7 +7,7 @@ DEP = $(OBJ:.o=.d)
 
 CPP = c++
 
-INC = server.hpp client.hpp Channel.hpp  ./commands/commands.hpp msgHandler.hpp
+INC = server.hpp client.hpp Channel.hpp  ./commands/Commands.hpp msgHandler.hpp
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
