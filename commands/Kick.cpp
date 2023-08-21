@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 20:38:08 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 21:09:59 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ void commands::Kick(Client &kicker, Server &server)
         sendMessageToChannel(channel, successMsg);
     }
     else
-        sendMessage("ERROR : failed to kick user\r\n", kicker.getFd());
+        sendMessage("000 ERROR : failed to kick user\r\n", kicker.getFd());
 }

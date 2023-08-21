@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 18:58:53 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 21:08:24 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
         {
             channel.setOnlyOperatorTopic(true);
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption) + "\r\n", c.getFd());
-            sendMessage("Current topic is: " + channel.getChannelTopic() + "\r\n", c.getFd());
+            sendMessage(RPL_TOPIC(c.getNickname(), channel.getChannelName(), channel.getChannelTopic()) + "\r\n", c.getFd());
         }
         else if (modeSymbol == '-')
         {
@@ -83,7 +83,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
                 sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
             }
             else
-                sendMessage("ERROR: Channel is not protected by password\r\n", c.getFd());
+                sendMessage("000 ERROR: Channel is not protected by password\r\n", c.getFd());
         }
         else
             sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
@@ -102,19 +102,24 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
                 int numUsers = std::stoi(key);
                 if (numUsers > std::numeric_limits<int>::max())
                 {
-                    sendMessage("ERROR: Value is too large\r\n", c.getFd());
+                    sendMessage("000 ERROR: Value is too large\r\n", c.getFd());
                     return;
                 }
-                channel.setMaxNumUsers(numUsers);
-                sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
+                if (numUsers > 0)
+                {
+                    channel.setMaxNumUsers(numUsers);
+                    sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "+" + modeOption + " " + key) + "\r\n", c.getFd());
+                }
+                else
+                    sendMessage("000 ERROR: Value must be greater than 0\r\n", c.getFd());
             }
             catch (const std::invalid_argument &)
             {
-                sendMessage("ERROR: Invalid number format\r\n", c.getFd());
+                sendMessage("000 ERROR: Invalid number format\r\n", c.getFd());
             }
             catch (const std::out_of_range &)
             {
-                sendMessage("ERROR: Value is out of range for int\r\n", c.getFd());
+                sendMessage("000 ERROR: Value is out of range for int\r\n", c.getFd());
             }
         }
         else if (modeSymbol == '-')
@@ -180,7 +185,7 @@ void commands::Mode(Client &c, Server &s)
         std::string nickname = target;
         if (nickname.empty())
         {
-            sendMessage(" ERROR: No Client Found\r\n", c.getFd());
+            sendMessage(ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n", c.getFd());
             return;
         }
         Client client = s.getClient(s, nickname);
@@ -209,7 +214,7 @@ void commands::Mode(Client &c, Server &s)
         if (mode[0] == '+')
         {
             if (channel.isOperator(userInChannel.getNickname()))
-                sendMessage("ERROR: User is already an operator\r\n", c.getFd());
+                sendMessage("000 ERROR: User is already an operator\r\n", c.getFd());
             else
             {
                 channel.setChannelOperators(userInChannel.getNickname());
