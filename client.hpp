@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 19:36:19 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 20:47:34 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ class Client
 {
 private:
     std::string nickname;
-    // User            user;
     char *ipv4;
     int fd;
     std::string username;
@@ -41,15 +40,15 @@ private:
     std::string unused;
     std::string realname;
     int isOperator;
-    bool    pass;
-    bool    nick;
-    bool    user;
-    bool    Authen;
+    bool pass;
+    bool nick;
+    bool user;
+    bool Authen;
 
 public:
     Client();
     ~Client();
-    char    buffer[1024];
+    char buffer[1024];
     std::vector<std::string> tokens;
     std::vector<std::string> getTokens();
     void addData(std::string &new_token);
@@ -69,8 +68,8 @@ public:
     std::string getNickname();
     int getOp();
     void setPass(bool type);
-	void setNick(bool type);
-	void setUser(bool type);
+    void setNick(bool type);
+    void setUser(bool type);
     void setAuthen(bool type);
     bool getPass();
     bool getUser();
