@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:00 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 14:21:52 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:28:14 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void commands::Invite(Client &c, Server &s)
 
     if (!s.isChannelIsThere(channelName))
     {
+        std::cout << "channel makaynach1: " << channelName << std::endl;
         std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
@@ -51,7 +52,7 @@ void commands::Invite(Client &c, Server &s)
 
     if (channel.getChannelName() != channelName) // assuming a default channel got returned
     {
-        std::string errorMsg = ERR_NOSUCHNICK(c.getNickname(), nickname) + "\r\n";
+        std::string errorMsg = ERR_NOSUCHCHANNEL(c.getNickname(), channelName) + "\r\n";
         sendMessage(errorMsg, c.getFd());
         return;
     }
