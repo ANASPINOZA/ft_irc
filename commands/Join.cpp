@@ -128,8 +128,7 @@ void commands::Join(Client &client, Server &server)
                     }
                     else
                     {
-                        message = ":" + getHostName() + " 471 " + client.getNickname() + " " + channels[i] + " :Cannot join channel (+l)\r\n";
-                        sendMessage(message, client.getFd());
+                        sendMessage(ERR_CHANNELISFULL(client.getNickname(), channels[i]), client.getFd());
                         return;
                     }
                 }
