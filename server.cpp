@@ -252,6 +252,7 @@ void Server::client_handling(Server &server, int fds_fd)
     commands cmd;
     server.client[fds_fd].addVector(server, tokens, fds_fd);
     server.client[fds_fd].setFd(server, fds_fd);
+    checkIfDisconnected(server);
 
     if (!tokens.empty() && !tokens[0].compare("JOIN"))
         cmd.Join(server.client[fds_fd], server);
@@ -270,7 +271,6 @@ void Server::client_handling(Server &server, int fds_fd)
         std::string mssg = std::string(":") + getHostName() + " 401 " + server.client.at(fds_fd).getNickname() + " :uknown command" + "\r\n";
         sendMessage(mssg, fds_fd);
     }
-    checkIfDisconnected(server);
     server.client[fds_fd].tokens.clear();
     tokens.clear();
 }
@@ -442,4 +442,20 @@ Channel &Server::getChannelByName(std::string channelName)
 
     static Channel defaultChannel;
     return defaultChannel;
+}
+
+// -------------------------------- Mountassir
+
+bool Server::removeClientFromServer(Server &s, int fd)
+{
+    std::map<int, Client>::iterator it;
+    for (it = s.client.begin(); it != s.client.end(); it++)
+    {
+        if (it->first == fd)
+        {
+            s.client.erase(it);
+            return true;
+        }
+    }
+    return false;
 }
