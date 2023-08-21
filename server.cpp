@@ -62,50 +62,49 @@ void trimCRLF(std::vector<std::string> &lines)
     }
 }
 
-bool    Server::checkPASS(Server &s, std::string param, int idx, int fds_fd)
+bool Server::checkPASS(Server &s, std::string param, int idx, int fds_fd)
 {
     if (!param.compare(this->PASS))
         s.client[fds_fd].setPass(TRUE);
-    else {
+    else
+    {
         Failure(s, fds_fd, idx);
         return FALSE;
     }
     return TRUE;
 }
 
-
-bool    Server::checkNICK(Server &s, std::string nick, int fd, int idx)
+bool Server::checkNICK(Server &s, std::string nick, int fd, int idx)
 {
     if (!isNickThere(s, nick))
     {
-        this->nick = TRUE;
         s.client[fd].setNick(TRUE);
         s.client[fd].setNickname(nick);
     }
-    else {
+    else
+    {
         Failure(s, fd, idx);
         return FALSE;
     }
     return TRUE;
 }
 
-bool    Server::checkUSER(Server &s, std::string user, int fd, int idx)
+bool Server::checkUSER(Server &s, std::string user, int fd, int idx)
 {
     if (!checkUserCmd(user))
     {
-        this->user = TRUE;
         s.client[fd].setUser(TRUE);
         parseUserInfos(s, user, fd);
     }
-    else {
+    else
+    {
         Failure(s, fd, idx);
         return FALSE;
     }
     return TRUE;
 }
 
-
-bool    Server::isFdThere(Server &s, int fd)
+bool Server::isFdThere(Server &s, int fd)
 {
     std::map<int, Client>::iterator it;
     for (it = s.client.begin(); it != s.client.end(); it++)
@@ -114,17 +113,17 @@ bool    Server::isFdThere(Server &s, int fd)
     return (FALSE);
 }
 
-void    Server::Failure(Server &s, int fds_fd, int idx)
+void Server::Failure(Server &s, int fds_fd, int idx)
 {
+    std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
     std::string failure = "\033[1;31mPLEASE TRY AGAIN\033[0m\n";
     send(fds_fd, failure.c_str(), failure.size() + 1, 0);
     close(fds_fd);
-    if (isFdThere(s , fds_fd))
+    if (isFdThere(s, fds_fd))
         s.client.erase(fds_fd);
     fds.erase(fds.begin() + idx);
     tokens.clear();
 }
-
 
 bool Server::Authentication(Server &s, int fds_fd, int idx)
 {
@@ -134,7 +133,8 @@ bool Server::Authentication(Server &s, int fds_fd, int idx)
         return FALSE;
     if (!tokens[0].compare("USER") && !checkUSER(s, tokens[1], fds_fd, idx))
         return FALSE;
-    if (tokens[0].compare("PASS") && tokens[0].compare("USER") && tokens[0].compare("NICK")) {
+    if (tokens[0].compare("PASS") && tokens[0].compare("USER") && tokens[0].compare("NICK"))
+    {
         Failure(s, fds_fd, idx);
         tokens.clear();
         return FALSE;
@@ -269,9 +269,14 @@ void Server::client_handling(Server &server, int fds_fd)
     else if (!tokens.empty()) {
         std::string mssg = std::string(":") + getHostName() + " 401 " + server.client.at(fds_fd).getNickname() + " :uknown command" + "\r\n";
         sendMessage(mssg, fds_fd);
-     }
+    }
+    // checkIfDisconnected(server);
     server.client[fds_fd].tokens.clear();
     tokens.clear();
+}
+
+bool containsNewline(const std::string& input) {
+    return input.find('\n') != std::string::npos;
 }
 
 void Server::ft_server()
@@ -303,14 +308,14 @@ void Server::ft_server()
 
     std::cout << "Server listening on port " << Port << "..." << std::endl;
 
-
-
     pollfd clientPoll;
     clientPoll.fd = this->server_fd;
     clientPoll.events = POLLIN;
     clientPoll.revents = 0;
     fds.push_back(clientPoll);
     client_fd = 0;
+    std::string save;
+    std::string tmp;
     while (true)
     {
         int pollResult = poll(&fds[0], fds.size(), -1);
@@ -357,56 +362,61 @@ void Server::ft_server()
                 client_socket.push_back(clientSocket);
             }
         }
-        char buffer[1024];
+        // char buffer[1024];
         for (size_t i = 1; i < fds.size(); ++i)
         {
             if (fds[i].revents && POLLIN)
             {
-                memset(buffer, 0, sizeof(buffer)); // clearing buffer
-                this->valread = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
+                memset(server.client[fds[i].fd].buffer, 0, sizeof(server.client[fds[i].fd].buffer) - 1 ); // clearing buffer
+                this->valread = recv(fds[i].fd, server.client[fds[i].fd].buffer, sizeof(server.client[fds[i].fd].buffer) - 1, 0);
+                server.client[fds[i].fd].buffer[valread] = '\0';
                 if (this->valread == 0)
                 {
                     std::cout << "Host disconnected , ip " << inet_ntoa(address.sin_addr) << " , port " << ntohs(address.sin_port) << std::endl;
 
                     close(fds[i].fd);
-                    std::cout << "CHNO FIIK " << fds[i].fd << std::endl;
-                    if (isFdThere(server , fds[i].fd))
+                    if (isFdThere(server, fds[i].fd))
                         server.client.erase(fds[i].fd);
+                    checkIfDisconnected(server);
                     fds.erase(fds.begin() + i);
-                    memset(buffer, 0, sizeof(buffer));
+                    // memset(buffer, 0, sizeof(buffer));
                 }
                 else
                 {
-                    std::cout << buffer << std::endl;
-                    std::cout << "SIZE : "<< strlen(buffer)<< std::endl;
-                    std::string input = buffer;
-                    memset(buffer, 0, sizeof(buffer));
+                    // std::cout << server.client[fds[i].fd].buffer << std::endl;
+                    // std::cout << "SIZE : " << strlen(server.client[fds[i].fd].buffer) << std::endl;
+                    std::string input = server.client[fds[i].fd].buffer;
+                    tmp = save + input;
+                    if (!containsNewline(tmp)) {
+                        save = tmp;
+                        break;
+                    }
+                    // memset(buffer, 0, sizeof(buffer));
                     std::string delimiter = " ";
 
-                    size_t pos = 0;
                     std::string token;
-                    if ((pos = input.find(delimiter)) != std::string::npos)
+                    size_t pos = 0;
+                    if ((pos = tmp.find(delimiter)) != std::string::npos)
                     {
-                        token = input.substr(0, pos);
+                        token = tmp.substr(0, pos);
                         tokens.push_back(token);
-                        input.erase(0, pos + delimiter.length());
-                        tokens.push_back(input.substr(0, input.find("\n")));
+                        tmp.erase(0, pos + delimiter.length());
+                        tokens.push_back(tmp.substr(0, tmp.find("\n")));
+                        tmp.clear();
+                        save.clear();
+                        input.clear();
                     }
-                    else {
-                        Failure(server, fds[i].fd, i); 
-                        memset(buffer, 0, sizeof(buffer));
+                    else
+                    {
+                        Failure(server, fds[i].fd, i);
                         break;
                     }
                     trimCRLF(tokens);
                     if (!server.client[fds[i].fd].getAuthen() && !Authentication(server, fds[i].fd, i))
-                    {    
-                        memset(buffer, 0, sizeof(buffer));
                         break;
-                    }
                     else if (server.client[fds[i].fd].getAuthen())
                         client_handling(server, fds[i].fd);
                 }
-
             }
         }
     } // END of While
