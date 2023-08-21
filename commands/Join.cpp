@@ -85,7 +85,7 @@ void commands::Join(Client &client, Server &server)
                                     server.channel[channels[i]].channelClients.insert(std::make_pair(client.getNickname(), client));
                                     userNum = server.channel[channels[i]].getUsersNum();
                                     server.channel[channels[i]].setUsersNum(userNum + 1);
-                                    message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
+                                    message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + server.hostBuffer + " JOIN " + channels[i] + "\r\n";
                                     server.channel[channels[i]].sendMsgToChannel(message, client.getFd());
                                     message = ":" + getHostName() + " 353 " + client.getNickname() + " @ " + channels[i] + " " + server.channel[channels[i]].getChannelMembers(channels[i], server) + "\r\n";
                                     sendMessage(message, client.getFd());
