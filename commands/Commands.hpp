@@ -20,7 +20,7 @@ class Channel;
 #define ERR_NOSUCHCHANNEL(nick, channel) "403 " + nick + " " + channel + " :No such channel"
 #define ERR_NEEDMOREPARAMS(nick) "461 " + nick + " :Not enough parameters"
 #define ERR_CHANOPRIVSNEEDED(nick, channel) "482 " + nick + " " + channel + " :You're not channel operator"
-#define ERR_NOSUCHNICK(nick, channel) "401 " + nick + " " + channel + " :No such nick/channel"
+#define ERR_NOSUCHNICK(nick, channel) "401 " + nick + " " + channel + " :No such nick"
 #define ERR_UNKNOWNMODE(nick, mode) "472 " + nick + " " + mode + " :is unknown mode char to me"
 #define ERR_KEYSET(nick, channel) "467 " + nick + " " + channel + " :Channel key already set"
 #define ERR_CHANNELISFULL(nick, channel) "471 " + nick + " " + channel + " :Cannot join channel (+l)"
@@ -47,6 +47,8 @@ public:
     void Mode(Client &c, Server &s);
     void Join(Client &client, Server &server);
     void Privmsg(Client &client, Server &server);
+    void Quit(Client &client, Server &server, int idx);
+    void  Ping(Client &c);
 };
 
 std::vector<std::string> splitCommand(const std::string &cmd);

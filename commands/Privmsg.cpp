@@ -21,7 +21,7 @@ void    commands::Privmsg(Client &client ,Server &server)
                 int clienFd = server.getFdOfExistedClient(target[i], server);
                 if (clients.find(clienFd) != clients.end())
                 {
-                    message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG ";
+                    message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " PRIVMSG " + target[i];
                     for(size_t j = 2; j < cmd.size(); j++)
                         message += " " + cmd[j];
                     message += "\r\n";
