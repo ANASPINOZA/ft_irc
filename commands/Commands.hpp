@@ -33,7 +33,7 @@ class Channel;
 #define RPL_YOUREOPER(nick) "381 " + nick + " :You are now an IRC operator"
 #define ERR_BOT(nick) "381 " + nick + " :Bot Option is empty Usage: BOT :<option>  Options: -d for dad jokes -s for random song -g for guess -f to get interesting facts" + "\r\n"
 #define RPL_BOT(nick) "381 " + nick
-#define ERR_CANTKILLSERVER(nick) "483 " + nick + " :You can't kill a server!"
+#define ERR_CANTKICK(nick) "482 " + nick + " :You can't kick yourself"
 #define ERR_NICKNAMEINUSE(nick) "433 " + nick + " :Nickname is already in use"
 #define ERR_NONICKNAMEGIVEN "431" \
                             " :No nickname given\r\n"
