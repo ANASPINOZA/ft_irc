@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 11:52:05 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:46:21 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,13 +255,14 @@ void Channel::removeOperator(std::string nickname)
 
 void Channel::sendMsgToChannel(std::string message, int fd)
 {
+	(void)fd;
 	for (std::map<std::string, Client>::iterator it = channelClients.begin(); it != channelClients.end(); it++)
 	{
-		if (fd != it->second.getFd())
-		{
+		// if (fd != it->second.getFd())
+		// {
 			if (send(it->second.getFd(), message.c_str(), message.length(), 0) == -1)
 				std::perror("send message error");
-		}
+		// }
 	}
 }
 

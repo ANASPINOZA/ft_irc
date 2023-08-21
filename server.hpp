@@ -19,6 +19,7 @@
 #include "client.hpp"
 #include <sys/poll.h>
 #include <sstream>
+#include <fcntl.h>
 #include "Channel.hpp"
 #include "./commands/Commands.hpp"
 
@@ -40,7 +41,7 @@ public:
     // bool    Authentication(int idx);
     bool Authentication(Server &s, int fds_fd, int idx);
     // void    client_handling(Server &server,int idx);
-    void client_handling(Server &server, int fds_fd);
+    void client_handling(Server &server, int fds_fd, int idx);
     bool isNickThere(Server &s, std::string nickName);
     bool isNickInChannel(Server &server, std::string nickName, std::string channelName);
     int getFdOfExistedClient(std::string nickName, Server &server);
@@ -62,7 +63,7 @@ public:
     void resetBool();
     void Failure(Server &s, int fds_fd, int idx);
     bool isFdThere(Server &s, int fd);
-    bool removeClientFromServer(Server &s, int fd);
+    bool removeClientFromServer(Server &s, int f, int idx);
 
 private:
     struct sockaddr_in address;
