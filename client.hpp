@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/20 14:51:43 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 00:48:01 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,16 @@ private:
     std::string unused;
     std::string realname;
     int isOperator;
+    bool    pass;
+    bool    nick;
+    bool    user;
+    bool    Authen;
 
 public:
     Client();
     ~Client();
     std::vector<std::string> tokens;
     std::vector<std::string> getTokens();
-    void setPass(bool type);
     void addData(std::string &new_token);
     void addVector(Server &s, std::vector<std::string> new_vector, int fds_fd);
     void printData();
@@ -65,10 +68,14 @@ public:
     std::string getRealName();
     std::string getNickname();
     int getOp();
-    bool    pass;
-    bool    nick;
-    bool    user;
-    bool    Authen;
+    void setPass(bool type);
+	void setNick(bool type);
+	void setUser(bool type);
+    void setAuthen(bool type);
+    bool getPass();
+    bool getUser();
+    bool getNick();
+    bool getAuthen();
     // void            parser(std::vector<std::string> tokens);
     // void            checkTokens(std::string cmd, std::string param, int *i);
     // void            checkTokens(std::vector<std::string> cmd);
@@ -83,7 +90,6 @@ public:
     // void            delelet
     int getFd() const;
     void setFd(Server &s, int Fd);
-    bool getPass();
     // User            getUser();
 };
 
