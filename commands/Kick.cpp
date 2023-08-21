@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 21:39:21 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 23:53:15 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,7 @@ void commands::Kick(Client &kicker, Server &server)
     }
     if (channel.removeClientFromChannel(server, userToKickInChannel, channelName))
     {
-        std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
-        sendMessage(successMsg, userToKickInChannel.getFd());
-        sendMessageToChannel(channel, successMsg);
+        sendMessage(RPL_KICK(kicker.getNickname(), userToKickInChannel.getNickname()) + "\r\n" , kicker.getFd());
     }
     else
         sendMessage("000 ERROR : failed to kick user\r\n", kicker.getFd());

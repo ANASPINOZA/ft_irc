@@ -43,7 +43,7 @@ void commands::Join(Client &client, Server &server)
                         userNum = server.channel[channels[i]].getUsersNum();
                         server.channel[channels[i]].setUsersNum(userNum + 1);
                         server.channel[channels[i]].setChannelPassword(keys[i]);
-                        server.channel[channels[i]].setProtectedByPassword(true); //mountassir
+                        server.channel[channels[i]].setProtectedByPassword(true);
 
                         message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + server.hostBuffer + " JOIN " + channels[i] + "\r\n";
                         sendMessage(message, client.getFd());
