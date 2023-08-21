@@ -2,7 +2,7 @@
 
 Server::Server()
 {
-    this->pass = FALSE;
+
 }
 
 void Server::CheckPort(char *port)
@@ -293,8 +293,8 @@ void Server::client_handling(Server &server, int fds_fd)
         cmd.Mode(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
         cmd.Privmsg(server.client[fds_fd], server);
-    else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
-        cmd.Privmsg(server.client[fds_fd], server);
+    else if (!tokens.empty() && !tokens[0].compare("BOT"))
+        cmd.Bot(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("QUIT"))
         std::cout << "Client Quit......" << std::endl;
     else if (!tokens.empty() && !tokens[0].compare("PONG"))
