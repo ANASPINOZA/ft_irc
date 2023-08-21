@@ -35,11 +35,13 @@ class Server
 public:
     Server();
     void ft_server();
+    void setIp(int ip);
+    int  getIp();
     void SomeParss(char **av);
     void CheckPort(char *port);
     void get_PASS(char *pass);
     bool Authentication(Server &s, int fds_fd, int idx);
-    void client_handling(Server &server, int fds_fd);
+    void client_handling(Server &server, int fds_fd, int idx);
     bool isNickThere(Server &s, std::string nickName);
     bool isNickInChannel(Server &server, std::string nickName, std::string channelName);
     int getFdOfExistedClient(std::string nickName, Server &server);
@@ -71,6 +73,7 @@ private:
     int clientSocket;
     int valread;
     int Port;
+    int ipv4;
 };
 
 #endif

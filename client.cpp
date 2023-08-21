@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 17:22:14 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:36:51 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,4 +208,14 @@ int Client::getFd() const
     return (this->fd);
 }
 
+
+void    Client::setIp(char* ip)
+{
+    this->ipv4 = ip;
+}
+
+char* Client::getIp()
+{
+    return this->ipv4;
+}
 /* ************************************************************************** */
