@@ -13,7 +13,6 @@ class Client;
 class Server;
 class Channel;
 
-// // -------------------------------------- MSGS -------------------------------------- //
 #define ERR_USERONCHANNEL(nick, channel) "443 " + nick + " " + channel + " :is already on channel"
 #define ERR_USERNOTINCHANNEL(nick, channel) "441 " + nick + " " + channel + " :They aren't on that channel"
 #define ERR_NOTONCHANNEL(nick, channel) "442 " + nick + " " + channel + " :You're not on that channel"
@@ -32,7 +31,8 @@ class Channel;
 #define RPL_TOPIC(nick, channel, topic) "332 " + nick + " " + channel + " :" + topic
 #define RPL_NOTOPIC(nick, channel) "331 " + nick + " " + channel + " :No topic is set"
 #define RPL_YOUREOPER(nick) "381 " + nick + " :You are now an IRC operator"
-// //------------------------------------Authen                                            //
+#define ERR_BOT(nick) "381 " + nick + " :Bot Option is empty Usage: BOT :<option>  Options: -d for dad jokes -s for random song -g for guess -f to get interesting facts" + "\r\n"
+#define RPL_BOT(nick) "381 " + nick
 
 #define ERR_NICKNAMEINUSE(nick) "433 " + nick + " :Nickname is already in use"
 #define ERR_NONICKNAMEGIVEN "431" \

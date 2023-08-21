@@ -31,22 +31,16 @@ std::string parseModeOptions(const std::string &input)
         else if (c == 't' || c == 'l' || c == 'o' || c == 'k' || c == 'i')
         {
             if (hasSecondChar)
-            {
                 return "";
-            }
             secondChar = c;
             hasSecondChar = true;
         }
         else
-        {
             return "";
-        }
     }
 
     if (!hasSecondChar)
-    {
         return "";
-    }
 
     return std::string(1, firstChar) + secondChar;
 }

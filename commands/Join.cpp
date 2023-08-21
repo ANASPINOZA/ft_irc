@@ -1,6 +1,6 @@
 #include "Commands.hpp"
 
-void    commands::Join(Client &client, Server &server)
+void commands::Join(Client &client, Server &server)
 {
     std::vector<std::string> channels;
     std::vector<std::string> keys;
@@ -98,7 +98,6 @@ void    commands::Join(Client &client, Server &server)
                         }
                         else
                         {
-                            // if channel is public (anyone can join)
                             if (keys.size() > i && server.channel[channels[i]].getChannelPassword() != keys[i])
                             {
                                 message = ":" + getHostName() + " 464 * :Password incorrect\r\n";
@@ -149,9 +148,3 @@ void    commands::Join(Client &client, Server &server)
         return;
     }
 }
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
-/* ************************************************************************** */

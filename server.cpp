@@ -2,7 +2,7 @@
 
 Server::Server()
 {
-    this->pass = FALSE;
+
 }
 
 void Server::CheckPort(char *port)
@@ -293,8 +293,8 @@ void Server::client_handling(Server &server, int fds_fd)
         cmd.Mode(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
         cmd.Privmsg(server.client[fds_fd], server);
-    else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
-        cmd.Privmsg(server.client[fds_fd], server);
+    else if (!tokens.empty() && !tokens[0].compare("BOT"))
+        cmd.Bot(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("QUIT"))
         std::cout << "Client Quit......" << std::endl;
     else if (!tokens.empty() && !tokens[0].compare("PONG"))
@@ -347,7 +347,6 @@ void Server::ft_server()
     clientPoll.events = POLLIN;
     clientPoll.revents = 0;
     fds.push_back(clientPoll);
-    client_fd = 0;
     std::string save;
     std::string tmp;
     fcntl(server_fd, F_SETFL, O_NONBLOCK);
@@ -421,7 +420,7 @@ void Server::ft_server()
 
                     std::string token;
                     size_t pos = 0;
-                    if ((pos = tmp.find(delimiter)) != std::string::npos)
+                    if ((pos = tmp.find(delimiter)) != std::string::npos || server.client[fds[i].fd].getAuthen())
                     {
                         token = tmp.substr(0, pos);
                         tokens.push_back(token);
@@ -431,7 +430,7 @@ void Server::ft_server()
                         save.clear();
                         input.clear();
                     }
-                    else
+                    else if (!server.client[fds[i].fd].getAuthen())
                     {
                         Failure(server, fds[i].fd, i);
                         break;

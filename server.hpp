@@ -68,14 +68,9 @@ private:
     std::vector<std::string> tokens;
     std::string PASS;
     int server_fd;
-    int client_fd;
     int clientSocket;
     int valread;
     int Port;
-    bool pass;
-    bool nick;
-    bool user;
-    bool Authen;
 };
 
 #endif

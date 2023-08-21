@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:05 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 14:23:29 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:58:53 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         else
-        {
             sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
-        }
         break;
 
     case 't':
@@ -62,9 +60,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         else
-        {
             sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
-        }
         break;
     case 'k':
         if (modeSymbol == '+')
@@ -87,14 +83,10 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
                 sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
             }
             else
-            {
                 sendMessage("ERROR: Channel is not protected by password\r\n", c.getFd());
-            }
         }
         else
-        {
             sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
-        }
         break;
 
     case 'l':
@@ -131,9 +123,7 @@ void handleMode(const std::string &mode, Channel &channel, Client &c, std::strin
             sendMessage(RPL_CHANNELMODEIS(c.getNickname(), channel.getChannelName(), "-" + modeOption) + "\r\n", c.getFd());
         }
         else
-        {
             sendMessage(ERR_UNKNOWNMODE(c.getNickname(), modeOption) + "\r\n", c.getFd());
-        }
         break;
 
     default:
@@ -219,9 +209,7 @@ void commands::Mode(Client &c, Server &s)
         if (mode[0] == '+')
         {
             if (channel.isOperator(userInChannel.getNickname()))
-            {
                 sendMessage("ERROR: User is already an operator\r\n", c.getFd());
-            }
             else
             {
                 channel.setChannelOperators(userInChannel.getNickname());
@@ -236,9 +224,7 @@ void commands::Mode(Client &c, Server &s)
                 sendMessage(RPL_UMODEIS(c.getNickname(), "-" + mode[1]) + "\r\n", c.getFd());
             }
             else
-            {
                 sendMessage(ERR_USERNOTINCHANNEL(c.getNickname(), userInChannel.getNickname()) + "\r\n", c.getFd());
-            }
         }
         return;
     }
