@@ -169,8 +169,7 @@ bool Server::Authentication(Server &s, int fds_fd, int idx)
     return TRUE;
 }
 
-
-int     Server::getFdOfExistedClient(std::string nickName, Server &server)
+int Server::getFdOfExistedClient(std::string nickName, Server &server)
 {
     std::map<int, Client>::iterator it;
     for (it = server.client.begin(); it != server.client.end(); it++)

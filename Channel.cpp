@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 00:34:51 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 02:09:11 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 	}
 
 	server.channel[channelName].channelClients.erase(nickname);
+	server.channel[channelName].usersNum--;
 
 	return true;
 }
