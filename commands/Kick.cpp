@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:03 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 15:50:26 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:59:28 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void commands::Kick(Client &kicker, Server &server)
     }
     std::string channelName = cmd[0];
     std::string targetNickname = cmd[1];
-    std::cout << targetNickname << std::endl;
     std::string comment = (cmd.size() > 2) ? getTextAfterColon(kicker.getTokens()[1]) : "";
 
     if (channelName[0] != '#')
@@ -58,6 +57,12 @@ void commands::Kick(Client &kicker, Server &server)
         return;
     }
 
+    if (kicker.getNickname() == targetNickname)
+    {
+        std::string errorMsg = ERR_CANTKILLSERVER(kicker.getNickname()) + "\r\n";
+        sendMessage(errorMsg, kicker.getFd());
+        return;
+    }
     if (channel.removeClientFromChannel(server, userToKickInChannel, channelName))
     {
         std::string successMsg = RPL_KICK(kicker.getNickname(), targetNickname, channelName, comment) + "\r\n";
