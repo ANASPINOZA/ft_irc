@@ -6,45 +6,49 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 15:43:41 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/20 16:01:26 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:18:29 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-// check if deconnected and remove from the channels he is in
-
 void checkIfDisconnected(Server &server)
 {
-    std::map<std::string, Channel>::iterator channelIt = server.getChannels().begin();
+    std::map<std::string, Channel> channels = server.getChannels();
 
-    while (channelIt != server.getChannels().end())
+    for (std::map<std::string, Channel>::iterator channelIt = channels.begin(); channelIt != channels.end(); ++channelIt)
     {
-        std::map<std::string, Client> clients = channelIt->second.getChannelClients();
-        std::map<std::string, Client>::iterator clientIt = clients.begin();
+        Channel &channel = channelIt->second;
+        std::map<std::string, Client> clients = channel.getChannelClients();
 
-        while (clientIt != clients.end())
+        for (std::map<std::string, Client>::iterator clientIt = clients.begin(); clientIt != clients.end();)
         {
-            if (!server.isNickThere(server, clientIt->second.getNickname()))
+            const std::string &nickname = clientIt->second.getNickname();
+            bool clientDisconnected = !server.isNickThere(server, nickname);
+
+            if (clientDisconnected)
             {
-                if (channelIt->second.getChannelOwner() == clientIt->second.getNickname())
+                if (channel.getChannelOwner() == nickname)
                 {
                     std::map<std::string, Client>::iterator nextClientIt = clients.begin();
-                    nextClientIt++;
-                    if (nextClientIt != clients.end())
-                        channelIt->second.setChannelOwner(nextClientIt->second.getNickname());
+                    if (nextClientIt != clientIt)
+                    {
+                        channel.setChannelOwner(nextClientIt->second.getNickname());
+                    }
                     else
-                        channelIt->second.setChannelOwner("");
+                    {
+                        channel.setChannelOwner("");
+                    }
                 }
-                channelIt->second.removeClientFromChannel(server, clientIt->second, channelIt->first);
-                clientIt = clients.erase(clientIt);
+                channel.removeClientFromChannel(server, clientIt->second, channelIt->first);
+                std::map<std::string, Client>::iterator tempIt = clientIt;
+                ++clientIt;
+                clients.erase(tempIt);
             }
             else
             {
                 ++clientIt;
             }
         }
-
-        ++channelIt;
     }
 }
