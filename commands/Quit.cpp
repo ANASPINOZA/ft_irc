@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:56:14 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 16:11:43 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:42:36 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void commands::Quit(Client &c, Server &s, int idx)
     if (s.isNickThere(s, c.getNickname()))
     {
         fd = c.getFd();
-        if (s.removeClientFromServer(s, c.getFd(), idx))
+        if (s.removeClientFromServer(s, c.getFd()))
         {
             sendMessage(c.getNickname() + " has quit (" + quitMsg + ")\r\n", fd);
             close(fd);

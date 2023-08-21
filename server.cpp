@@ -48,29 +48,32 @@ int checkUserCmd(std::string Args)
     return 1;
 }
 
-bool isValidUserCommand(const std::string& command) {
+bool isValidUserCommand(const std::string &command)
+{
     std::istringstream iss(command);
     std::string firstToken;
     iss >> firstToken;
 
-    if (firstToken == "USER") {
+    if (firstToken == "USER")
+    {
         std::vector<std::string> parameters;
         std::string param;
 
         // Extract parameters
-        while (iss >> param) {
+        while (iss >> param)
+        {
             parameters.push_back(param);
         }
 
         // Check the number of parameters
-        if (parameters.size() == 4) {
+        if (parameters.size() == 4)
+        {
             return true;
         }
     }
 
     return false;
 }
-
 
 void trimCRLF(std::vector<std::string> &lines)
 {
@@ -296,7 +299,8 @@ void Server::client_handling(Server &server, int fds_fd, int idx)
         cmd.Quit(server.client[fds_fd], server, idx);
     else if (!tokens.empty() && !tokens[0].compare("PONG"))
         cmd.Ping(server.client[fds_fd]);
-    else if (!tokens.empty()) {
+    else if (!tokens.empty())
+    {
         std::string mssg = std::string(":") + getHostName() + " 401 " + server.client.at(fds_fd).getNickname() + " :uknown command" + "\r\n";
         sendMessage(mssg, fds_fd);
     }
@@ -304,7 +308,8 @@ void Server::client_handling(Server &server, int fds_fd, int idx)
     tokens.clear();
 }
 
-bool containsNewline(const std::string& input) {
+bool containsNewline(const std::string &input)
+{
     return input.find('\n') != std::string::npos;
 }
 
@@ -345,7 +350,7 @@ void Server::ft_server()
     client_fd = 0;
     std::string save;
     std::string tmp;
-    fcntl(server_fd , F_SETFL, O_NONBLOCK);
+    fcntl(server_fd, F_SETFL, O_NONBLOCK);
     while (true)
     {
         int pollResult = poll(&fds[0], fds.size(), -1);
@@ -390,7 +395,7 @@ void Server::ft_server()
             std::cout << "TEST" << std::endl;
             if (fds[i].revents && POLLIN)
             {
-                memset(server.client[fds[i].fd].buffer, 0, sizeof(server.client[fds[i].fd].buffer) - 1 ); // clearing buffer
+                memset(server.client[fds[i].fd].buffer, 0, sizeof(server.client[fds[i].fd].buffer) - 1); // clearing buffer
                 this->valread = recv(fds[i].fd, server.client[fds[i].fd].buffer, sizeof(server.client[fds[i].fd].buffer) - 1, 0);
                 server.client[fds[i].fd].buffer[valread] = '\0';
                 if (this->valread == 0)
@@ -408,7 +413,8 @@ void Server::ft_server()
                     std::cout << server.client[fds[i].fd].buffer << std::endl;
                     std::string input = server.client[fds[i].fd].buffer;
                     tmp = save + input;
-                    if (!containsNewline(tmp)) {
+                    if (!containsNewline(tmp))
+                    {
                         save = tmp;
                         break;
                     }
@@ -472,16 +478,24 @@ Channel &Server::getChannelByName(std::string channelName)
 
 // -------------------------------- Mountassir
 
-bool Server::removeClientFromServer(Server &s, int fd, int idx)
+bool Server::removeClientFromServer(Server &s, int fd)
 {
     std::map<int, Client>::iterator it;
+    std::vector<pollfd>::iterator it2;
+    for (it2 = s.fds.begin(); it2 != s.fds.end(); it2++)
+    {
+        if (it2->fd == fd)
+        {
+            s.fds.erase(it2);
+            break;
+        }
+    }
+
     for (it = s.client.begin(); it != s.client.end(); it++)
     {
         if (it->first == fd)
         {
             s.client.erase(it);
-            ( void)idx;
-            // fds.erase(fds.begin() + idx);
             return true;
         }
     }

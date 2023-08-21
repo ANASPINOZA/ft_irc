@@ -63,7 +63,7 @@ public:
     void resetBool();
     void Failure(Server &s, int fds_fd, int idx);
     bool isFdThere(Server &s, int fd);
-    bool removeClientFromServer(Server &s, int f, int idx);
+    bool removeClientFromServer(Server &s, int f);
 
 private:
     struct sockaddr_in address;
