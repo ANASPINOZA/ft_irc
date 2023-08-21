@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:40 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 02:09:11 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:52:05 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ std::string Channel::getChannelPassword() const
 
 //----------------------------------------------------------------- Setters
 
-
 void Channel::setChannelName(std::string channelName)
 {
 	this->channelName = channelName;
@@ -224,9 +223,7 @@ bool Channel::removeClientFromChannel(Server &server, Client user, std::string c
 	std::map<std::string, Client> client = server.channel[channelName].channelClients;
 
 	if (client.find(nickname) == client.end() || server.channel[channelName].getChannelOwner() == nickname)
-	{
 		return false;
-	}
 
 	server.channel[channelName].channelClients.erase(nickname);
 	server.channel[channelName].usersNum--;
