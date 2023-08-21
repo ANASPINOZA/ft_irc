@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/19 17:32:37 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 00:47:38 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,47 @@ std::string getHostName()
 ** --------------------------------- ACCESSOR ---------------------------------
 */
 
+void Client::setPass(bool type)
+{
+    this->pass = type;
+}
+
+void Client::setUser(bool type)
+{
+    this->user = type;
+}
+
+void Client::setNick(bool type)
+{
+    this->nick = type;
+}
+
+void Client::setAuthen(bool type)
+{
+    this->Authen = type;
+}
+
+
+bool Client::getPass()
+{
+    return this->pass;
+}
+
+bool Client::getUser()
+{
+    return this->user;
+}
+
+bool Client::getNick()
+{
+    return this->nick;
+}
+
+bool Client::getAuthen()
+{
+    return this->Authen;
+}
+
 void Client::setFd(Server &s, int Fd)
 {
     s.client[Fd].fd = Fd;
@@ -102,10 +143,6 @@ std::vector<std::string> Client::getTokens()
     return (this->tokens);
 }
 
-void Client::setPass(bool type)
-{
-    this->pass = type;
-}
 
 // bool    Client::getPass()
 // {

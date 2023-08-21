@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:47:29 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/20 13:21:54 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/21 02:08:57 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ public:
 	Channel();
 	Channel(std::string name, Client user);
 	~Channel();
-
+	
 	std::map<std::string, Client> channelClients;
 	std::vector<std::string> channelOperators;
 	//----------------------------------------------------------------- Getters
