@@ -274,7 +274,7 @@ void Server::parseUserInfos(Server &s, std::string userInfos, int fds_fd)
 }
 /////////////////////////////////////////////////////////////////////////////
 
-void Server::client_handling(Server &server, int fds_fd, int idx)
+void Server::client_handling(Server &server, int fds_fd)
 {
     commands cmd;
     server.client[fds_fd].addVector(server, tokens, fds_fd);
@@ -296,9 +296,9 @@ void Server::client_handling(Server &server, int fds_fd, int idx)
     else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
         cmd.Privmsg(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("QUIT"))
-        cmd.Quit(server.client[fds_fd], server, idx);
+        std::cout << "Client Quit......" << std::endl;
     else if (!tokens.empty() && !tokens[0].compare("PONG"))
-        cmd.Ping(server.client[fds_fd]);
+        std::cout << "PING..." << std::endl;
     else if (!tokens.empty())
     {
         std::string mssg = std::string(":") + getHostName() + " 401 " + server.client.at(fds_fd).getNickname() + " :uknown command" + "\r\n";
@@ -390,9 +390,8 @@ void Server::ft_server()
                 client_socket.push_back(clientSocket);
             }
         }
-        for (size_t i = 1; i < fds.size(); ++i)
+        for (size_t i = 1; i < fds.size() ; ++i)
         {
-            std::cout << "TEST" << std::endl;
             if (fds[i].revents && POLLIN)
             {
                 memset(server.client[fds[i].fd].buffer, 0, sizeof(server.client[fds[i].fd].buffer) - 1); // clearing buffer
@@ -441,7 +440,7 @@ void Server::ft_server()
                     if (!server.client[fds[i].fd].getAuthen() && !Authentication(server, fds[i].fd, i))
                         break;
                     else if (server.client[fds[i].fd].getAuthen())
-                        client_handling(server, fds[i].fd, i);
+                        client_handling(server, fds[i].fd);
                 }
             }
         }
@@ -478,26 +477,31 @@ Channel &Server::getChannelByName(std::string channelName)
 
 // -------------------------------- Mountassir
 
-bool Server::removeClientFromServer(Server &s, int fd)
-{
-    std::map<int, Client>::iterator it;
-    std::vector<pollfd>::iterator it2;
-    for (it2 = s.fds.begin(); it2 != s.fds.end(); it2++)
-    {
-        if (it2->fd == fd)
-        {
-            s.fds.erase(it2);
-            break;
-        }
-    }
+// bool Server::removeClientFromServer(Server &s, int fd, int idx)
+// {
+//     (void)s;
+//     std::map<int, Client>::iterator it;
+//     // std::vector<pollfd>::iterator it2;
+//     // for (it2 = fds.begin(); it2 != fds.end(); it2++)
+//     // {
+//     //     if (it2->fd == fd)
+//     //     {
+//     //         fds.erase(it2);
+//     //         break;
+//     //     }
+//     // }
 
-    for (it = s.client.begin(); it != s.client.end(); it++)
-    {
-        if (it->first == fd)
-        {
-            s.client.erase(it);
-            return true;
-        }
-    }
-    return false;
-}
+//     int res = 0;
+//     close(fd);
+//     for (it = s.client.begin(); it != s.client.end(); it++)
+//     {
+//         if (it->first == fd)
+//         {
+//             s.client.erase(it);
+//             res = 1;
+//         }
+//     }
+//     if (res)
+//         fds.erase(fds.begin() + idx);
+//     return (res);
+// }

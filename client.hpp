@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 19:17:49 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 14:55:36 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 17:23:16 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <iostream>
 #include <string>
-#include "User.hpp"
 #include <vector>
 #include <algorithm>
 #include <sstream>
@@ -77,21 +76,9 @@ public:
     bool getUser();
     bool getNick();
     bool getAuthen();
-    // void            parser(std::vector<std::string> tokens);
-    // void            checkTokens(std::string cmd, std::string param, int *i);
-    // void            checkTokens(std::vector<std::string> cmd);
-    // int            checkCmds(std::string cmd);
-    // void            Join(std::string param);
-    // void            Join(Client &client ,Server &server , int i);
-    // void            checkInviteParam(std::string param);
-    // void            checkKickParam(std::string param);
-    // void            checkTopicParam(std::string param);
-    // void            Privmsg(std::string param);
     void setOP(int state);
-    // void            delelet
     int getFd() const;
     void setFd(Server &s, int Fd);
-    // User            getUser();
 };
 
 std::string getHostName();
