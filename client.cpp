@@ -6,7 +6,7 @@
 /*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:14:11 by aadnane           #+#    #+#             */
-/*   Updated: 2023/08/21 00:47:38 by ielmakhf         ###   ########.fr       */
+/*   Updated: 2023/08/21 17:22:14 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,6 @@ std::vector<std::string> Client::getTokens()
     return (this->tokens);
 }
 
-
-// bool    Client::getPass()
-// {
-//     return (this->pass);
-// }
-
 void Client::setNickname(std::string nickname)
 {
     this->nickname = nickname;
@@ -194,13 +188,6 @@ std::string Client::getRealName()
     return (this->realname);
 }
 
-// void   Client::setUser(std::string username, std::string hostname, std::string realname)
-// {
-//     this->user.setUsername(username);
-//     this->user.setHostname(hostname);
-//     this->user.setRealname(realname);
-// }
-
 std::string Client::getNickname()
 {
     return this->nickname;
@@ -215,16 +202,6 @@ void Client::setOP(int state)
 {
     this->isOperator = state;
 }
-
-// std::string     Client::getPassword()
-// {
-//     return this->password;
-// }
-
-// User            Client::getUser()
-// {
-//     return this->user;
-// }
 
 int Client::getFd() const
 {
