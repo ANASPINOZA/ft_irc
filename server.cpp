@@ -264,6 +264,8 @@ void Server::client_handling(Server &server, int fds_fd)
         cmd.Mode(server.client[fds_fd], server);
     else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
         cmd.Privmsg(server.client[fds_fd], server);
+    else if (!tokens.empty() && !tokens[0].compare("PRIVMSG"))
+        cmd.Privmsg(server.client[fds_fd], server);
     else if (!tokens.empty()) {
         std::string mssg = std::string(":") + getHostName() + " 401 " + server.client.at(fds_fd).getNickname() + " :uknown command" + "\r\n";
         sendMessage(mssg, fds_fd);
