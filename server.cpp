@@ -316,6 +316,33 @@ bool containsNewline(const std::string &input)
     return input.find('\n') != std::string::npos;
 }
 
+void   Server::ft_getHostMachine(Server &s)
+{
+    char *addr = inet_ntoa(clientAddr.sin_addr);
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    struct addrinfo* result;
+    int status = getaddrinfo(addr, NULL, &hints, &result);
+
+    // char hostBuffer[NI_MAXHOST];
+    status = getnameinfo(result->ai_addr, result->ai_addrlen,
+                s.hostBuffer, sizeof(s.hostBuffer),
+                NULL, 0, NI_NAMEREQD);
+        if (status != 0) {
+            std::cerr << "getnameinfo error: " << gai_strerror(status) << std::endl;
+            return ;
+    } else {
+        std::cout << "Hostname: " << s.hostBuffer << std::endl;
+
+    }
+    return ;
+}
+
+
+
 void Server::ft_server()
 {
 
@@ -382,6 +409,7 @@ void Server::ft_server()
                 std::cout << "New connection established. Client IP: "
                           << inet_ntoa(clientAddr.sin_addr) << ", Client Port: "
                           << ntohs(clientAddr.sin_port) << std::endl;
+                ft_getHostMachine(server);
 
                 pollfd clientPoll;
                 clientPoll.fd = clientSocket;

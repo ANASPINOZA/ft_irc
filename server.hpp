@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include "Channel.hpp"
 #include "./commands/Commands.hpp"
+#include <netdb.h>
 
 #define TRUE true
 #define FALSE false
@@ -61,6 +62,8 @@ public:
     void Failure(Server &s, int fds_fd, int idx);
     bool isFdThere(Server &s, int fd);
     bool removeClientFromServer(Server &s, int f, int idx);
+    void    ft_getHostMachine(Server &s);
+    char hostBuffer[NI_MAXHOST];
 
 private:
     struct sockaddr_in address;

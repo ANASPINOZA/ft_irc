@@ -45,7 +45,7 @@ void commands::Join(Client &client, Server &server)
                         server.channel[channels[i]].setChannelPassword(keys[i]);
                         server.channel[channels[i]].setProtectedByPassword(true); //mountassir
 
-                        message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + getHostName() + " JOIN " + channels[i] + "\r\n";
+                        message = ":" + client.getNickname() + "!" + client.getUserName() + "@" + server.hostBuffer + " JOIN " + channels[i] + "\r\n";
                         sendMessage(message, client.getFd());
                         message = std::string(":") + getHostName() + " MODE " + channels[i] + " " + "\r\n";
                         sendMessage(message, client.getFd());
