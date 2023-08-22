@@ -6,7 +6,7 @@
 /*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 15:43:41 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/21 11:55:31 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/22 00:53:53 by ahel-mou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void checkIfDisconnected(Server &server)
                     itChan->second.removeOperator(clientIt->second.getNickname());
                 if (itChan->second.getChannelOwner() == clientIt->second.getNickname())
                     itChan->second.setChannelOwner("");
+
                 itChan->second.removeClientFromChannel(server, clientIt->second, itChan->second.getChannelName());
             }
             clientIt++;
