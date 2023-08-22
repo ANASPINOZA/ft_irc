@@ -409,6 +409,7 @@ void Server::ft_server()
                 std::cout << "New connection established. Client IP: "
                           << inet_ntoa(clientAddr.sin_addr) << ", Client Port: "
                           << ntohs(clientAddr.sin_port) << std::endl;
+                memset(server.hostBuffer, 0, sizeof(server.hostBuffer));
                 ft_getHostMachine(server);
 
                 pollfd clientPoll;
