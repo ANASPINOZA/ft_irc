@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahel-mou <ahmed@1337.ma>                   +#+  +:+       +#+        */
+/*   By: ielmakhf <ielmakhf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 22:28:07 by ahel-mou          #+#    #+#             */
-/*   Updated: 2023/08/22 01:01:42 by ahel-mou         ###   ########.fr       */
+/*   Updated: 2023/08/22 01:26:09 by ielmakhf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void commands::Topic(Client &c, Server &s)
         return;
     }
 
-    const std::string topic = getTextAfterColon(c.getTokens()[1]);
+    std::string topic = getTextAfterColon(c.getTokens()[1]);
     if (topic.empty())
     {
         if (channel.getOnlyOperatorTopic() && !channel.isOperator(c.getNickname()))
@@ -75,6 +75,8 @@ void commands::Topic(Client &c, Server &s)
             return;
         }
         channel.setChannelTopic(topic);
+        if (topic.find(":") == 1)
+            topic = topic.substr(1);
         std::string topicMsg = RPL_TOPIC(c.getNickname(), channelName, topic) + "\r\n";
         sendMessageToChannel(channel, topicMsg);
     }
